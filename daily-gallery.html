@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Gallery</title>
+<style>
+  :root {
+    --bg: #111214;
+    --panel: #1b1c1f;
+    --text: #eef0f2;
+    --muted: #9aa0a6;
+    --accent: #4f8cff;
+    --border: #2a2c30;
+    --mp-red: #c8102e;
+    --mp-gold: #ffcc00;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  }
+
+  header {
+    position: sticky; top: 0; z-index: 10;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 20px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+  }
+  header h1 {
+    grid-column: 2;
+    font-size: 18px; font-weight: 600; margin: 0;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .back-link {
+    grid-column: 1; justify-self: start;
+    color: var(--muted);
+    font-size: 13px;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .back-link:hover { color: var(--text); }
+  .header-right {
+    grid-column: 3; justify-self: end;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .count { color: var(--muted); font-size: 13px; white-space: nowrap; }
+
+  button, .file-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 9px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: opacity .15s ease;
+  }
+  button:hover, .file-btn:hover { opacity: .88; }
+
+  select {
+    background: var(--panel);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+
+  #day-picker { padding: 30px 20px 60px; max-width: 700px; margin: 0 auto; }
+  .day-picker-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .day-picker-toolbar h2 { font-weight: 600; margin: 0; }
+  /* A vertical list of full-width rows, not a card grid -- one day per
+     row, oldest-first by default, title on the left and item count on
+     the right, so the whole trip reads top-to-bottom like a table of
+     contents rather than a tiled gallery of tiles. */
+  .day-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .day-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .day-card:hover { border-color: var(--accent); }
+  .day-card .day-card-title { font-weight: 600; font-size: 14.5px; }
+  .day-card .day-card-count { color: var(--muted); font-size: 12.5px; white-space: nowrap; }
+
+  #empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 60vh;
+    color: var(--muted);
+    padding: 20px;
+  }
+  #empty-state h2 { color: var(--text); font-weight: 600; margin-bottom: 6px; }
+  #empty-state p { max-width: 420px; line-height: 1.5; font-size: 14px; }
+
+  #grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 10px;
+    padding: 16px 20px 60px;
+  }
+  .thumb {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    background: var(--panel);
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 1px solid var(--border);
+  }
+  .thumb img, .thumb video {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform .2s ease;
+  }
+  .thumb:hover img, .thumb:hover video { transform: scale(1.05); }
+  .thumb .video-badge {
+    position: absolute; top: 8px; right: 8px;
+    background: rgba(0,0,0,.6);
+    color: #fff;
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  .thumb .name {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    padding: 6px 8px;
+    font-size: 11px;
+    color: #fff;
+    background: linear-gradient(to top, rgba(0,0,0,.8), transparent);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .thumb .name .thumb-date { display: block; color: #cfd3d8; font-size: 10px; }
+
+  #viewer {
+    position: fixed; inset: 0;
+    background: rgba(8,8,10,.97);
+    display: none;
+    z-index: 100;
+  }
+  #viewer.open {
+    display: grid;
+    grid-template-columns: 10% 80% 10%;
+    height: 100%;
+  }
+
+  /* Left/right 10% panels: a fixed item at the top (count / close), and
+     first+previous or next+last nav buttons vertically centered below —
+     same relative top/middle positions the old single-row layout used. */
+  .viewer-side {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    padding: 18px 6px;
+  }
+  .viewer-side-top {
+    flex: none;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 8px;
+  }
+  .viewer-side-nav {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .viewer-count { color: var(--muted); font-size: 12px; text-align: center; white-space: nowrap; }
+
+  .icon-btn {
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.15);
+    color: #fff;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    padding: 0;
+  }
+  .icon-btn:hover { background: rgba(255,255,255,.18); }
+
+  .nav-btn {
+    flex: none;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.15);
+    color: white;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+  .nav-btn:hover { background: rgba(255,255,255,.18); }
+  .nav-btn:disabled { opacity: .35; cursor: default; }
+
+  /* Center 80% column: description block (top-aligned) above the image,
+     then zoom controls, then the filename block -- the image stage is the
+     only flexible ("1fr") row, so it is always sized to whatever room is
+     left over after the other three blocks, never the other way around. */
+  .viewer-center {
+    display: grid;
+    grid-template-rows: auto 1fr auto auto;
+    gap: 10px;
+    height: 100%;
+    min-width: 0;
+    padding: 0 10px 18px;
+    overflow-y: auto;
+  }
+
+  .desc-block {
+    width: 100%;
+    margin: 0;
+    background: transparent;
+    border-radius: 10px;
+    padding: 12px 16px;
+    line-height: 1.55;
+    font-size: 14px;
+    color: var(--text);
+  }
+  .desc-block .desc-label-inline {
+    font-size: 11.5px; text-transform: uppercase; letter-spacing: .08em;
+    color: var(--muted); font-weight: 700;
+  }
+  .desc-block .desc-alt-link {
+    margin-left: 8px;
+    color: var(--accent);
+    font-size: 12.5px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .desc-block .desc-alt-link:hover { text-decoration: underline; }
+  .desc-block.monty {
+    font-family: "Comic Sans MS", "Chalkboard SE", cursive, sans-serif;
+    background:
+      repeating-linear-gradient(45deg, rgba(200,16,46,.22), rgba(200,16,46,.22) 10px, rgba(255,204,0,.22) 10px, rgba(255,204,0,.22) 20px);
+    color: #fff3cd;
+    text-shadow: 1px 1px 0 rgba(0,0,0,.6);
+    font-size: 15px;
+  }
+  .desc-block.monty .desc-label-inline { color: var(--mp-gold); text-shadow: 1px 1px 0 rgba(0,0,0,.6); }
+  .desc-block.monty .desc-alt-link { color: var(--mp-gold); }
+
+  #stage {
+    min-height: 0;
+    overflow: auto;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 8px;
+    background: #000;
+  }
+  /* Centered flex content can not be scrolled into on its top/left side in
+     any browser -- a well-known CSS limitation, not a bug in this page --
+     so once zoomed in past 100% #stage switches to top/left anchoring,
+     which keeps the whole enlarged image reachable by scrolling. */
+  #stage.zoomed {
+    align-items: flex-start; justify-content: flex-start;
+  }
+  #stage img, #stage video {
+    display: block;
+    max-width: 100%; max-height: 100%;
+    object-fit: contain;
+    transition: transform .1s ease;
+    transform-origin: 0 0;
+  }
+
+  .zoom-bar { display: flex; align-items: center; justify-content: center; gap: 10px; }
+  .zoom-bar button {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.15);
+    color: #fff; font-size: 15px; padding: 0;
+  }
+  .zoom-bar button:hover { background: rgba(255,255,255,.18); }
+  #zoom-level { font-size: 12px; color: var(--muted); min-width: 42px; text-align: center; }
+
+  .filename-block { text-align: center; color: var(--muted); font-size: 13px; }
+  .filename-block .data-link {
+    margin-left: 10px;
+    color: var(--accent);
+    font-size: 12.5px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .filename-block .data-link:hover { text-decoration: underline; }
+
+  .modal {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.75);
+    display: none;
+    align-items: center; justify-content: center;
+    z-index: 200;
+    padding: 20px;
+  }
+  .modal.open { display: flex; }
+  .modal-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    max-width: 720px; width: 100%;
+    max-height: 80vh;
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  .modal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    font-weight: 600; font-size: 14px;
+  }
+  #data-json {
+    margin: 0; padding: 16px;
+    overflow: auto;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 12.5px; line-height: 1.5;
+    color: var(--text);
+    white-space: pre-wrap; word-break: break-word;
+  }
+
+  @media (max-width: 620px) {
+    header { grid-template-columns: auto 1fr auto; }
+    header h1 { font-size: 14px; }
+    #viewer.open { grid-template-columns: 44px 1fr 44px; }
+    .viewer-side { padding: 10px 2px; }
+    .nav-btn, .icon-btn { width: 30px; height: 30px; font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="back-link" href="./index.html">&larr; Journal</a>
+  <h1 id="page-title">Daily Gallery</h1>
+  <div class="header-right">
+    <span class="count" id="count"></span>
+    <select id="sort">
+      <option value="asc">Date: Oldest first</option>
+      <option value="desc">Date: Newest first</option>
+    </select>
+    <select id="slideshow-interval" title="Seconds per slide">
+      <option value="2">Slideshow: 2s</option>
+      <option value="3">Slideshow: 3s</option>
+      <option value="4" selected>Slideshow: 4s</option>
+      <option value="5">Slideshow: 5s</option>
+      <option value="7">Slideshow: 7s</option>
+      <option value="10">Slideshow: 10s</option>
+    </select>
+    <button class="file-btn" id="slideshow-start" title="Start slideshow">&#9654; Slideshow</button>
+    <a class="file-btn" href="./daily-gallery.html">All Days</a>
+  </div>
+</header>
+
+<div id="day-picker" style="display:none;">
+  <div class="day-picker-toolbar">
+    <h2>Choose a day</h2>
+    <select id="day-sort" title="Sort days">
+      <option value="asc" selected>Date: Oldest first</option>
+      <option value="desc">Date: Newest first</option>
+    </select>
+  </div>
+  <div class="day-list" id="day-list"></div>
+</div>
+
+<div id="empty-state" style="display:none;">
+  <h2>Folder not found</h2>
+  <p id="empty-state-msg"></p>
+</div>
+
+<div id="grid" style="display:none;"></div>
+
+<div id="viewer">
+  <div class="viewer-side viewer-left">
+    <div class="viewer-side-top">
+      <span class="viewer-count" id="viewer-count"></span>
+      <button class="icon-btn slideshow-toggle" id="slideshow-toggle" title="Pause slideshow" style="display:none;">&#9208;</button>
+    </div>
+    <div class="viewer-side-nav">
+      <button class="nav-btn" id="nav-first" title="First (Home)">&#8676;</button>
+      <button class="nav-btn" id="nav-prev" title="Previous (&larr;)">&lsaquo;</button>
+    </div>
+  </div>
+
+  <div class="viewer-center">
+    <div class="desc-block" id="desc-block" style="display:none;">
+      <span class="desc-label-inline" id="desc-label-inline">DESCRIPTION </span><span id="desc-body"></span><a href="#" class="desc-alt-link" id="desc-toggle">Show Alternate</a>
+    </div>
+
+    <div id="stage">
+      <img id="stage-img" alt="" style="display:none;">
+      <video id="stage-video" controls style="display:none;"></video>
+    </div>
+
+    <div class="zoom-bar" id="zoom-bar">
+      <button id="zoom-out" title="Zoom out (-)">&minus;</button>
+      <span id="zoom-level">100%</span>
+      <button id="zoom-in" title="Zoom in (+)">&#43;</button>
+      <button id="zoom-reset" title="Reset zoom (0)">Reset</button>
+    </div>
+
+    <div class="filename-block" id="filename-block">
+      <span id="viewer-caption"></span><a href="#" class="data-link" id="data-btn">View File Data</a>
+    </div>
+  </div>
+
+  <div class="viewer-side viewer-right">
+    <div class="viewer-side-top">
+      <button class="icon-btn" id="viewer-close" title="Close (Esc)">&#10005;</button>
+    </div>
+    <div class="viewer-side-nav">
+      <button class="nav-btn" id="nav-next" title="Next (&rarr;)">&rsaquo;</button>
+      <button class="nav-btn" id="nav-last" title="Last (End)">&#8677;</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="data-modal">
+  <div class="modal-card">
+    <div class="modal-header">
+      <span id="data-modal-title">Full file data</span>
+      <button class="icon-btn" id="data-close">&#10005;</button>
+    </div>
+    <pre id="data-json"></pre>
+  </div>
+</div>
+
+<script src="./data/multimedia/multimedia-data.js" onerror="window.MULTIMEDIA_CATALOG = window.MULTIMEDIA_CATALOG || []"></script>
+
+<script>
+(function () {
+  // ---- Runtime data resolution --------------------------------------------
+  // Everything below reads the RAW catalog (window.MULTIMEDIA_CATALOG, an
+  // unsorted, ungrouped array mirroring data/multimedia/multimedia-data.json
+  // exactly) and resolves it live, every time this page loads: grouping by
+  // day/folder, parsing capture dates, building file URLs, and picking
+  // which description text exists. None of this is precomputed at build
+  // time, so the page always reflects whatever the catalog currently says
+  // without regenerating this HTML file.
+
+  // EXIF datetime_original looks like "2026:07:10 15:28:06" — the first two
+  // colons are date separators, not time separators, so a plain Date.parse
+  // will not understand it without first rewriting it to ISO-8601.
+  var EXIF_DT_RE = /^(\d{4}):(\d{2}):(\d{2}) (\d{2}):(\d{2}):(\d{2})$/;
+  function parseExifDateTime(raw) {
+    if (!raw) return null;
+    var m = EXIF_DT_RE.exec(raw);
+    if (!m) return null;
+    var iso = m[1] + "-" + m[2] + "-" + m[3] + "T" + m[4] + ":" + m[5] + ":" + m[6];
+    var ms = Date.parse(iso);
+    return isNaN(ms) ? null : ms;
+  }
+
+  // Sort by metadata datetime_original ascending by default, falling back
+  // to the file's own recorded date (file_properties.modified_time — the
+  // only per-file timestamp this catalog tracks) when datetime_original is
+  // missing or unparseable.
+  function resolveDate(entry) {
+    var exifRaw = entry.multimedia_metadata && entry.multimedia_metadata.datetime_original;
+    var exifMs = parseExifDateTime(exifRaw);
+    if (exifMs !== null) return { source: "exif", ms: exifMs };
+
+    var modRaw = entry.file_properties && entry.file_properties.modified_time;
+    var modMs = modRaw ? Date.parse(modRaw) : NaN;
+    if (!isNaN(modMs)) return { source: "file_modified", ms: modMs };
+
+    return { source: "none", ms: null };
+  }
+
+  // Build a file's URL relative to this page, matching how gallery.html
+  // builds photo URLs from manifest.js — encode each path segment
+  // separately so folder/file names with spaces or punctuation still
+  // resolve.
+  function buildUrl(relativeFolder, fileName) {
+    var folderPart = relativeFolder.split("/").map(encodeURIComponent).join("/");
+    return "./" + folderPart + "/" + encodeURIComponent(fileName);
+  }
+
+  // relative_folder is like "photos/2026-07-10" — group (and title) by its
+  // last path segment, so a future non-dated folder (e.g. "photos-unsorted")
+  // groups and titles correctly too, not just dated ones.
+  function basename(relativeFolder) {
+    var parts = relativeFolder.split("/");
+    return parts[parts.length - 1];
+  }
+
+  function buildGroups(rawCatalog) {
+    var out = {};
+    for (var i = 0; i < rawCatalog.length; i++) {
+      var entry = rawCatalog[i];
+      var folderName = basename(entry.relative_folder);
+      var date = resolveDate(entry);
+      var sd = entry.subject_description || {};
+      var item = {
+        file_name: entry.file_name,
+        url: buildUrl(entry.relative_folder, entry.file_name),
+        type: (entry.multimedia_metadata && entry.multimedia_metadata.type) || "photo",
+        dtMs: date.ms,
+        dtSource: date.source,
+        descStandard: sd.standard || null,
+        descMonty: sd.monty_python || null,
+        raw: entry
+      };
+      (out[folderName] = out[folderName] || []).push(item);
+    }
+    return out;
+  }
+
+  var DATA = buildGroups(window.MULTIMEDIA_CATALOG || []);
+
+  var pageTitle = document.getElementById("page-title");
+  var backLink = document.querySelector(".back-link");
+  var countEl = document.getElementById("count");
+  var sortSel = document.getElementById("sort");
+
+  var dayPicker = document.getElementById("day-picker");
+  var dayList = document.getElementById("day-list");
+  var daySortSel = document.getElementById("day-sort");
+  var emptyState = document.getElementById("empty-state");
+  var emptyStateMsg = document.getElementById("empty-state-msg");
+  var grid = document.getElementById("grid");
+
+  var viewer = document.getElementById("viewer");
+  var viewerCount = document.getElementById("viewer-count");
+  var viewerCaption = document.getElementById("viewer-caption");
+  var viewerClose = document.getElementById("viewer-close");
+
+  var descBlock = document.getElementById("desc-block");
+  var descLabelInline = document.getElementById("desc-label-inline");
+  var descBody = document.getElementById("desc-body");
+  var descToggle = document.getElementById("desc-toggle");
+
+  var stage = document.getElementById("stage");
+  var stageImg = document.getElementById("stage-img");
+  var stageVideo = document.getElementById("stage-video");
+  var zoomBar = document.getElementById("zoom-bar");
+  var zoomLevel = document.getElementById("zoom-level");
+
+  var navFirst = document.getElementById("nav-first");
+  var navPrev = document.getElementById("nav-prev");
+  var navNext = document.getElementById("nav-next");
+  var navLast = document.getElementById("nav-last");
+
+  var dataBtn = document.getElementById("data-btn");
+  var dataModal = document.getElementById("data-modal");
+  var dataJson = document.getElementById("data-json");
+  var dataClose = document.getElementById("data-close");
+
+  var slideshowIntervalSel = document.getElementById("slideshow-interval");
+  var slideshowStartBtn = document.getElementById("slideshow-start");
+  var slideshowToggleBtn = document.getElementById("slideshow-toggle");
+
+  var currentFolder = null;
+  var items = [];       // current folder, sorted
+  var sortDir = "asc";
+  var daySortDir = "asc"; // All Days list: oldest first by default
+  var currentIndex = -1;
+  var zoomScale = 1;
+  var showingMonty = false;
+  var slideshowTimerId = null;
+  var slideshowActive = false;
+  var slideshowPaused = false;
+
+  function esc(s) {
+    var d = document.createElement("div");
+    d.textContent = s == null ? "" : String(s);
+    return d.innerHTML;
+  }
+
+  var DATE_RE = /^(\d{4})-(\d{2})-(\d{2})$/;
+  function folderTitle(folder) {
+    var m = DATE_RE.exec(folder);
+    if (!m) return folder;
+    var d = new Date(Date.UTC(+m[1], +m[2] - 1, +m[3], 12));
+    return d.toLocaleDateString(undefined, {
+      weekday: "long", month: "long", day: "numeric", year: "numeric", timeZone: "UTC"
+    });
+  }
+
+  function fmtDate(ms) {
+    if (ms == null) return "Unknown date";
+    var d = new Date(ms);
+    return d.toLocaleString(undefined, {
+      year: "numeric", month: "short", day: "numeric", hour: "numeric", minute: "2-digit"
+    });
+  }
+
+  // Items with no resolvable date always sort last, in either direction.
+  function sortItems(list, dir) {
+    var arr = list.slice();
+    arr.sort(function (a, b) {
+      var am = a.dtMs == null ? Infinity : a.dtMs;
+      var bm = b.dtMs == null ? Infinity : b.dtMs;
+      if (am === bm) return a.file_name.localeCompare(b.file_name, undefined, { numeric: true });
+      if (am === Infinity || bm === Infinity) return am - bm;
+      return dir === "asc" ? am - bm : bm - am;
+    });
+    return arr;
+  }
+
+  // ---- Day picker (no ?folder= given) -----------------------------------
+  // "All Days" is a single vertical list, sorted chronologically by
+  // folder/date -- oldest first by default (daySortDir "asc"), switchable
+  // to newest first via the day-sort dropdown, same asc/desc convention
+  // the per-day thumbnail grid's own sort dropdown already uses.
+  function sortFolders(folders, dir) {
+    var arr = folders.slice();
+    arr.sort(function (a, b) {
+      return dir === "asc"
+        ? a.localeCompare(b, undefined, { numeric: true })
+        : b.localeCompare(a, undefined, { numeric: true });
+    });
+    return arr;
+  }
+
+  function renderDayPicker() {
+    pageTitle.textContent = "Daily Gallery";
+    backLink.style.display = "inline";
+    document.querySelector(".header-right").style.display = "none";
+    grid.style.display = "none";
+    emptyState.style.display = "none";
+    dayPicker.style.display = "block";
+    renderDayList();
+  }
+
+  function renderDayList() {
+    var folderNames = Object.keys(DATA);
+
+    if (!folderNames.length) {
+      dayList.innerHTML = "";
+      var p = document.createElement("p");
+      p.style.color = "var(--muted)";
+      p.style.textAlign = "center";
+      p.textContent = "No multimedia files found. Run scripts/python/build-multimedia-data.py, then build-daily-multimedia-gallery.js, again.";
+      dayList.appendChild(p);
+      return;
+    }
+
+    var folders = sortFolders(folderNames, daySortDir);
+
+    dayList.innerHTML = folders.map(function (folder) {
+      var count = DATA[folder].length;
+      return '<a class="day-card" href="./daily-gallery.html?folder=' + encodeURIComponent(folder) + '">'
+        + '<div class="day-card-title">' + esc(folderTitle(folder)) + "</div>"
+        + '<div class="day-card-count">' + count + (count === 1 ? " item" : " items") + "</div>"
+        + "</a>";
+    }).join("");
+  }
+
+  // ---- Grid ---------------------------------------------------------------
+  function loadFolder(folder) {
+    var list = DATA[folder];
+    dayPicker.style.display = "none";
+    document.querySelector(".header-right").style.display = "flex";
+    backLink.style.display = "inline";
+
+    if (!list || !list.length) {
+      grid.style.display = "none";
+      emptyState.style.display = "flex";
+      emptyStateMsg.textContent =
+        'No multimedia files recorded for "' + folder + '" in data/multimedia/multimedia-data.json.';
+      pageTitle.textContent = "Gallery for " + folderTitle(folder);
+      countEl.textContent = "";
+      return;
+    }
+
+    currentFolder = folder;
+    pageTitle.textContent = "Gallery for " + folderTitle(folder);
+    emptyState.style.display = "none";
+    grid.style.display = "grid";
+    sortAndRenderGrid();
+  }
+
+  function sortAndRenderGrid() {
+    items = sortItems(DATA[currentFolder], sortDir);
+    countEl.textContent = items.length + (items.length === 1 ? " item" : " items");
+    grid.innerHTML = "";
+    items.forEach(function (item, i) {
+      var cell = document.createElement("div");
+      cell.className = "thumb";
+      var dateLabel = item.dtMs == null ? "No date" : fmtDate(item.dtMs);
+      var mediaHtml = item.type === "video"
+        ? '<video muted preload="metadata" src="' + item.url + '"></video><span class="video-badge">&#9654; video</span>'
+        : '<img loading="lazy" src="' + item.url + '" alt="' + esc(item.file_name) + '">';
+      cell.innerHTML = mediaHtml
+        + '<div class="name">' + esc(item.file_name)
+        + '<span class="thumb-date">' + esc(dateLabel) + "</span></div>";
+      cell.addEventListener("click", function () { openViewer(i); });
+      grid.appendChild(cell);
+    });
+  }
+
+  // ---- Individual viewer ----------------------------------------------
+  // Opening a fresh item (a direct thumbnail click, or startSlideshow's
+  // own initial call before it arms the timer) always stops any slideshow
+  // that might still be running from before.
+  function openViewer(i) {
+    stopSlideshow();
+    currentIndex = i;
+    zoomScale = 1;
+    showingMonty = false;
+    renderViewerItem();
+    viewer.classList.add("open");
+  }
+  function closeViewer() {
+    stopSlideshow();
+    showingMonty = false; // reset the sticky alternate-description choice
+    viewer.classList.remove("open");
+    stageVideo.pause();
+  }
+
+  function renderViewerItem() {
+    var item = items[currentIndex];
+
+    viewerCount.textContent = (currentIndex + 1) + " / " + items.length;
+    var dateLabel = item.dtMs == null ? "No date recorded" : fmtDate(item.dtMs);
+    if (item.dtSource === "file_modified") dateLabel += " (file date, no EXIF capture time)";
+    viewerCaption.textContent = item.file_name + "  \u2014  " + dateLabel;
+
+    // Media
+    stage.classList.remove("zoomed");
+    stage.scrollTop = 0;
+    stage.scrollLeft = 0;
+    zoomScale = 1;
+    if (item.type === "video") {
+      stageImg.style.display = "none";
+      stageVideo.style.display = "block";
+      stageVideo.src = item.url;
+      stageVideo.style.transform = "scale(1)";
+      zoomBar.style.display = "none"; // native video controls handle their own zoom/fullscreen
+    } else {
+      stageVideo.style.display = "none";
+      stageVideo.removeAttribute("src");
+      stageImg.style.display = "block";
+      stageImg.src = item.url;
+      stageImg.alt = item.file_name;
+      stageImg.style.transform = "scale(1)";
+      zoomBar.style.display = "flex";
+      zoomLevel.textContent = "100%";
+    }
+
+    // Subject description text block (DESCRIPTION / YET ANOTHER DESCRIPTION)
+    if (item.descStandard) {
+      descBlock.style.display = "block";
+      renderDescription();
+    } else {
+      descBlock.style.display = "none";
+    }
+
+    navFirst.disabled = currentIndex === 0;
+    navPrev.disabled = currentIndex === 0;
+    navNext.disabled = currentIndex === items.length - 1;
+    navLast.disabled = currentIndex === items.length - 1;
+  }
+
+  // Two states for the subject description text block:
+  //   standard: "DESCRIPTION " + descStandard + "Show Alternate" link
+  //   alternate (Monty Python): "YET ANOTHER DESCRIPTION " + descMonty
+  //     + "Show Original" link, with Monty Python styling on the whole block
+  function renderDescription() {
+    var item = items[currentIndex];
+    if (!item.descStandard) return;
+    if (showingMonty && item.descMonty) {
+      descBlock.className = "desc-block monty";
+      descLabelInline.textContent = "YET ANOTHER DESCRIPTION ";
+      descBody.textContent = item.descMonty;
+      descToggle.textContent = "Show Original";
+    } else {
+      descBlock.className = "desc-block";
+      descLabelInline.textContent = "DESCRIPTION ";
+      descBody.textContent = item.descStandard;
+      descToggle.textContent = "Show Alternate";
+    }
+    descToggle.style.display = item.descMonty ? "inline" : "none";
+  }
+
+  // Sticky alternate description: navigating between items on purpose
+  // does NOT reset showingMonty -- if you have switched to the Monty
+  // Python description, it stays selected as you move through the rest
+  // of the gallery (gracefully falling back to the standard description
+  // for any item that has no monty_python rewrite of its own). It only
+  // resets to standard when you close the viewer back to the gallery --
+  // see closeViewer().
+  function stepTo(index) {
+    if (index < 0 || index >= items.length) return;
+    currentIndex = index;
+    zoomScale = 1;
+    renderViewerItem();
+  }
+
+  // ---- Zoom (images only) ------------------------------------------------
+  // Zooming in enlarges the image past the size of #stage; #stage scrolls
+  // (overflow: auto) so every part of the enlarged image stays reachable.
+  // Centered flex content cannot be scrolled into on its top/left side in
+  // any browser, so #stage switches to top/left anchoring (the ".zoomed"
+  // class) once scale climbs past 100%, and back to centered once it is
+  // reset to 100% -- see the matching #stage.zoomed rule and img/video
+  // transform-origin: 0 0 in the stylesheet above.
+  function setZoom(scale) {
+    zoomScale = Math.max(0.5, Math.min(4, scale));
+    stageImg.style.transform = "scale(" + zoomScale + ")";
+    zoomLevel.textContent = Math.round(zoomScale * 100) + "%";
+    if (zoomScale > 1) {
+      stage.classList.add("zoomed");
+    } else {
+      stage.classList.remove("zoomed");
+      stage.scrollTop = 0;
+      stage.scrollLeft = 0;
+    }
+  }
+  function zoomIn() { setZoom(zoomScale + 0.25); }
+  function zoomOut() { setZoom(zoomScale - 0.25); }
+  function zoomReset() { setZoom(1); }
+
+  // ---- Full file data popup ----------------------------------------------
+  function openDataModal() {
+    var item = items[currentIndex];
+    dataJson.textContent = JSON.stringify(item.raw, null, 2);
+    dataModal.classList.add("open");
+  }
+  function closeDataModal() {
+    dataModal.classList.remove("open");
+  }
+
+  // ---- Slideshow ------------------------------------------------------------
+  // Opens the individual multimedia display at the first item of the
+  // current (sorted) grid and auto-advances through every item, looping
+  // back to the first after the last, every N seconds (default 4,
+  // selectable via the header dropdown before starting). Manual
+  // navigation while a slideshow is running does not stop it -- only the
+  // pause/resume button in the left panel, or closing the viewer, does.
+  function startSlideshow() {
+    if (!items.length) return;
+    openViewer(0);
+    slideshowActive = true;
+    slideshowPaused = false;
+    slideshowToggleBtn.style.display = "flex";
+    updateSlideshowToggleUI();
+    startSlideshowTimer();
+  }
+  function startSlideshowTimer() {
+    clearSlideshowTimer();
+    var seconds = parseInt(slideshowIntervalSel.value, 10) || 4;
+    slideshowTimerId = window.setInterval(advanceSlideshow, seconds * 1000);
+  }
+  function clearSlideshowTimer() {
+    if (slideshowTimerId !== null) {
+      window.clearInterval(slideshowTimerId);
+      slideshowTimerId = null;
+    }
+  }
+  // Stops at the last item instead of looping back to the first: once the
+  // last item has had its own full interval on screen, the next tick
+  // stops the slideshow (leaving that last item displayed) rather than
+  // wrapping around to item 0 again.
+  function advanceSlideshow() {
+    if (currentIndex >= items.length - 1) {
+      stopSlideshow();
+      return;
+    }
+    currentIndex = currentIndex + 1;
+    zoomScale = 1;
+    renderViewerItem();
+  }
+  function toggleSlideshowPause() {
+    if (!slideshowActive) return;
+    slideshowPaused = !slideshowPaused;
+    if (slideshowPaused) {
+      clearSlideshowTimer();
+    } else {
+      startSlideshowTimer();
+    }
+    updateSlideshowToggleUI();
+  }
+  function updateSlideshowToggleUI() {
+    if (slideshowPaused) {
+      slideshowToggleBtn.innerHTML = "&#9654;";
+      slideshowToggleBtn.title = "Resume slideshow";
+    } else {
+      slideshowToggleBtn.innerHTML = "&#9208;";
+      slideshowToggleBtn.title = "Pause slideshow";
+    }
+  }
+  // stopSlideshow is called from openViewer/closeViewer too, so it is
+  // always safe to call even when no slideshow is running.
+  function stopSlideshow() {
+    clearSlideshowTimer();
+    slideshowActive = false;
+    slideshowPaused = false;
+    slideshowToggleBtn.style.display = "none";
+  }
+
+  // ---- Wire up events -----------------------------------------------------
+  sortSel.addEventListener("change", function () {
+    sortDir = sortSel.value;
+    if (currentFolder) sortAndRenderGrid();
+  });
+
+  daySortSel.addEventListener("change", function () {
+    daySortDir = daySortSel.value;
+    renderDayList();
+  });
+
+  slideshowStartBtn.addEventListener("click", startSlideshow);
+  slideshowToggleBtn.addEventListener("click", toggleSlideshowPause);
+
+  viewerClose.addEventListener("click", closeViewer);
+  viewer.addEventListener("click", function (e) { if (e.target === viewer) closeViewer(); });
+
+  navFirst.addEventListener("click", function () { stepTo(0); });
+  navPrev.addEventListener("click", function () { stepTo(currentIndex - 1); });
+  navNext.addEventListener("click", function () { stepTo(currentIndex + 1); });
+  navLast.addEventListener("click", function () { stepTo(items.length - 1); });
+
+  descToggle.addEventListener("click", function (e) {
+    e.preventDefault();
+    showingMonty = !showingMonty;
+    renderDescription();
+  });
+
+  document.getElementById("zoom-in").addEventListener("click", zoomIn);
+  document.getElementById("zoom-out").addEventListener("click", zoomOut);
+  document.getElementById("zoom-reset").addEventListener("click", zoomReset);
+
+  dataBtn.addEventListener("click", function (e) { e.preventDefault(); openDataModal(); });
+  dataClose.addEventListener("click", closeDataModal);
+  dataModal.addEventListener("click", function (e) { if (e.target === dataModal) closeDataModal(); });
+
+  document.addEventListener("keydown", function (e) {
+    if (dataModal.classList.contains("open")) {
+      if (e.key === "Escape") closeDataModal();
+      return;
+    }
+    if (!viewer.classList.contains("open")) return;
+    if (e.key === "ArrowLeft") stepTo(currentIndex - 1);
+    else if (e.key === "ArrowRight") stepTo(currentIndex + 1);
+    else if (e.key === "Home") stepTo(0);
+    else if (e.key === "End") stepTo(items.length - 1);
+    else if (e.key === "Escape") closeViewer();
+    else if (e.key === "+" || e.key === "=") zoomIn();
+    else if (e.key === "-" || e.key === "_") zoomOut();
+    else if (e.key === "0") zoomReset();
+  });
+
+  // ---- Entry point ---------------------------------------------------------
+  var params = new URLSearchParams(window.location.search);
+  var folderParam = params.get("folder");
+  var photoParam = params.get("photo");
+  if (folderParam) {
+    loadFolder(folderParam);
+    // ?photo=<file_name> (e.g. from daily-location-gallery.html's
+    // thumbnail links) opens straight to that item in the viewer instead
+    // of leaving the visitor on the plain thumbnail grid. Matched by
+    // exact file_name against the just-loaded, just-sorted items list --
+    // silently falls back to the grid if the name is not found (renamed
+    // file, stale link, etc.) rather than erroring.
+    if (photoParam) {
+      var photoIdx = items.findIndex(function (it) { return it.file_name === photoParam; });
+      if (photoIdx >= 0) openViewer(photoIdx);
+    }
+  } else {
+    renderDayPicker();
+  }
+})();
+</script>
+
+</body>
+</html>

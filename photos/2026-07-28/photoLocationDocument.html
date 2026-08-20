@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kullaberg: Cliffs to the Lighthouse — Tuesday, July 28, 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,900;1,500;1,600&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+:root{
+  --ink:#1c2b3a; --ink-soft:#4b5563; --paper:#f7f2e6; --paper-alt:#efe4cd;
+  --brass:#b8863b; --brass-dark:#8f6526; --brick:#a1432f; --sea:#3f6e64;
+  --rule:#ddccaa; --white:#fffdf8;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0; background:var(--paper); color:var(--ink);
+  font-family:'Public Sans', -apple-system, sans-serif; font-size:17px; line-height:1.6;}
+a{color:var(--sea);}
+.masthead{background:linear-gradient(180deg, var(--paper-alt) 0%, var(--paper) 100%);
+  border-bottom:1px solid var(--rule); padding:3.2rem 1.5rem 2.4rem; text-align:center;}
+.masthead-inner{max-width:900px; margin:0 auto;}
+.kicker{font-family:'IBM Plex Mono', monospace; font-size:0.72rem; letter-spacing:0.14em;
+  text-transform:uppercase; color:var(--brass-dark); margin:0 0 0.9rem;}
+.leg-label{font-family:'IBM Plex Mono', monospace; font-size:0.78rem; letter-spacing:0.06em;
+  text-transform:uppercase; color:var(--sea); margin:0 0 0.6rem; font-weight:600;}
+h1.headline{font-family:'Fraunces', serif; font-weight:600; font-style:italic;
+  font-size:clamp(2rem, 5vw, 3.4rem); line-height:1.08; margin:0.2rem 0 0.9rem; color:var(--ink);}
+.date-line{font-size:1rem; color:var(--ink-soft); margin:0; font-family:'Public Sans', sans-serif;}
+.date-line .sep{color:var(--brass); margin:0 0.5em;}
+.read-aloud-btn{margin-top:1.4rem; padding:0.55rem 1.3rem; border-radius:999px;
+  border:1px solid var(--brass); background:var(--white); color:var(--brass-dark);
+  font-family:'IBM Plex Mono', monospace; font-size:0.78rem; letter-spacing:0.04em;
+  text-transform:uppercase; font-weight:600; cursor:pointer; transition:background 0.15s ease, color 0.15s ease;}
+.read-aloud-btn:hover{background:var(--brass); color:var(--white);}
+.read-aloud-btn.reading{background:var(--ink); border-color:var(--ink); color:var(--paper);}
+.read-aloud-btn:disabled{opacity:0.4; cursor:not-allowed;}
+.map-wrap{max-width:1100px; margin:2.4rem auto; padding:0 1.5rem;}
+#map{height:56vh; min-height:380px; border-radius:6px; border:1px solid var(--rule);
+  box-shadow:0 8px 24px rgba(28,43,58,0.12);}
+.leaflet-popup-content-wrapper{font-family:'Public Sans', sans-serif; border-radius:4px;}
+.popup-pin-num{display:inline-block; width:1.3em; height:1.3em; line-height:1.3em; text-align:center;
+  background:var(--brass); color:var(--white); border-radius:50%; font-size:0.75em; margin-right:0.4em;
+  font-family:'IBM Plex Mono', monospace;}
+main.locations{max-width:900px; margin:0 auto; padding:0 1.5rem;}
+article.location{padding:2.6rem 0; border-top:1px solid var(--rule);}
+article.location:first-child{border-top:none;}
+.loc-head{display:flex; gap:1rem; align-items:flex-start; margin-bottom:1rem;}
+.pin-badge{flex:0 0 auto; width:2.2rem; height:2.2rem; border-radius:50%; background:var(--ink);
+  color:var(--paper); display:flex; align-items:center; justify-content:center;
+  font-family:'IBM Plex Mono', monospace; font-size:0.95rem; font-weight:600; border:2px solid var(--brass);}
+h2.loc-title{font-family:'Fraunces', serif; font-weight:600; font-size:1.65rem; margin:0 0 0.25rem; color:var(--ink);}
+p.loc-meta{font-family:'IBM Plex Mono', monospace; font-size:0.76rem; letter-spacing:0.02em; color:var(--ink-soft); margin:0;}
+p.loc-meta .place{color:var(--sea); font-weight:600;}
+.unconfirmed-note{font-family:'Public Sans', sans-serif; font-size:0.88rem; font-style:italic; color:var(--brick);
+  background:rgba(161,67,47,0.06); border-left:2px solid var(--brick); padding:0.55rem 0.9rem; margin:0.9rem 0 1.2rem;}
+.unconfirmed-note strong{font-style:normal; text-transform:uppercase; font-size:0.72rem; letter-spacing:0.06em;
+  display:block; margin-bottom:0.15rem;}
+.prose{max-width:68ch;}
+.prose p{margin:0 0 1rem; color:#2c2620;}
+.read-highlight{background:rgba(184,134,59,0.16); border-radius:4px; box-shadow:0 0 0 6px rgba(184,134,59,0.16);
+  transition:background 0.3s ease, box-shadow 0.3s ease;}
+.prose p:first-of-type:first-letter{font-family:'Fraunces', serif; font-size:2.6em; float:left; line-height:0.85;
+  padding:0.05em 0.08em 0 0; color:var(--brass-dark); font-weight:600;}
+h3.sub-heading{font-family:'Fraunces', serif; font-style:italic; font-weight:600; font-size:1.18rem;
+  margin:1.8rem 0 0.6rem; color:var(--sea); border-top:1px dashed var(--rule); padding-top:1.2rem;}
+.gallery{display:grid; grid-template-columns:repeat(auto-fill, minmax(190px, 1fr)); gap:8px; margin:1.2rem 0 0.4rem;}
+.gallery figure{margin:0; position:relative; overflow:hidden; border-radius:4px; background:#00000010;}
+.gallery img, .gallery video{width:100%; height:150px; object-fit:cover; display:block; cursor:zoom-in;
+  transition:transform 0.35s ease;}
+.gallery video{cursor:default;}
+.gallery img:hover{transform:scale(1.04);}
+.gallery figcaption{position:absolute; bottom:0; left:0; right:0; padding:0.3rem 0.5rem;
+  font-family:'IBM Plex Mono', monospace; font-size:0.66rem; color:#fff;
+  background:linear-gradient(to top, rgba(0,0,0,0.65), transparent); opacity:0; transition:opacity 0.2s;}
+.gallery figure:hover figcaption{opacity:1;}
+.video-tag{position:absolute; top:6px; right:6px; background:rgba(28,43,58,0.75); color:#fff;
+  font-family:'IBM Plex Mono', monospace; font-size:0.62rem; padding:0.15rem 0.4rem; border-radius:3px; pointer-events:none;}
+section.unmapped{max-width:900px; margin:1rem auto 4rem; padding:2.2rem 1.5rem 0; border-top:3px double var(--rule);}
+section.unmapped h2{font-family:'Fraunces', serif; font-style:italic; font-size:1.6rem; color:var(--brick); margin-bottom:0.4rem;}
+.unmapped-intro{color:var(--ink-soft); font-size:0.92rem; max-width:60ch; margin-bottom:1.4rem;}
+.unmapped-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(130px, 1fr)); gap:8px;}
+.unmapped-grid figure{margin:0;}
+.unmapped-grid img, .unmapped-grid .video-placeholder{width:100%; height:100px; object-fit:cover; border-radius:4px;
+  display:block; opacity:0.85; cursor:zoom-in;}
+.unmapped-grid figcaption{font-family:'IBM Plex Mono', monospace; font-size:0.62rem; color:var(--ink-soft);
+  margin-top:0.2rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+footer.doc-footer{text-align:center; padding:2.5rem 1.5rem 3.5rem; color:var(--ink-soft);
+  font-family:'IBM Plex Mono', monospace; font-size:0.72rem; letter-spacing:0.03em;}
+.lightbox{position:fixed; inset:0; background:rgba(16,20,26,0.92); display:none; align-items:center;
+  justify-content:center; z-index:999; padding:3vh 3vw; cursor:zoom-out;}
+.lightbox.open{display:flex;}
+.lightbox img{max-width:100%; max-height:100%; border-radius:2px; box-shadow:0 10px 40px rgba(0,0,0,0.5);}
+@media (max-width:640px){.masthead{padding:2.2rem 1.2rem 1.8rem;} #map{height:42vh;}
+  .gallery img, .gallery video{height:120px;}}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <p class="kicker">Hans's Travel Journal &middot; Entry 14 of 16</p>
+    <p class="leg-label">Kullaberg &amp; Mölle, Skåne</p>
+    <h1 class="headline">Kullaberg: Cliffs to the Lighthouse</h1>
+    <p class="date-line">Tuesday, July 28, 2026<span class="sep">&middot;</span>Sweden</p>
+    <button type="button" id="read-aloud-btn" class="read-aloud-btn" style="display:none;">&#128266; Read Aloud</button>
+  </div>
+</header>
+
+<div class="map-wrap"><div id="map"></div></div>
+
+<main class="locations">
+
+<article class="location" id="loc-1">
+  <div class="loc-head">
+    <span class="pin-badge">1</span>
+    <div>
+      <h2 class="loc-title">Holiday Cottage, Kullaberg</h2>
+      <p class="loc-meta"><span class="place">Kullaberg peninsula, Höganäs Municipality, Skåne</span> &nbsp;&middot;&nbsp; 56.3007° N, 12.4699° E &nbsp;&middot;&nbsp; 1:09 PM–1:35 PM &nbsp;&middot;&nbsp; 10 photos</p>
+    </div>
+  </div>
+  <p class="unconfirmed-note"><strong>Unconfirmed</strong>A small red-painted wooden cottage on a rocky, wooded slope with a sea view -- almost certainly a private holiday rental on the Kullaberg peninsula rather than a public site. The exact address/road could not be identified from the photos.</p>
+<div class="prose"><p>The day's base sits on the wooded, rocky shoulder of Kullaberg, the gnarled peninsula of reddish gneiss that juts out from Skåne's northwest corner into the Kattegat. The reserve's first written record comes from around 1740, when Carl Linnaeus passed through on one of his provincial journeys and took the trouble to note down its unusually rich flora -- a description that still holds, since over two-thirds of all of Sweden's plant species can be found somewhere on this one small headland. In the early 20th century a private company nearly bought the rights to quarry Kullaberg's rock outright; conservation-minded locals intervened instead, and in 1913 a trust, AB Kullabergs Natur, was formed to acquire and protect the land, laying the groundwork for the nature reserve hikers use today.</p><p>From the cottage garden, a network of roughly 35 km of marked trails -- a red loop in the south, a blue one in the north, and an orange trail tracing the coast -- heads out in every direction, three different ways to explore the same small, cliff-edged patch of forest before the day's walk properly begins.</p></div>
+<div class="gallery"><figure><img src="20260728_130947.jpg" loading="lazy" alt="20260728_130947.jpg" onclick="openLightbox(this.src)"><figcaption>1:09 PM</figcaption></figure>
+<figure><img src="20260728_130955.jpg" loading="lazy" alt="20260728_130955.jpg" onclick="openLightbox(this.src)"><figcaption>1:09 PM</figcaption></figure>
+<figure><img src="20260728_131358.jpg" loading="lazy" alt="20260728_131358.jpg" onclick="openLightbox(this.src)"><figcaption>1:13 PM</figcaption></figure>
+<figure><img src="20260728_131431.jpg" loading="lazy" alt="20260728_131431.jpg" onclick="openLightbox(this.src)"><figcaption>1:14 PM</figcaption></figure>
+<figure><img src="20260728_131849.jpg" loading="lazy" alt="20260728_131849.jpg" onclick="openLightbox(this.src)"><figcaption>1:18 PM</figcaption></figure>
+<figure><img src="20260728_131916.jpg" loading="lazy" alt="20260728_131916.jpg" onclick="openLightbox(this.src)"><figcaption>1:19 PM</figcaption></figure>
+<figure><img src="20260728_132030.jpg" loading="lazy" alt="20260728_132030.jpg" onclick="openLightbox(this.src)"><figcaption>1:20 PM</figcaption></figure>
+<figure><img src="20260728_132055.jpg" loading="lazy" alt="20260728_132055.jpg" onclick="openLightbox(this.src)"><figcaption>1:20 PM</figcaption></figure>
+<figure><img src="20260728_132330.jpg" loading="lazy" alt="20260728_132330.jpg" onclick="openLightbox(this.src)"><figcaption>1:23 PM</figcaption></figure>
+<figure><img src="20260728_133508.jpg" loading="lazy" alt="20260728_133508.jpg" onclick="openLightbox(this.src)"><figcaption>1:35 PM</figcaption></figure></div>
+
+</article>
+
+<article class="location" id="loc-2">
+  <div class="loc-head">
+    <span class="pin-badge">2</span>
+    <div>
+      <h2 class="loc-title">North Coast Path, Kullaberg</h2>
+      <p class="loc-meta"><span class="place">Kullaberg Nature Reserve, Höganäs Municipality, Skåne</span> &nbsp;&middot;&nbsp; 56.2998° N, 12.4770° E &nbsp;&middot;&nbsp; 1:57 PM–2:11 PM &nbsp;&middot;&nbsp; 6 photos</p>
+    </div>
+  </div>
+  <p class="unconfirmed-note"><strong>Unconfirmed</strong>Coordinates place this along Kullaberg's northern coastal trail, between the cottage and Ransvik cove; no single named viewpoint could be confirmed for this exact stretch.</p>
+<div class="prose"><p>The orange coastal trail hugs Kullaberg's north shore here, threading between wind-bent oak scrub and bare outcrops of the reddish gneiss bedrock that gives the whole peninsula its distinctive colour. It's an easy stretch by the reserve's standards -- Kullaberg's paths range from short seaside ambles to longer routes that climb toward Håkull, the peninsula's high point at 187 metres -- and it rewards even a short walk with sea views west toward the lighthouse and east back along the coast the way you came.</p><p>Little of Kullaberg is flat for long, and this section is no exception: rock gives way to gorse, gorse to a sudden clearing with a sea view, in the kind of quietly changeable terrain that has made this small headland one of Skåne's most-walked stretches of coast despite -- or perhaps because of -- never settling into any one landscape for very long.</p></div>
+<div class="gallery"><figure><img src="20260728_135747.jpg" loading="lazy" alt="20260728_135747.jpg" onclick="openLightbox(this.src)"><figcaption>1:57 PM</figcaption></figure></div>
+
+<h3 class="sub-heading">Cliffside Trail, Kullaberg</h3>
+<div class="prose"><p>Further along the same coastal path, the trail climbs briefly along a low cliff edge before dropping back toward the shore -- Kullaberg's paths do this constantly, trading a few metres of elevation for a wider view of the Kattegat before ducking back into the treeline. The reserve's rich birdlife (Kullaberg is one of Sweden's better-known raptor lookout points come autumn migration, though these July photos predate that season) and its two-thirds share of the country's plant life both trace back to the same accident of geology: bare, sun-warmed rock, sheltered coves, and open grazing land all packed into one small, dramatically varied headland.</p><p>It's the kind of stretch that photographs well without much effort -- rock, gorse, sea, repeat -- and that has quietly made Kullaberg one of the most-hiked nature reserves in Skåne, one short cliffside path at a time.</p></div>
+<div class="gallery"><figure><img src="20260728_140237.jpg" loading="lazy" alt="20260728_140237.jpg" onclick="openLightbox(this.src)"><figcaption>2:02 PM</figcaption></figure>
+<figure><img src="20260728_140556.jpg" loading="lazy" alt="20260728_140556.jpg" onclick="openLightbox(this.src)"><figcaption>2:05 PM</figcaption></figure>
+<figure><img src="20260728_140803.jpg" loading="lazy" alt="20260728_140803.jpg" onclick="openLightbox(this.src)"><figcaption>2:08 PM</figcaption></figure>
+<figure><img src="20260728_140906.jpg" loading="lazy" alt="20260728_140906.jpg" onclick="openLightbox(this.src)"><figcaption>2:09 PM</figcaption></figure>
+<figure><img src="20260728_141154.jpg" loading="lazy" alt="20260728_141154.jpg" onclick="openLightbox(this.src)"><figcaption>2:11 PM</figcaption></figure></div>
+</article>
+
+<article class="location" id="loc-3">
+  <div class="loc-head">
+    <span class="pin-badge">3</span>
+    <div>
+      <h2 class="loc-title">Forest Interior, Kullaberg</h2>
+      <p class="loc-meta"><span class="place">Kullaberg Nature Reserve, Höganäs Municipality, Skåne</span> &nbsp;&middot;&nbsp; 56.2944° N, 12.4800° E &nbsp;&middot;&nbsp; 2:24 PM–2:29 PM &nbsp;&middot;&nbsp; 4 photos</p>
+    </div>
+  </div>
+  <p class="unconfirmed-note"><strong>Unconfirmed</strong>Coordinates place this a short distance inland from the coast path, between clusters 2 and 5; no named feature could be confirmed.</p>
+<div class="prose"><p>Here the trail briefly turns inland, away from the cliffs and into Kullaberg's denser interior woodland -- oak, beech and hazel closing in overhead, a marked change from the wind-scoured coastal scrub just a few hundred metres back. Pockets like this one are part of why Kullaberg supports such an outsized share of Swedish plant life in such a small area: coastal heath, sheltered forest, and bare rock all sit within a few minutes' walk of one another, each hosting a different set of species that would otherwise need a much larger and more varied landscape to coexist.</p><p>It's an easy, shaded breather in an otherwise sun-exposed hike, and a reminder that Kullaberg's reputation rests as much on this kind of quiet internal variety as it does on the dramatic cliffs the reserve is best known for.</p></div>
+<div class="gallery"><figure><img src="20260728_142420.jpg" loading="lazy" alt="20260728_142420.jpg" onclick="openLightbox(this.src)"><figcaption>2:24 PM</figcaption></figure>
+<figure><img src="20260728_142625.jpg" loading="lazy" alt="20260728_142625.jpg" onclick="openLightbox(this.src)"><figcaption>2:26 PM</figcaption></figure>
+<figure><img src="20260728_142647.jpg" loading="lazy" alt="20260728_142647.jpg" onclick="openLightbox(this.src)"><figcaption>2:26 PM</figcaption></figure></div>
+
+<h3 class="sub-heading">Approach to Ransvik</h3>
+<div class="prose"><p>The path re-emerges from the trees on the descent toward Ransvik, one of Kullaberg's several small coves -- the kind of brief woods-to-sea transition that defines a coastal walk here more than any single landmark does. A few more minutes downhill, and the trail opens onto the cove itself.</p></div>
+<div class="gallery"><figure><img src="20260728_142927.jpg" loading="lazy" alt="20260728_142927.jpg" onclick="openLightbox(this.src)"><figcaption>2:29 PM</figcaption></figure></div>
+</article>
+
+<article class="location" id="loc-4">
+  <div class="loc-head">
+    <span class="pin-badge">4</span>
+    <div>
+      <h2 class="loc-title">Ransvik</h2>
+      <p class="loc-meta"><span class="place">Ransvik, Kullaberg Nature Reserve, Höganäs Municipality, Skåne</span> &nbsp;&middot;&nbsp; 56.2916° N, 12.4748° E &nbsp;&middot;&nbsp; 2:55 PM–3:20 PM &nbsp;&middot;&nbsp; 10 photos</p>
+    </div>
+  </div>
+  <p class="unconfirmed-note"><strong>Note</strong>The signage for "Ransvik Havsveranda" (a café/bar built into the cove) is visible directly in one of the photos, confirming the location; further photos in the cluster show the grass path and rocky overlook just beyond the café, and a weathered wooden bench along the point.</p>
+<div class="prose"><p>Ransvik is one of Kullaberg's pocket coves, a steep run of wooden steps down to a rocky bathing spot with a small jetty and diving ladder, and -- rebuilt into the hillside above the water -- Ransvik Havsveranda, a café and bar that has turned what was once just a fishing and bathing cove into one of the peninsula's most popular lunch stops. It's a workmanlike descendant of the same coastal bathing culture that made nearby Mölle famous a little over a century ago: a wooden jetty for swimming, sun umbrellas on a terraced deck, hydrangeas spilling over the rail, and a long staircase back up to the coastal path for whoever has just finished their coffee.</p><p>Beyond the café, a grass path continues along the point to a bare rocky overlook where the wind comes straight off the open Kattegat -- whitecaps breaking below, a distant ship on the horizon, and, looking back east along the coast, the red rooftops of Mölle's village strung along the shoreline the day's walk will eventually reach. A single weathered wooden bench sits above the water nearby, its plank seat silvered by salt and sun -- one of a handful of quiet resting points the reserve leaves along the coast trail, away from the café's terrace but still within sound of the surf.</p></div>
+<div class="gallery"><figure><img src="20260728_145503.jpg" loading="lazy" alt="20260728_145503.jpg" onclick="openLightbox(this.src)"><figcaption>2:55 PM</figcaption></figure>
+<figure><img src="20260728_145530.jpg" loading="lazy" alt="20260728_145530.jpg" onclick="openLightbox(this.src)"><figcaption>2:55 PM</figcaption></figure>
+<figure><img src="20260728_145953.jpg" loading="lazy" alt="20260728_145953.jpg" onclick="openLightbox(this.src)"><figcaption>2:59 PM</figcaption></figure>
+<figure><img src="20260728_150033.jpg" loading="lazy" alt="20260728_150033.jpg" onclick="openLightbox(this.src)"><figcaption>3:00 PM</figcaption></figure>
+<figure><img src="20260728_150146.jpg" loading="lazy" alt="20260728_150146.jpg" onclick="openLightbox(this.src)"><figcaption>3:01 PM</figcaption></figure>
+<figure><img src="20260728_150201.jpg" loading="lazy" alt="20260728_150201.jpg" onclick="openLightbox(this.src)"><figcaption>3:02 PM</figcaption></figure>
+<figure><img src="20260728_150235.jpg" loading="lazy" alt="20260728_150235.jpg" onclick="openLightbox(this.src)"><figcaption>3:02 PM</figcaption></figure>
+<figure><img src="20260728_150305.jpg" loading="lazy" alt="20260728_150305.jpg" onclick="openLightbox(this.src)"><figcaption>3:03 PM</figcaption></figure>
+<figure><img src="20260728_151944.jpg" loading="lazy" alt="20260728_151944.jpg" onclick="openLightbox(this.src)"><figcaption>3:19 PM</figcaption></figure>
+<figure><img src="20260728_152013.jpg" loading="lazy" alt="20260728_152013.jpg" onclick="openLightbox(this.src)"><figcaption>3:20 PM</figcaption></figure></div>
+
+</article>
+
+<article class="location" id="loc-5">
+  <div class="loc-head">
+    <span class="pin-badge">5</span>
+    <div>
+      <h2 class="loc-title">West Toward the Lighthouse</h2>
+      <p class="loc-meta"><span class="place">Kullaberg Nature Reserve, Höganäs Municipality, Skåne</span> &nbsp;&middot;&nbsp; 56.2926° N, 12.4696° E &nbsp;&middot;&nbsp; 3:27 PM–3:41 PM &nbsp;&middot;&nbsp; 4 photos</p>
+    </div>
+  </div>
+  <div class="prose"><p>Beyond Ransvik the coastal trail turns properly wild, climbing over bare, weather-smoothed gneiss outcrops with the open Kattegat pounding the rocks below -- this stretch, exposed to the full run of wind off the sea, is where Kullaberg's reputation as a dramatic coastal hike is best earned. The bedrock underfoot here is old and worn, part of the same reddish-grey gneiss formation that runs the length of the peninsula and that so nearly ended up quarried for stone rather than preserved.</p></div>
+<div class="gallery"><figure><img src="20260728_152744.jpg" loading="lazy" alt="20260728_152744.jpg" onclick="openLightbox(this.src)"><figcaption>3:27 PM</figcaption></figure>
+<figure><img src="20260728_152808.jpg" loading="lazy" alt="20260728_152808.jpg" onclick="openLightbox(this.src)"><figcaption>3:28 PM</figcaption></figure></div>
+
+<h3 class="sub-heading">Coastal Outcrop, Kullaberg</h3>
+<div class="prose"><p>A short pause on one of the trail's many rocky viewpoints -- unnamed, unmarked, and indistinguishable on a map from a dozen similar outcrops along this stretch, but exactly the sort of spot the orange coastal trail exists to string together.</p></div>
+<div class="gallery"><figure><img src="20260728_153651.jpg" loading="lazy" alt="20260728_153651.jpg" onclick="openLightbox(this.src)"><figcaption>3:36 PM</figcaption></figure></div>
+<h3 class="sub-heading">Coastal Outcrop, Kullaberg</h3>
+<div class="prose"><p>The trail continues to climb and dip along the cliff edge, the lighthouse now visible ahead on its headland -- close enough to be a destination rather than just a distant landmark on the horizon.</p></div>
+<div class="gallery"><figure><img src="20260728_154143.jpg" loading="lazy" alt="20260728_154143.jpg" onclick="openLightbox(this.src)"><figcaption>3:41 PM</figcaption></figure></div>
+</article>
+
+<article class="location" id="loc-6">
+  <div class="loc-head">
+    <span class="pin-badge">6</span>
+    <div>
+      <h2 class="loc-title">Kullens Fyr, the Lighthouse Point</h2>
+      <p class="loc-meta"><span class="place">Kullens fyr, Kullaberg Nature Reserve, Höganäs Municipality, Skåne</span> &nbsp;&middot;&nbsp; 56.2971° N, 12.4629° E &nbsp;&middot;&nbsp; 3:51 PM–4:12 PM &nbsp;&middot;&nbsp; 9 photos</p>
+    </div>
+  </div>
+  <p class="unconfirmed-note"><strong>Note</strong>Photos in this group show the lighthouse itself on its headland (dark tower, red-roofed keeper's building, a line of hikers on the approach trail, a ship on the horizon), confirming the arrival at Kullens fyr, plus a modern radar mast standing in the juniper scrub a short way back from the point -- unconfirmed which agency operates it, but visibly active infrastructure rather than a historic feature.</p>
+<div class="prose"><p>Kullen has marked this headland since 1561, when Danish king Frederik II ordered a beacon lit here -- the earliest documented lighthouse site in Scandinavia, then just an open iron fire-basket on a pole. The current tower, 15 metres of gneiss and brick designed by architect Magnus Dahlander, went into service in 1900 and remains, by most measures, the brightest and most powerful lighthouse in Scandinavia, its beam sweeping the northern entrance to the Öresund, one of the busiest shipping lanes in the world, from 78.5 metres above the sea.</p><p>The final approach along the cliffs, past scattered granite boulders and increasingly open sea views, makes the tower's slow appearance on the horizon feel earned rather than incidental -- a thin line of hikers strung along the last stretch of trail toward the dark-capped light and the red-roofed keeper's building beside it. A short way back from the point, a modern radar mast rises out of the reserve's low juniper scrub, unrelated to the historic light itself but a reminder that this headland is still watching the same shipping lane it has watched since 1561 -- more than four and a half centuries of vessels making the same approach from the water, looking for exactly this light.</p></div>
+<div class="gallery"><figure><img src="20260728_155136.jpg" loading="lazy" alt="20260728_155136.jpg" onclick="openLightbox(this.src)"><figcaption>3:51 PM</figcaption></figure>
+<figure><img src="20260728_155222.jpg" loading="lazy" alt="20260728_155222.jpg" onclick="openLightbox(this.src)"><figcaption>3:52 PM</figcaption></figure>
+<figure><img src="20260728_155517.jpg" loading="lazy" alt="20260728_155517.jpg" onclick="openLightbox(this.src)"><figcaption>3:55 PM</figcaption></figure></div>
+
+<h3 class="sub-heading">Cliffs near the Lighthouse</h3>
+<div class="prose"><p>The rock here drops straight to the water, with the lighthouse compound just ahead on the high point of the headland -- the last uphill stretch of a coastal walk that has spent all afternoon alternating between forest, cove, and open cliff.</p></div>
+<div class="gallery"><figure><img src="20260728_155710.jpg" loading="lazy" alt="20260728_155710.jpg" onclick="openLightbox(this.src)"><figcaption>3:57 PM</figcaption></figure></div>
+<h3 class="sub-heading">Cliffs near the Lighthouse</h3>
+<div class="prose"><p>A last few minutes of open, wind-exposed trail before the lighthouse grounds themselves -- Kullaberg saving its most dramatic scenery, characteristically, for right before the destination rather than along the way.</p></div>
+<div class="gallery"><figure><img src="20260728_160134.jpg" loading="lazy" alt="20260728_160134.jpg" onclick="openLightbox(this.src)"><figcaption>4:01 PM</figcaption></figure></div>
+<h3 class="sub-heading">At the Lighthouse</h3>
+<div class="prose"><p>The lighthouse compound itself, at the very tip of the peninsula -- the end point of the day's coastal walk and, at 78.5 metres up, one of the best vantage points on the whole Skåne coast for looking back at the cliffs just covered.</p></div>
+<div class="gallery"><figure><img src="20260728_160449.jpg" loading="lazy" alt="20260728_160449.jpg" onclick="openLightbox(this.src)"><figcaption>4:04 PM</figcaption></figure>
+<figure><img src="20260728_160711.jpg" loading="lazy" alt="20260728_160711.jpg" onclick="openLightbox(this.src)"><figcaption>4:07 PM</figcaption></figure>
+<figure><img src="20260728_161227.jpg" loading="lazy" alt="20260728_161227.jpg" onclick="openLightbox(this.src)"><figcaption>4:12 PM</figcaption></figure>
+<figure><img src="20260728_161237.jpg" loading="lazy" alt="20260728_161237.jpg" onclick="openLightbox(this.src)"><figcaption>4:12 PM</figcaption></figure></div>
+</article>
+
+<article class="location" id="loc-7">
+  <div class="loc-head">
+    <span class="pin-badge">7</span>
+    <div>
+      <h2 class="loc-title">Mölle</h2>
+      <p class="loc-meta"><span class="place">Mölle, Höganäs Municipality, Skåne</span> &nbsp;&middot;&nbsp; 56.2857° N, 12.4929° E &nbsp;&middot;&nbsp; 4:29 PM–4:34 PM &nbsp;&middot;&nbsp; 2 photos</p>
+    </div>
+  </div>
+  <p class="unconfirmed-note"><strong>Note</strong>Coordinates (56.2857°N, 12.4929°E) match Mölle's village centre closely; the photo shows a coastal view back toward the Kullaberg cliffs from the village side.</p>
+<div class="prose"><p>Mölle sits at the foot of Kullaberg, a fishing village that spent the late 19th century as, by reputation, the most scandalous seaside resort in Sweden: it was the first place in the country to allow mixed-gender bathing, men and women in the water together rather than segregated yards apart, and photographs of the fact -- taken and sold as postcards across Europe by photographer Peter P. Lund -- turned Mölle into a minor sensation. Visitors poured in from Germany, Denmark and France; Kaiser Wilhelm II himself visited the beach in 1907, and a direct rail line opened in 1910 to keep the crowds coming.</p><p>That first flush of fame ended with the First World War, and Mölle settled back into being a quiet fishing village and holiday resort in the shadow of Kullaberg's cliffs -- which is more or less what greets you today, looking back at the day's walk from the harbour side, the lighthouse now just a speck on the headland behind.</p></div>
+<div class="gallery"><figure><img src="20260728_162930.jpg" loading="lazy" alt="20260728_162930.jpg" onclick="openLightbox(this.src)"><figcaption>4:29 PM</figcaption></figure>
+<figure><img src="20260728_163412.jpg" loading="lazy" alt="20260728_163412.jpg" onclick="openLightbox(this.src)"><figcaption>4:34 PM</figcaption></figure></div>
+
+</article>
+</main>
+
+
+<section class="unmapped">
+  <h2>Off the Map</h2>
+  <p class="unmapped-intro">These 8 frames carried no GPS data in
+  their EXIF (common for messaging-app re-saves, screenshots, or some camera apps) and weren’t placed on the
+  map above. Add coordinates manually if you’d like them included.</p>
+  <div class="unmapped-grid"><figure><img src="20260728_132139.jpg" loading="lazy" onclick="openLightbox(this.src)"><figcaption>20260728_132139.jpg &middot; 1:21 PM</figcaption></figure><figure><img src="20260728_132233.jpg" loading="lazy" onclick="openLightbox(this.src)"><figcaption>20260728_132233.jpg &middot; 1:22 PM</figcaption></figure><figure><img src="20260728_133829.jpg" loading="lazy" onclick="openLightbox(this.src)"><figcaption>20260728_133829.jpg &middot; 1:38 PM</figcaption></figure><figure><img src="20260728_140602.jpg" loading="lazy" onclick="openLightbox(this.src)"><figcaption>20260728_140602.jpg &middot; 2:06 PM</figcaption></figure><figure><img src="20260728_144046.jpg" loading="lazy" onclick="openLightbox(this.src)"><figcaption>20260728_144046.jpg &middot; 2:40 PM</figcaption></figure><figure><img src="20260728_144053.jpg" loading="lazy" onclick="openLightbox(this.src)"><figcaption>20260728_144053.jpg &middot; 2:40 PM</figcaption></figure><figure><img src="20260728_144449.jpg" loading="lazy" onclick="openLightbox(this.src)"><figcaption>20260728_144449.jpg &middot; 2:44 PM</figcaption></figure><figure><img src="20260728_164852.jpg" loading="lazy" onclick="openLightbox(this.src)"><figcaption>20260728_164852.jpg &middot; 4:48 PM</figcaption></figure></div>
+</section>
+
+
+<footer class="doc-footer">Daily Photo Map &middot; generated by build-photo-maps.py from this folder's photo EXIF data &middot; map data &copy; OpenStreetMap contributors</footer>
+
+<div class="lightbox" id="lightbox" onclick="this.classList.remove('open')"><img id="lightbox-img" src=""></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+function openLightbox(src) {
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox').classList.add('open');
+}
+const pins = [{"num": 1, "lat": 56.30069530983333, "lon": 12.469861759972222, "label": "Holiday Cottage, Kullaberg", "place": "Kullaberg peninsula, H\u00f6gan\u00e4s Municipality, Sk\u00e5ne"}, {"num": 2, "lat": 56.29977099972222, "lon": 12.4769549, "label": "North Coast Path, Kullaberg", "place": "Kullaberg Nature Reserve, H\u00f6gan\u00e4s Municipality, Sk\u00e5ne"}, {"num": 3, "lat": 56.29442783333334, "lon": 12.480038433055554, "label": "Forest Interior, Kullaberg", "place": "Kullaberg Nature Reserve, H\u00f6gan\u00e4s Municipality, Sk\u00e5ne"}, {"num": 4, "lat": 56.291589739944435, "lon": 12.474826709805555, "label": "Ransvik", "place": "Ransvik, Kullaberg Nature Reserve, H\u00f6gan\u00e4s Municipality, Sk\u00e5ne"}, {"num": 5, "lat": 56.29260639986111, "lon": 12.46962009986111, "label": "West Toward the Lighthouse", "place": "Kullaberg Nature Reserve, H\u00f6gan\u00e4s Municipality, Sk\u00e5ne"}, {"num": 6, "lat": 56.29709546657407, "lon": 12.46289983324074, "label": "Kullens Fyr, the Lighthouse Point", "place": "Kullens fyr, Kullaberg Nature Reserve, H\u00f6gan\u00e4s Municipality, Sk\u00e5ne"}, {"num": 7, "lat": 56.28568829986111, "lon": 12.492861999722223, "label": "M\u00f6lle", "place": "M\u00f6lle, H\u00f6gan\u00e4s Municipality, Sk\u00e5ne"}];
+const map = L.map('map', {scrollWheelZoom:false});
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; OpenStreetMap contributors', maxZoom: 19
+}).addTo(map);
+const latlngs = pins.map(p => [p.lat, p.lon]);
+if (latlngs.length) {
+  const bounds = L.latLngBounds(latlngs);
+  map.fitBounds(bounds, {padding:[36,36]});
+  if (latlngs.length === 1) map.setZoom(15);
+}
+if (latlngs.length > 1) {
+  L.polyline(latlngs, {color:'#b8863b', weight:2, dashArray:'2,8', opacity:0.8}).addTo(map);
+}
+pins.forEach(p => {
+  const icon = L.divIcon({
+    className: '',
+    html: '<div style="background:#1c2b3a;color:#f7f2e6;border:2px solid #b8863b;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-family:\'IBM Plex Mono\',monospace;font-size:13px;font-weight:600;box-shadow:0 2px 6px rgba(0,0,0,0.35);">' + p.num + '</div>',
+    iconSize: [28,28], iconAnchor: [14,14]
+  });
+  const marker = L.marker([p.lat, p.lon], {icon}).addTo(map);
+  marker.bindPopup('<span class="popup-pin-num">' + p.num + '</span><strong>' + p.label.replace(/</g,'&lt;') + '</strong><br><span style="color:#4b5563;font-size:0.85em;">' + p.place.replace(/</g,'&lt;') + '</span>');
+  marker.on('click', () => {
+    const el = document.getElementById('loc-' + p.num);
+    if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+  });
+});
+
+// ---- Read Aloud: speaks each location's title/note/prose in order via
+// the Web Speech API, auto-scrolling to and highlighting whichever
+// paragraph is currently being read. Hidden entirely (never shown) on
+// browsers without speechSynthesis support -- see the module docstring's
+// "READ ALOUD" section for why this can't be polyfilled.
+(function() {
+  const btn = document.getElementById('read-aloud-btn');
+  if (!btn || !('speechSynthesis' in window)) return;
+  btn.style.display = '';
+
+  const synth = window.speechSynthesis;
+  const segments = [];
+  document.querySelectorAll('article.location').forEach(function(article) {
+    const title = article.querySelector('.loc-title');
+    if (title) segments.push({el: title, text: title.textContent});
+    const note = article.querySelector('.unconfirmed-note');
+    if (note) segments.push({el: note, text: note.textContent});
+    article.querySelectorAll('.prose p').forEach(function(p) {
+      segments.push({el: p, text: p.textContent});
+    });
+  });
+
+  let idx = -1;
+  let reading = false;
+  let highlighted = null;
+
+  function clearHighlight() {
+    if (highlighted) {
+      highlighted.classList.remove('read-highlight');
+      highlighted = null;
+    }
+  }
+
+  function setIdle() {
+    reading = false;
+    idx = -1;
+    clearHighlight();
+    btn.textContent = '🔊 Read Aloud';
+    btn.classList.remove('reading');
+  }
+
+  function speakNext() {
+    idx++;
+    if (idx >= segments.length) {
+      setIdle();
+      return;
+    }
+    const seg = segments[idx];
+    clearHighlight();
+    seg.el.classList.add('read-highlight');
+    highlighted = seg.el;
+    seg.el.scrollIntoView({behavior: 'smooth', block: 'center'});
+    const utter = new SpeechSynthesisUtterance(seg.text);
+    utter.onend = function() { if (reading) speakNext(); };
+    utter.onerror = function() { if (reading) speakNext(); };
+    synth.speak(utter);
+  }
+
+  btn.addEventListener('click', function() {
+    if (reading) {
+      reading = false;
+      synth.cancel();
+      setIdle();
+      return;
+    }
+    if (segments.length === 0) return;
+    synth.cancel();
+    reading = true;
+    idx = -1;
+    btn.textContent = '⏹ Stop Reading';
+    btn.classList.add('reading');
+    speakNext();
+  });
+
+  window.addEventListener('beforeunload', function() { synth.cancel(); });
+})();
+</script>
+</body>
+</html>

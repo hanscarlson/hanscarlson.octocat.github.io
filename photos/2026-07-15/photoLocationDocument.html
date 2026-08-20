@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>An Evening in Brussels — Wednesday, July 15, 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,900;1,500;1,600&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+:root{
+  --ink:#1c2b3a; --ink-soft:#4b5563; --paper:#f7f2e6; --paper-alt:#efe4cd;
+  --brass:#b8863b; --brass-dark:#8f6526; --brick:#a1432f; --sea:#3f6e64;
+  --rule:#ddccaa; --white:#fffdf8;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0; background:var(--paper); color:var(--ink);
+  font-family:'Public Sans', -apple-system, sans-serif; font-size:17px; line-height:1.6;}
+a{color:var(--sea);}
+.masthead{background:linear-gradient(180deg, var(--paper-alt) 0%, var(--paper) 100%);
+  border-bottom:1px solid var(--rule); padding:3.2rem 1.5rem 2.4rem; text-align:center;}
+.masthead-inner{max-width:900px; margin:0 auto;}
+.kicker{font-family:'IBM Plex Mono', monospace; font-size:0.72rem; letter-spacing:0.14em;
+  text-transform:uppercase; color:var(--brass-dark); margin:0 0 0.9rem;}
+.leg-label{font-family:'IBM Plex Mono', monospace; font-size:0.78rem; letter-spacing:0.06em;
+  text-transform:uppercase; color:var(--sea); margin:0 0 0.6rem; font-weight:600;}
+h1.headline{font-family:'Fraunces', serif; font-weight:600; font-style:italic;
+  font-size:clamp(2rem, 5vw, 3.4rem); line-height:1.08; margin:0.2rem 0 0.9rem; color:var(--ink);}
+.date-line{font-size:1rem; color:var(--ink-soft); margin:0; font-family:'Public Sans', sans-serif;}
+.date-line .sep{color:var(--brass); margin:0 0.5em;}
+.read-aloud-btn{margin-top:1.4rem; padding:0.55rem 1.3rem; border-radius:999px;
+  border:1px solid var(--brass); background:var(--white); color:var(--brass-dark);
+  font-family:'IBM Plex Mono', monospace; font-size:0.78rem; letter-spacing:0.04em;
+  text-transform:uppercase; font-weight:600; cursor:pointer; transition:background 0.15s ease, color 0.15s ease;}
+.read-aloud-btn:hover{background:var(--brass); color:var(--white);}
+.read-aloud-btn.reading{background:var(--ink); border-color:var(--ink); color:var(--paper);}
+.read-aloud-btn:disabled{opacity:0.4; cursor:not-allowed;}
+.map-wrap{max-width:1100px; margin:2.4rem auto; padding:0 1.5rem;}
+#map{height:56vh; min-height:380px; border-radius:6px; border:1px solid var(--rule);
+  box-shadow:0 8px 24px rgba(28,43,58,0.12);}
+.leaflet-popup-content-wrapper{font-family:'Public Sans', sans-serif; border-radius:4px;}
+.popup-pin-num{display:inline-block; width:1.3em; height:1.3em; line-height:1.3em; text-align:center;
+  background:var(--brass); color:var(--white); border-radius:50%; font-size:0.75em; margin-right:0.4em;
+  font-family:'IBM Plex Mono', monospace;}
+main.locations{max-width:900px; margin:0 auto; padding:0 1.5rem;}
+article.location{padding:2.6rem 0; border-top:1px solid var(--rule);}
+article.location:first-child{border-top:none;}
+.loc-head{display:flex; gap:1rem; align-items:flex-start; margin-bottom:1rem;}
+.pin-badge{flex:0 0 auto; width:2.2rem; height:2.2rem; border-radius:50%; background:var(--ink);
+  color:var(--paper); display:flex; align-items:center; justify-content:center;
+  font-family:'IBM Plex Mono', monospace; font-size:0.95rem; font-weight:600; border:2px solid var(--brass);}
+h2.loc-title{font-family:'Fraunces', serif; font-weight:600; font-size:1.65rem; margin:0 0 0.25rem; color:var(--ink);}
+p.loc-meta{font-family:'IBM Plex Mono', monospace; font-size:0.76rem; letter-spacing:0.02em; color:var(--ink-soft); margin:0;}
+p.loc-meta .place{color:var(--sea); font-weight:600;}
+.unconfirmed-note{font-family:'Public Sans', sans-serif; font-size:0.88rem; font-style:italic; color:var(--brick);
+  background:rgba(161,67,47,0.06); border-left:2px solid var(--brick); padding:0.55rem 0.9rem; margin:0.9rem 0 1.2rem;}
+.unconfirmed-note strong{font-style:normal; text-transform:uppercase; font-size:0.72rem; letter-spacing:0.06em;
+  display:block; margin-bottom:0.15rem;}
+.prose{max-width:68ch;}
+.prose p{margin:0 0 1rem; color:#2c2620;}
+.read-highlight{background:rgba(184,134,59,0.16); border-radius:4px; box-shadow:0 0 0 6px rgba(184,134,59,0.16);
+  transition:background 0.3s ease, box-shadow 0.3s ease;}
+.prose p:first-of-type:first-letter{font-family:'Fraunces', serif; font-size:2.6em; float:left; line-height:0.85;
+  padding:0.05em 0.08em 0 0; color:var(--brass-dark); font-weight:600;}
+h3.sub-heading{font-family:'Fraunces', serif; font-style:italic; font-weight:600; font-size:1.18rem;
+  margin:1.8rem 0 0.6rem; color:var(--sea); border-top:1px dashed var(--rule); padding-top:1.2rem;}
+.gallery{display:grid; grid-template-columns:repeat(auto-fill, minmax(190px, 1fr)); gap:8px; margin:1.2rem 0 0.4rem;}
+.gallery figure{margin:0; position:relative; overflow:hidden; border-radius:4px; background:#00000010;}
+.gallery img, .gallery video{width:100%; height:150px; object-fit:cover; display:block; cursor:zoom-in;
+  transition:transform 0.35s ease;}
+.gallery video{cursor:default;}
+.gallery img:hover{transform:scale(1.04);}
+.gallery figcaption{position:absolute; bottom:0; left:0; right:0; padding:0.3rem 0.5rem;
+  font-family:'IBM Plex Mono', monospace; font-size:0.66rem; color:#fff;
+  background:linear-gradient(to top, rgba(0,0,0,0.65), transparent); opacity:0; transition:opacity 0.2s;}
+.gallery figure:hover figcaption{opacity:1;}
+.video-tag{position:absolute; top:6px; right:6px; background:rgba(28,43,58,0.75); color:#fff;
+  font-family:'IBM Plex Mono', monospace; font-size:0.62rem; padding:0.15rem 0.4rem; border-radius:3px; pointer-events:none;}
+section.unmapped{max-width:900px; margin:1rem auto 4rem; padding:2.2rem 1.5rem 0; border-top:3px double var(--rule);}
+section.unmapped h2{font-family:'Fraunces', serif; font-style:italic; font-size:1.6rem; color:var(--brick); margin-bottom:0.4rem;}
+.unmapped-intro{color:var(--ink-soft); font-size:0.92rem; max-width:60ch; margin-bottom:1.4rem;}
+.unmapped-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(130px, 1fr)); gap:8px;}
+.unmapped-grid figure{margin:0;}
+.unmapped-grid img, .unmapped-grid .video-placeholder{width:100%; height:100px; object-fit:cover; border-radius:4px;
+  display:block; opacity:0.85; cursor:zoom-in;}
+.unmapped-grid figcaption{font-family:'IBM Plex Mono', monospace; font-size:0.62rem; color:var(--ink-soft);
+  margin-top:0.2rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+footer.doc-footer{text-align:center; padding:2.5rem 1.5rem 3.5rem; color:var(--ink-soft);
+  font-family:'IBM Plex Mono', monospace; font-size:0.72rem; letter-spacing:0.03em;}
+.lightbox{position:fixed; inset:0; background:rgba(16,20,26,0.92); display:none; align-items:center;
+  justify-content:center; z-index:999; padding:3vh 3vw; cursor:zoom-out;}
+.lightbox.open{display:flex;}
+.lightbox img{max-width:100%; max-height:100%; border-radius:2px; box-shadow:0 10px 40px rgba(0,0,0,0.5);}
+@media (max-width:640px){.masthead{padding:2.2rem 1.2rem 1.8rem;} #map{height:42vh;}
+  .gallery img, .gallery video{height:120px;}}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <p class="kicker">Hans's Travel Journal &middot; Entry 5 of 16</p>
+    <p class="leg-label">Brussels, Belgium</p>
+    <h1 class="headline">An Evening in Brussels</h1>
+    <p class="date-line">Wednesday, July 15, 2026<span class="sep">&middot;</span>Belgium</p>
+    <button type="button" id="read-aloud-btn" class="read-aloud-btn" style="display:none;">&#128266; Read Aloud</button>
+  </div>
+</header>
+
+<div class="map-wrap"><div id="map"></div></div>
+
+<main class="locations">
+
+<article class="location" id="loc-1">
+  <div class="loc-head">
+    <span class="pin-badge">1</span>
+    <div>
+      <h2 class="loc-title">Brussels – Statue of Charles of Lorraine</h2>
+      <p class="loc-meta"><span class="place">Brussels (Coudenberg / Place du Musée area), Belgium</span> &nbsp;&middot;&nbsp; 50.8464° N, 4.3524° E &nbsp;&middot;&nbsp; 6:48 PM–6:50 PM &nbsp;&middot;&nbsp; 2 photos</p>
+    </div>
+  </div>
+  <p class="unconfirmed-note"><strong>Note</strong>The gilded equestrian statue and its Latin inscription ('...CAROLO ALEXANDRO... DUCI BELGARUM... GUBERNATORI...') identify it as the monument to Charles-Alexander of Lorraine, governor-general of the Austrian Netherlands, near the former Coudenberg palace grounds. GPS placed it slightly northwest of its exact plaza, likely due to signal drift among the tall buildings of central Brussels.</p>
+<div class="prose"><p>The gold horseman catching the evening light is Charles-Alexander of Lorraine, Austria's governor-general of the Netherlands from 1744 to 1780, and by most accounts the most fondly remembered ruler Brussels ever had under a foreign crown, which is a fairly low bar that he nonetheless cleared with real enthusiasm. He rebuilt swaths of the city after a French bombardment, founded scientific academies, and was reportedly more interested in gardens and chemistry experiments than in actually governing -- a set of priorities the Bruxellois found utterly endearing, and one suspects several modern politicians could learn from.</p><p>The first statue of him, cast by Peter Anton von Verschaffelt, stood nearby until French revolutionary forces melted it down for its metal value in the 1790s, revolutionary fervour apparently extending to a keen interest in scrap bronze. This gilded replacement was raised later on Place du Musée, close to where his palace once stood at Coudenberg -- itself now an archaeological site buried beneath the Place Royale, quietly getting on with being underground.</p></div>
+<div class="gallery"><figure><img src="20260715_184807.jpg" loading="lazy" alt="20260715_184807.jpg" onclick="openLightbox(this.src)"><figcaption>6:48 PM</figcaption></figure>
+<figure><img src="20260715_185002.jpg" loading="lazy" alt="20260715_185002.jpg" onclick="openLightbox(this.src)"><figcaption>6:50 PM</figcaption></figure></div>
+
+</article>
+
+<article class="location" id="loc-2">
+  <div class="loc-head">
+    <span class="pin-badge">2</span>
+    <div>
+      <h2 class="loc-title">Brussels – Mont des Arts Gardens</h2>
+      <p class="loc-meta"><span class="place">Mont des Arts / Place de l'Albertine, Brussels, Belgium</span> &nbsp;&middot;&nbsp; 50.8434° N, 4.3578° E &nbsp;&middot;&nbsp; 8:45 PM–8:50 PM &nbsp;&middot;&nbsp; 5 photos</p>
+    </div>
+  </div>
+  <p class="unconfirmed-note"><strong>Note</strong>The terraced formal gardens, hedge rows, and the distant spire match the Mont des Arts, looking toward Brussels' Hôtel de Ville tower. The bronze equestrian statue visible in the wide shot corresponds to the Albert I monument at Place de l'Albertine, at the foot of the gardens. A separate photo shows a large black-and-white mural of a fantastical animal, in the style of Belgian street artist ROA, who is known for monumental monochrome animal murals across Brussels — the specific wall/piece could not be confirmed. A third photo shows a star-patterned pavement/sundial-style installation near the gardens; its exact title and artist are unconfirmed.</p>
+<div class="prose"><p>From the terraced lawns of the Mont des Arts, the view lines up straight down toward the openwork spire of Brussels' Hôtel de Ville, topped by a gilded weathervane statue of St. Michael slaying a dragon -- completed in 1455 and still, at 96 metres, the tallest thing on the medieval skyline, and clearly intending to stay that way. The gardens themselves were laid out in the 1950s atop a hillside that was levelled and rebuilt for the 1958 World's Fair, replacing a warren of 19th-century streets that presumably had no say in the matter.</p><p>At the foot of the slope, on Place de l'Albertine, a bronze king on horseback watches the traffic with the patience of a man who has seen worse: Albert I, Belgium's 'Soldier King,' who led the army's resistance during the German invasion of 1914 and became a symbol of national defiance. Sculptor Alfred Courtens' equestrian monument was unveiled here in 1951, sixteen years after Albert's death in a climbing accident in the Ardennes -- a rather less heroic end than the statue lets on. Just off the gardens, the walls carry some of Brussels' celebrated street art -- the city has quietly become one of Europe's open-air galleries for large-scale murals since the 2000s, without ever quite admitting to trying.</p></div>
+<div class="gallery"><figure><img src="20260715_204547.jpg" loading="lazy" alt="20260715_204547.jpg" onclick="openLightbox(this.src)"><figcaption>8:45 PM</figcaption></figure>
+<figure><img src="20260715_204657.jpg" loading="lazy" alt="20260715_204657.jpg" onclick="openLightbox(this.src)"><figcaption>8:46 PM</figcaption></figure>
+<figure><img src="20260715_204709.jpg" loading="lazy" alt="20260715_204709.jpg" onclick="openLightbox(this.src)"><figcaption>8:47 PM</figcaption></figure>
+<figure><img src="20260715_204718.jpg" loading="lazy" alt="20260715_204718.jpg" onclick="openLightbox(this.src)"><figcaption>8:47 PM</figcaption></figure>
+<figure><img src="20260715_205044.jpg" loading="lazy" alt="20260715_205044.jpg" onclick="openLightbox(this.src)"><figcaption>8:50 PM</figcaption></figure></div>
+
+</article>
+</main>
+
+
+<section class="unmapped">
+  <h2>Off the Map</h2>
+  <p class="unmapped-intro">These 22 frames carried no GPS data in
+  their EXIF (common for messaging-app re-saves, screenshots, or some camera apps) and weren’t placed on the
+  map above. Add coordinates manually if you’d like them included.</p>
+  <div class="unmapped-grid"><figure><img src="20260715_130028.jpg" loading="lazy" onclick="openLightbox(this.src)"><figcaption>20260715_130028.jpg &middot; 1:00 PM</figcaption></figure><figure><img src="20260715_131503.jpg" loading="lazy" onclick="openLightbox(this.src)"><figcaption>20260715_131503.jpg &middot; 1:15 PM</figcaption></figure><figure><img src="20260715_132114.jpg" loading="lazy" onclick="openLightbox(this.src)"><figcaption>20260715_132114.jpg &middot; 1:21 PM</figcaption></figure><figure><img src="20260715_134540.jpg" loading="lazy" onclick="openLightbox(this.src)"><figcaption>20260715_134540.jpg &middot; 1:45 PM</figcaption></figure><figure><img src="20260715_134734.jpg" loading="lazy" onclick="openLightbox(this.src)"><figcaption>20260715_134734.jpg &middot; 1:47 PM</figcaption></figure><figure><img src="20260715_135245.jpg" loading="lazy" onclick="openLightbox(this.src)"><figcaption>20260715_135245.jpg &middot; 1:52 PM</figcaption></figure><figure><img src="20260715_135255.jpg" loading="lazy" onclick="openLightbox(this.src)"><figcaption>20260715_135255.jpg &middot; 1:52 PM</figcaption></figure><figure><img src="20260715_140347.jpg" loading="lazy" onclick="openLightbox(this.src)"><figcaption>20260715_140347.jpg &middot; 2:03 PM</figcaption></figure><figure><img src="20260715_140431.jpg" loading="lazy" onclick="openLightbox(this.src)"><figcaption>20260715_140431.jpg &middot; 2:04 PM</figcaption></figure><figure><img src="20260715_140546.jpg" loading="lazy" onclick="openLightbox(this.src)"><figcaption>20260715_140546.jpg &middot; 2:05 PM</figcaption></figure><figure><img src="20260715_140601.jpg" loading="lazy" onclick="openLightbox(this.src)"><figcaption>20260715_140601.jpg &middot; 2:06 PM</figcaption></figure><figure><img src="20260715_140618.jpg" loading="lazy" onclick="openLightbox(this.src)"><figcaption>20260715_140618.jpg &middot; 2:06 PM</figcaption></figure><figure><img src="20260715_140647.jpg" loading="lazy" onclick="openLightbox(this.src)"><figcaption>20260715_140647.jpg &middot; 2:06 PM</figcaption></figure><figure><img src="20260715_141801.jpg" loading="lazy" onclick="openLightbox(this.src)"><figcaption>20260715_141801.jpg &middot; 2:18 PM</figcaption></figure><figure><img src="20260715_142008.jpg" loading="lazy" onclick="openLightbox(this.src)"><figcaption>20260715_142008.jpg &middot; 2:20 PM</figcaption></figure><figure><img src="20260715_143614.jpg" loading="lazy" onclick="openLightbox(this.src)"><figcaption>20260715_143614.jpg &middot; 2:36 PM</figcaption></figure><figure><img src="20260715_144023.jpg" loading="lazy" onclick="openLightbox(this.src)"><figcaption>20260715_144023.jpg &middot; 2:40 PM</figcaption></figure><figure><img src="20260715_152754.jpg" loading="lazy" onclick="openLightbox(this.src)"><figcaption>20260715_152754.jpg &middot; 3:27 PM</figcaption></figure><figure><img src="20260715_162441.jpg" loading="lazy" onclick="openLightbox(this.src)"><figcaption>20260715_162441.jpg &middot; 4:24 PM</figcaption></figure><figure><img src="20260715_162453.jpg" loading="lazy" onclick="openLightbox(this.src)"><figcaption>20260715_162453.jpg &middot; 4:24 PM</figcaption></figure><figure><img src="20260715_162519.jpg" loading="lazy" onclick="openLightbox(this.src)"><figcaption>20260715_162519.jpg &middot; 4:25 PM</figcaption></figure><figure><img src="20260715_183309.jpg" loading="lazy" onclick="openLightbox(this.src)"><figcaption>20260715_183309.jpg &middot; 6:33 PM</figcaption></figure></div>
+</section>
+
+
+<footer class="doc-footer">Daily Photo Map &middot; generated by build-photo-maps.py from this folder's photo EXIF data &middot; map data &copy; OpenStreetMap contributors</footer>
+
+<div class="lightbox" id="lightbox" onclick="this.classList.remove('open')"><img id="lightbox-img" src=""></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+function openLightbox(src) {
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox').classList.add('open');
+}
+const pins = [{"num": 1, "lat": 50.84643199986111, "lon": 4.352431449861111, "label": "Brussels \u2013 Statue of Charles of Lorraine", "place": "Brussels (Coudenberg / Place du Mus\u00e9e area), Belgium"}, {"num": 2, "lat": 50.843419219833336, "lon": 4.357813819888888, "label": "Brussels \u2013 Mont des Arts Gardens", "place": "Mont des Arts / Place de l'Albertine, Brussels, Belgium"}];
+const map = L.map('map', {scrollWheelZoom:false});
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; OpenStreetMap contributors', maxZoom: 19
+}).addTo(map);
+const latlngs = pins.map(p => [p.lat, p.lon]);
+if (latlngs.length) {
+  const bounds = L.latLngBounds(latlngs);
+  map.fitBounds(bounds, {padding:[36,36]});
+  if (latlngs.length === 1) map.setZoom(15);
+}
+if (latlngs.length > 1) {
+  L.polyline(latlngs, {color:'#b8863b', weight:2, dashArray:'2,8', opacity:0.8}).addTo(map);
+}
+pins.forEach(p => {
+  const icon = L.divIcon({
+    className: '',
+    html: '<div style="background:#1c2b3a;color:#f7f2e6;border:2px solid #b8863b;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-family:\'IBM Plex Mono\',monospace;font-size:13px;font-weight:600;box-shadow:0 2px 6px rgba(0,0,0,0.35);">' + p.num + '</div>',
+    iconSize: [28,28], iconAnchor: [14,14]
+  });
+  const marker = L.marker([p.lat, p.lon], {icon}).addTo(map);
+  marker.bindPopup('<span class="popup-pin-num">' + p.num + '</span><strong>' + p.label.replace(/</g,'&lt;') + '</strong><br><span style="color:#4b5563;font-size:0.85em;">' + p.place.replace(/</g,'&lt;') + '</span>');
+  marker.on('click', () => {
+    const el = document.getElementById('loc-' + p.num);
+    if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+  });
+});
+
+// ---- Read Aloud: speaks each location's title/note/prose in order via
+// the Web Speech API, auto-scrolling to and highlighting whichever
+// paragraph is currently being read. Hidden entirely (never shown) on
+// browsers without speechSynthesis support -- see the module docstring's
+// "READ ALOUD" section for why this can't be polyfilled.
+(function() {
+  const btn = document.getElementById('read-aloud-btn');
+  if (!btn || !('speechSynthesis' in window)) return;
+  btn.style.display = '';
+
+  const synth = window.speechSynthesis;
+  const segments = [];
+  document.querySelectorAll('article.location').forEach(function(article) {
+    const title = article.querySelector('.loc-title');
+    if (title) segments.push({el: title, text: title.textContent});
+    const note = article.querySelector('.unconfirmed-note');
+    if (note) segments.push({el: note, text: note.textContent});
+    article.querySelectorAll('.prose p').forEach(function(p) {
+      segments.push({el: p, text: p.textContent});
+    });
+  });
+
+  let idx = -1;
+  let reading = false;
+  let highlighted = null;
+
+  function clearHighlight() {
+    if (highlighted) {
+      highlighted.classList.remove('read-highlight');
+      highlighted = null;
+    }
+  }
+
+  function setIdle() {
+    reading = false;
+    idx = -1;
+    clearHighlight();
+    btn.textContent = '🔊 Read Aloud';
+    btn.classList.remove('reading');
+  }
+
+  function speakNext() {
+    idx++;
+    if (idx >= segments.length) {
+      setIdle();
+      return;
+    }
+    const seg = segments[idx];
+    clearHighlight();
+    seg.el.classList.add('read-highlight');
+    highlighted = seg.el;
+    seg.el.scrollIntoView({behavior: 'smooth', block: 'center'});
+    const utter = new SpeechSynthesisUtterance(seg.text);
+    utter.onend = function() { if (reading) speakNext(); };
+    utter.onerror = function() { if (reading) speakNext(); };
+    synth.speak(utter);
+  }
+
+  btn.addEventListener('click', function() {
+    if (reading) {
+      reading = false;
+      synth.cancel();
+      setIdle();
+      return;
+    }
+    if (segments.length === 0) return;
+    synth.cancel();
+    reading = true;
+    idx = -1;
+    btn.textContent = '⏹ Stop Reading';
+    btn.classList.add('reading');
+    speakNext();
+  });
+
+  window.addEventListener('beforeunload', function() { synth.cancel(); });
+})();
+</script>
+</body>
+</html>
