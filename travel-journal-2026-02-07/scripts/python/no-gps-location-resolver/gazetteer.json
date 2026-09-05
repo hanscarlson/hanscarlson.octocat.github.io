@@ -1,0 +1,236 @@
+[
+  {
+    "id": "wall_street_mill",
+    "_comment": "Checked before joshua_tree_np_generic: names the specific historic mill/gunfight site within the park.",
+    "requires_any": [
+      "Wall Street Mill"
+    ],
+    "location_label": "Wall Street Mill",
+    "place_full": "Wall Street Mill, Joshua Tree National Park, San Bernardino County, California",
+    "country": "United States",
+    "centroid_lat": 34.0251,
+    "centroid_lon": -116.1419
+  },
+  {
+    "id": "jumbo_rocks",
+    "_comment": "Checked before joshua_tree_np_generic: names the specific boulder-field area within the park.",
+    "requires_any": [
+      "Jumbo Rocks"
+    ],
+    "location_label": "Jumbo Rocks",
+    "place_full": "Jumbo Rocks, Joshua Tree National Park, San Bernardino County, California",
+    "country": "United States",
+    "centroid_lat": 33.9922,
+    "centroid_lon": -116.0625
+  },
+  {
+    "id": "keys_view",
+    "_comment": "Checked before joshua_tree_np_generic: names the specific overlook within the park.",
+    "requires_any": [
+      "Keys View"
+    ],
+    "location_label": "Keys View",
+    "place_full": "Keys View, Joshua Tree National Park, Riverside County, California",
+    "country": "United States",
+    "centroid_lat": 33.9269,
+    "centroid_lon": -116.1875
+  },
+  {
+    "id": "pinnacle_peak_park",
+    "requires_any": [
+      "Pinnacle Peak"
+    ],
+    "location_label": "Pinnacle Peak Park",
+    "place_full": "Pinnacle Peak Park, Scottsdale, Arizona",
+    "country": "United States",
+    "centroid_lat": 33.7279,
+    "centroid_lon": -111.8604
+  },
+  {
+    "id": "welcome_to_california_monument",
+    "_comment": "The grizzly-bear-and-poppies state welcome monument on I-10 at the California/Arizona border near Blythe. Coordinates are for the general state-line crossing area, not a surveyed monument location -- this specific roadside sculpture's exact pin was not confirmed.",
+    "requires_any": [
+      "Welcome to California"
+    ],
+    "location_label": "California/Arizona border",
+    "place_full": "California/Arizona state line, Interstate 10 near Blythe, Riverside County, California",
+    "country": "United States",
+    "centroid_lat": 33.7295,
+    "centroid_lon": -114.7181
+  },
+  {
+    "id": "parker_desert_center_junction",
+    "_comment": "A highway distance sign toward Parker, AZ and Desert Center, CA, photographed somewhere on the Mojave Desert crossing. Exact junction not confirmed from the caption alone, so no centroid is guessed -- left null on purpose.",
+    "requires_any": [
+      "Parker/Desert Center",
+      "Parker 62",
+      "Desert Center 177"
+    ],
+    "location_label": null,
+    "place_full": "Mojave Desert highway crossing, Arizona/California border area",
+    "country": "United States",
+    "centroid_lat": null,
+    "centroid_lon": null,
+    "_coord_comment": "centroid intentionally null: which specific highway junction this sign sits on was not confirmed, so no coordinate is fabricated for it."
+  },
+  {
+    "id": "twentynine_palms_oasis",
+    "_comment": "Checked before twentynine_palms_generic: the specific fan-palm spring (Oasis of Mara) rather than just the town.",
+    "requires_all": [
+      "Twentynine Palms",
+      "oasis"
+    ],
+    "location_label": "Oasis of Mara",
+    "place_full": "Oasis of Mara, Twentynine Palms, San Bernardino County, California",
+    "country": "United States",
+    "centroid_lat": 34.1358,
+    "centroid_lon": -116.0524
+  },
+  {
+    "id": "twentynine_palms_generic",
+    "_comment": "Fallback for a bare 'Twentynine Palms' mention -- after twentynine_palms_oasis.",
+    "requires_any": [
+      "Twentynine Palms"
+    ],
+    "location_label": "Twentynine Palms",
+    "place_full": "Twentynine Palms, San Bernardino County, California",
+    "country": "United States",
+    "centroid_lat": 34.1355,
+    "centroid_lon": -116.0542
+  },
+  {
+    "id": "joshua_tree_np_generic",
+    "_comment": "Fallback: must stay after wall_street_mill/jumbo_rocks/keys_view AND after twentynine_palms_oasis/twentynine_palms_generic -- several captions mention both 'Twentynine Palms' and 'Joshua Tree National Park' in the same sentence (the town/oasis visited before or after that day's drive into the park), and the more specific Twentynine Palms match should win. Catches every other Joshua Tree NP photo, including the many that just describe a Joshua tree plant or generic boulder terrain without naming a sub-area.",
+    "requires_any": [
+      "Joshua Tree National Park",
+      "Joshua tree",
+      "Joshua Tree"
+    ],
+    "location_label": "Joshua Tree National Park",
+    "place_full": "Joshua Tree National Park, California",
+    "country": "United States",
+    "centroid_lat": 33.8734,
+    "centroid_lon": -115.9010
+  },
+  {
+    "id": "pines_to_palms_highway",
+    "requires_any": [
+      "Pines to Palms Highway",
+      "Pines to Palms"
+    ],
+    "location_label": "Coachella Valley Vista Point",
+    "place_full": "Coachella Valley Vista Point, Highway 74 (Pines to Palms Highway), Riverside County, California",
+    "country": "United States",
+    "centroid_lat": 33.7161,
+    "centroid_lon": -116.6392
+  },
+  {
+    "id": "camp_pendleton_san_luis_rey_gate",
+    "_comment": "Checked before oceanside_harbor/camp_pendleton_generic: names the specific gate.",
+    "requires_any": [
+      "San Luis Rey Gate"
+    ],
+    "location_label": "San Luis Rey Gate",
+    "place_full": "San Luis Rey Gate, Marine Corps Base Camp Pendleton, Oceanside, California",
+    "country": "United States",
+    "centroid_lat": 33.2295,
+    "centroid_lon": -117.3776
+  },
+  {
+    "id": "oceanside_harbor",
+    "_comment": "Checked before camp_pendleton_generic: one caption mentions both 'Oceanside Harbor' and 'Camp Pendleton' (the harbor sits just outside the base's southern edge) -- the actual pictured place should win.",
+    "requires_any": [
+      "Oceanside Harbor",
+      "Chubasco"
+    ],
+    "location_label": "Oceanside Harbor",
+    "place_full": "Oceanside Harbor, Oceanside, California",
+    "country": "United States",
+    "centroid_lat": 33.2098,
+    "centroid_lon": -117.3943
+  },
+  {
+    "id": "oceanside_pier",
+    "requires_any": [
+      "Oceanside Pier"
+    ],
+    "location_label": "Oceanside Pier",
+    "place_full": "Oceanside Pier, Oceanside, California",
+    "country": "United States",
+    "centroid_lat": 33.1941,
+    "centroid_lon": -117.3848
+  },
+  {
+    "id": "camp_pendleton_generic",
+    "_comment": "Fallback for a bare 'Camp Pendleton' mention (barracks visit, etc.) -- after camp_pendleton_san_luis_rey_gate and oceanside_harbor.",
+    "requires_any": [
+      "Camp Pendleton"
+    ],
+    "location_label": "Camp Pendleton",
+    "place_full": "Marine Corps Base Camp Pendleton, California",
+    "country": "United States",
+    "centroid_lat": 33.3852,
+    "centroid_lon": -117.3703
+  },
+  {
+    "id": "oceanside_generic",
+    "_comment": "Broadest fallback for the Oceanside beach days -- after oceanside_harbor and oceanside_pier.",
+    "requires_any": [
+      "Oceanside"
+    ],
+    "location_label": "Oceanside",
+    "place_full": "Oceanside, California",
+    "country": "United States",
+    "centroid_lat": 33.1959,
+    "centroid_lon": -117.3795
+  },
+  {
+    "id": "temecula_wine_country_archway",
+    "_comment": "Checked before callaway_winery/old_town_temecula/temecula_generic: names the specific roadside archway.",
+    "requires_any": [
+      "Wine Country archway",
+      "Temecula Valley Wine Country archway"
+    ],
+    "location_label": "Temecula Valley Wine Country",
+    "place_full": "Temecula Valley Wine Country archway, Rancho California Road, Temecula, California",
+    "country": "United States",
+    "centroid_lat": 33.5231,
+    "centroid_lon": -117.0407
+  },
+  {
+    "id": "callaway_winery",
+    "_comment": "Checked before temecula_generic.",
+    "requires_any": [
+      "Callaway"
+    ],
+    "location_label": "Callaway Vineyard & Winery",
+    "place_full": "Callaway Vineyard & Winery, 32720 Rancho California Road, Temecula, California",
+    "country": "United States",
+    "centroid_lat": 33.5382,
+    "centroid_lon": -117.0395
+  },
+  {
+    "id": "old_town_temecula",
+    "_comment": "Checked before temecula_generic.",
+    "requires_any": [
+      "Old Town Temecula"
+    ],
+    "location_label": "Old Town Temecula",
+    "place_full": "Old Town Temecula, Temecula, California",
+    "country": "United States",
+    "centroid_lat": 33.4939,
+    "centroid_lon": -117.1483
+  },
+  {
+    "id": "temecula_generic",
+    "_comment": "Broadest fallback for this leg -- must stay after temecula_wine_country_archway/callaway_winery/old_town_temecula. Catches the unnamed second winery and its wine-list photo, which only say 'Temecula' / 'Temecula Valley' / 'Temecula-area winery'.",
+    "requires_any": [
+      "Temecula"
+    ],
+    "location_label": "Temecula",
+    "place_full": "Temecula Valley Wine Country, Temecula, California",
+    "country": "United States",
+    "centroid_lat": 33.5231,
+    "centroid_lon": -117.0407
+  }
+]

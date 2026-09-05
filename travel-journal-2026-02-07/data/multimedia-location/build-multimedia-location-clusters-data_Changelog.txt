@@ -1,0 +1,40 @@
+BUILD MULTIMEDIA LOCATION CLUSTERS DATA — TRIP CHANGELOG (travel-journal-2026-02-07)
+========================================================================================
+
+See scripts/javascript/build-multimedia-location-clusters-data_Instructions.txt
+for the generic mechanics, current CLI usage, and the general
+(non-trip-specific) design history. Everything in this file is specific
+to this trip's own catalog and cluster history.
+
+Initial build
+--------------
+First run of the script against this trip's catalog, following the same
+day the trip's own gazetteer.json (no-gps-location-resolver) was built.
+--list-clusters produced 26 clusters across 7 days (2026-02-08 through
+2026-02-17): 15 GPS clusters (45 files, mostly Camp Pendleton/Oceanside/
+Temecula, where a later build-multimedia-data.py run had already reverse-
+geocoded real device GPS) and 11 resolved_location clusters (90 files,
+grouped by the gazetteer-matched location_label from the no-gps-location-
+resolver's run earlier the same day — Pinnacle Peak Park, the Wall Street
+Mill/Jumbo Rocks/Keys View sub-areas of Joshua Tree National Park,
+Twentynine Palms, the Welcome to California monument, and two Oceanside
+surf shots). 135 of the catalog's 152 files ended up in a cluster; the
+remaining 17 (16 no_gps files the gazetteer left unmatched on purpose —
+see that folder's own README.md — plus one edge case, the 2026-02-14
+Desert Willow/Yucca Ridge trail-junction sign) were skipped, same as
+usual for files with neither GPS nor a resolved_location.
+
+Claude wrote a genuine overview-description for all 26 clusters in one
+pass from --list-clusters' descriptions arrays — no missing-synthesis
+warnings on the normal-mode run. Two clusters were single-file "one
+memorable moment" entries (the Welcome to California monument; the
+Angry Wife Red wine list); the rest synthesize several files' captions
+into one paragraph, e.g. the 22-file Feb 12 cluster spanning the whole
+Arizona-to-California drive through the evening hot tub at The Greenhaus,
+and the 23-file Feb 13 cluster covering the day's general Joshua Tree
+hike outside its three named sub-area clusters (Wall Street Mill, Jumbo
+Rocks, Keys View).
+
+data/multimedia-location/multimedia-location-data.json and its runtime
+mirror multimedia-location-data.js were written for the first time for
+this trip as part of this run.

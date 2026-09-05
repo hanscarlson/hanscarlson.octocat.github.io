@@ -1,0 +1,112 @@
+[
+  {
+    "date": "2026-02-07",
+    "trip_name": "Desert trip",
+    "locale": "Arizona, Phoenix",
+    "lodging": "Catherine and Geoffrey",
+    "transportation": "Airline SouthwestRental Car SIXT",
+    "meals": null,
+    "activities": "Chill",
+    "notes": "Flight Baltimore BWI to Phoenix (WN 1119)Time 1pm - 4:20pm (Eastern Time - New York)Date Sat Feb 7, 2026Southwest Airlines flight 1119Confirmation number: BVQINESIXTBooking number: 9727900112Pickup 7 Feb, 2026 | 4:30 PM Phoenix Int Airport1805 E Sky Harbor Circle South85034-4805 PhoenixCatherine and Geoffrey30248 N. 115th DrivePeoria, AZ 85383"
+  },
+  {
+    "date": "2026-02-08",
+    "trip_name": "Desert trip",
+    "locale": "Arizona, Phoenix",
+    "lodging": "Catherine and Geoffrey",
+    "transportation": "Rental Car",
+    "meals": null,
+    "activities": "Hike with CatherineShop for peruvian chicken",
+    "notes": null
+  },
+  {
+    "date": "2026-02-09",
+    "trip_name": "Desert trip",
+    "locale": "Arizona, Phoenix",
+    "lodging": "Catherine and Geoffrey",
+    "transportation": "Rental Car",
+    "meals": null,
+    "activities": "Visit Bradley",
+    "notes": null
+  },
+  {
+    "date": "2026-02-10",
+    "trip_name": "Desert trip",
+    "locale": "Arizona, Phoenix",
+    "lodging": "Catherine and Geoffrey",
+    "transportation": "Rental Car",
+    "meals": null,
+    "activities": "Visit BradleyWhite Tank Mountain Regional Park",
+    "notes": null
+  },
+  {
+    "date": "2026-02-11",
+    "trip_name": "Desert trip",
+    "locale": "Arizona, Phoenix",
+    "lodging": "Catherine and Geoffrey",
+    "transportation": "Rental Car",
+    "meals": null,
+    "activities": "Musical Instrument Museum4725 E Mayo Blvd, Phoenix, AZ 85050",
+    "notes": null
+  },
+  {
+    "date": "2026-02-12",
+    "trip_name": "Desert trip",
+    "locale": "California, Joshua Tree",
+    "lodging": "Campbell House Inn",
+    "transportation": "Rental Car",
+    "meals": null,
+    "activities": "Joshua Tree National ParkHike 49 Palms Oasis",
+    "notes": "Campbell House Inn74744 Joe Davis DriveTwentynine Palms 92277 CABOOKING CONFIRMATION - Campbell House Inn - 25038IFI1372Arrival: 02/12/26 (12 Feb 26)Departure: 02/14/26 (14 Feb 26)"
+  },
+  {
+    "date": "2026-02-13",
+    "trip_name": "Desert trip",
+    "locale": "California, Joshua Tree",
+    "lodging": "Campbell House Inn",
+    "transportation": "Rental Car",
+    "meals": null,
+    "activities": null,
+    "notes": null
+  },
+  {
+    "date": "2026-02-14",
+    "trip_name": "Desert trip",
+    "locale": "California, Camp Pendleton",
+    "lodging": "Del Mar Beach and Marina",
+    "transportation": "Rental Car",
+    "meals": null,
+    "activities": "Pickup WillCheckin Del Mar Beach & Marina",
+    "notes": "224.00224.001PNM3 2 Bedroom Marina View - No Pets AllowedDel Mar Beach and Marina12th Street Bldg 210841Oceanside, CA 92058760-725-4640"
+  },
+  {
+    "date": "2026-02-15",
+    "trip_name": "Desert trip",
+    "locale": "California, Camp Pendleton",
+    "lodging": "Del Mar Beach and Marina",
+    "transportation": "Rental Car",
+    "meals": null,
+    "activities": "Temecula Valleyhttps://robertrenzonivineyards.com/",
+    "notes": null
+  },
+  {
+    "date": "2026-02-16",
+    "trip_name": "Desert trip",
+    "locale": "California, Camp Pendleton",
+    "lodging": "Del Mar Beach and Marina",
+    "transportation": "Rental Car",
+    "meals": null,
+    "activities": "TBD",
+    "notes": null
+  },
+  {
+    "date": "2026-02-17",
+    "trip_name": "Desert trip",
+    "locale": null,
+    "lodging": "Home",
+    "transportation": "Rental CarAirline Southwest",
+    "meals": null,
+    "activities": null,
+    "notes": "SIXTReturn 17 Feb, 2026 | 12:00 PM San Diego Int Airport3355 Admiral Boland Way92101-1100 San DiegoFlight San Diego SAN to Baltimore (WN 4171)Time 2:45pm - 10:30pm (Eastern Time - New York)Date Tue Feb 17, 2026Southwest Airlines flight 4171Confirmation number: BVMS2M"
+  }
+]

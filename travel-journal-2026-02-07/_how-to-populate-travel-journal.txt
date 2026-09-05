@@ -1,0 +1,220 @@
+HOW TO POPULATE travel-journal-2026-02-07 — STEP BY STEP
+============================================================
+
+Goal: take travel-journal-2026-02-07 (currently just trip-info.json and
+this folder's own checklist) from empty to fully functional — the same
+end state travel-journal-2026-01-14 is in today: a populated photos/
+folder and a complete data/ folder, viewable at
+common/journal.html?trip=travel-journal-2026-02-07 (or via the trip card
+on the top-level index.html, which already lists this trip).
+
+Run every command below from the travel-journals/ collection root.
+Every script takes travel-journal-2026-02-07 as its <journal-folder>
+argument — swap it for a different trip's folder name to reuse any of
+these commands elsewhere.
+
+Nothing here needs a "rebuild the journal page" step at the end —
+common/journal.html is fully client-side-rendered and reads every data/
+file below live, on each page load. Just reload the page after each
+step to see it take effect. The one exception is Step 4 below (the
+daily-gallery mirror) — it's not read by common/journal.html's own
+photo counts, but common/daily-gallery.html?trip=travel-journal-2026-02-07
+needs it regenerated, specifically, any time the catalog changes.
+
+STEP 1 — Add the raw photos/videos
+--------------------------------------
+Create travel-journal-2026-02-07/photos-unsorted/ and drop every photo
+and video file from the trip into it (subfolders inside are fine — the
+next step sorts by each file's own date, not by where you put it).
+
+STEP 2 — Sort them into dated folders
+------------------------------------------
+    python3 scripts/python/organize_photos.py travel-journal-2026-02-07 --dry-run
+    python3 scripts/python/organize_photos.py travel-journal-2026-02-07
+
+Preview first (--dry-run doesn't move anything), then run for real. This
+sorts photos-unsorted/ into travel-journal-2026-02-07/photos/YYYY-MM-DD/
+by each file's metadata date, filename date, or filesystem date. Safe to
+re-run any time you add more files to photos-unsorted/ — already-sorted
+files are left alone.
+
+STEP 3 — Build the multimedia catalog
+------------------------------------------
+    python3 scripts/python/build-multimedia-data.py travel-journal-2026-02-07
+
+Writes data/multimedia/multimedia-data.json (file properties, EXIF/video
+metadata, and an attempted reverse geocode for every GPS-tagged file).
+Requires Pillow (pip3 install Pillow) and, for videos, ffprobe. Needs real
+internet access to nominatim.openstreetmap.org for real geocoded
+locations — if Claude runs this step instead of you, every GPS file
+comes back "geocode_unavailable"; re-run it yourself afterward to fill
+in the real results (it's incremental — only ungeocoded files are
+re-queried). Safe to re-run any time photos are added. This step does
+NOT write data/multimedia/multimedia-data.js — that mirror is Step 4,
+below, and is easy to forget since nothing here errors without it; it
+just silently leaves common/daily-gallery.html showing no photos.
+
+STEP 4 — Build the daily-gallery mirror
+----------------------------------------------
+    node scripts/javascript/build-daily-multimedia-gallery.js travel-journal-2026-02-07
+
+Writes data/multimedia/multimedia-data.js — a plain runtime mirror of
+data/multimedia/multimedia-data.json that common/daily-gallery.html?trip=travel-journal-2026-02-07
+(and common/journal.html's own multimedia-data.js <script src> load)
+read via <script src>, since opening these pages from disk (file://)
+blocks fetch() of local JSON in most browsers. Without this file, both
+pages load cleanly but silently show no photos/videos rather than
+erroring — easy to miss. Safe and cheap to re-run any time
+data/multimedia/multimedia-data.json changes: right after Step 3, and
+again after Step 5 (descriptions) or Step 6 (no-GPS resolver) if you run
+either of those later and want the gallery to reflect it.
+
+STEP 5 — Write subject / subject_description text (Claude-mediated)
+-------------------------------------------------------------------------
+Ask Claude to "describe the multimedia files for travel-journal-2026-02-07."
+Behind that request:
+
+    python3 scripts/python/build-multimedia-data.py travel-journal-2026-02-07 --list-pending --json
+
+lists every file still missing subject, subject_description.standard, or
+subject_description.monty_python. Claude opens each listed file and
+writes all three, then applies them:
+
+    python3 scripts/python/build-multimedia-data.py travel-journal-2026-02-07 --apply-descriptions <file>
+
+<file> is a JSON array of {relative_folder, file_name, subject,
+subject_description} update objects — see build-multimedia-data_Instructions.txt
+for the exact shape. This is typically a large pass done incrementally
+across several conversations; --list-pending always picks up where the
+last pass left off. Re-run Step 4 afterward if you want
+common/daily-gallery.html to reflect the newly-written descriptions.
+
+STEP 6 — (Optional) Resolve landmark locations for no-GPS photos
+------------------------------------------------------------------------
+Only needed if some photos have no GPS data but their subject_description
+names a recognizable landmark. Requires a gazetteer file — a JSON list
+of landmark-name → coordinates rules — which doesn't exist yet for this
+trip; ask Claude to help build
+travel-journal-2026-02-07/scripts/python/no-gps-location-resolver/gazetteer.json
+first if you want this. Then:
+
+    python3 scripts/python/resolve_no_gps_locations.py \
+      travel-journal-2026-02-07/data/multimedia/multimedia-data.json \
+      --gazetteer travel-journal-2026-02-07/scripts/python/no-gps-location-resolver/gazetteer.json \
+      --dry-run
+
+    python3 scripts/python/resolve_no_gps_locations.py \
+      travel-journal-2026-02-07/data/multimedia/multimedia-data.json \
+      --gazetteer travel-journal-2026-02-07/scripts/python/no-gps-location-resolver/gazetteer.json \
+      --in-place \
+      --report travel-journal-2026-02-07/scripts/python/no-gps-location-resolver/audit.csv
+
+Skip this step entirely if every photo already has GPS data, or if you
+don't need the no-GPS ones located. Re-run Step 4 afterward if you want
+common/daily-gallery.html to reflect the newly-resolved records.
+
+STEP 7 — Build multimedia location clusters (Claude-mediated, 3 commands)
+--------------------------------------------------------------------------------
+Ask Claude to "refresh multimedia location overview descriptions for
+travel-journal-2026-02-07." Behind that request:
+
+    node scripts/javascript/build-multimedia-location-clusters-data.js travel-journal-2026-02-07 --list-clusters <clusters-file>
+
+writes every GPS cluster to <clusters-file> (a temp file is fine).
+Claude reads it and writes a synthesized overview-description per
+cluster into a synthesis file, keyed by each cluster's "<folder>::<cluster_idx>"
+key. Then:
+
+    node scripts/javascript/build-multimedia-location-clusters-data.js travel-journal-2026-02-07 <synthesis-file>
+
+merges the synthesis in and writes data/multimedia-location/
+multimedia-location-data.json plus its runtime mirror,
+multimedia-location-data.js — the data behind each day's mini-map and
+common/daily-location-gallery.html.
+
+STEP 8 — Refresh travel details from TravelDetails.ods
+------------------------------------------------------------
+    python3 scripts/python/refresh-travel-details.py travel-journal-2026-02-07 <start> <end>
+
+<start>/<end> are the trip's actual inclusive date range, YYYY-MM-DD —
+travel-journal-2026-02-07 implies a start around 2026-02-07, but confirm
+the real end date from TravelDetails.ods itself. Writes
+data/travel-details/travel-details.json (one row per day: trip_name,
+locale, lodging, transportation, meals, activities, notes) plus its
+runtime mirror, travel-details-data.js. This is also what drives each
+day's "Locale" location band and the journal's overall date range in
+common/journal.html, so run this even for days with little else filled
+in on the spreadsheet.
+
+STEP 9 — Refresh daily notes (Claude-mediated, 2 steps)
+--------------------------------------------------------------
+Ask Claude to "refresh notes for travel-journal-2026-02-07." Behind that
+request:
+  1. Claude searches "My Drive/dailyNotes" for Google Docs titled
+     "Daily Note YYYY-MM-DD" whose dates fall in this trip's range,
+     fetches each one's full content, and writes one JSON file shaped
+     {"YYYY-MM-DD": "raw doc text", ...} to a temp path.
+  2. Then:
+       node scripts/javascript/refresh-notes.js travel-journal-2026-02-07 <raw-notes-file>
+     which cleans and merges the entries into data/daily-notes/
+     daily-notes-data.json (and its .js mirror), creating data/daily-notes/
+     if it doesn't exist yet. Safe to re-run — it merges, it doesn't
+     overwrite dates you don't mention.
+
+STEP 10 — Refresh calendar events (Claude-mediated, 2 steps)
+--------------------------------------------------------------------
+Ask Claude to "refresh events for travel-journal-2026-02-07." Behind
+that request:
+  1. Claude fetches events from the five source calendars ("Events Hans",
+     "Travel", "Birthdays", "Holidays in Sweden", "Victoria Arthaud")
+     over this trip's date range (with a little padding), strips each
+     down to id/summary/start/end/location/description, and writes one
+     raw-events-<calendar-name>.json file per calendar into a working
+     directory.
+  2. Then:
+       node scripts/javascript/refresh-events.js travel-journal-2026-02-07 <raw-events-dir> <start> <end>
+     which dedupes across calendars and writes data/events/events-data.json
+     (and its .js mirror).
+
+STEP 11 — (Optional) Add cycling ride reports
+---------------------------------------------------
+Only if this trip has rideWithGPS PDF route reports. Put them in
+travel-journal-2026-02-07/rideWithGPS/, then:
+
+    node scripts/javascript/build-ride-reports-data.js travel-journal-2026-02-07
+
+Rasterizes each PDF (via poppler's pdftoppm) and writes data/ride-reports/
+ride-reports-data.json plus its .js mirror — the data behind each day's
+"Cycle Routes" block.
+
+STEP 12 — View it
+-----------------------
+Open common/journal.html?trip=travel-journal-2026-02-07 (or click this
+trip's card on the top-level index.html — already listed, since
+trip-info.json already exists). Every section above fills in as its
+data/ file appears; nothing needs a separate rebuild. For photos
+specifically via common/daily-gallery.html?trip=travel-journal-2026-02-07,
+make sure Step 4 has actually been run — see that step's own note about
+it failing silently.
+
+Already done for you
+--------------------------
+- travel-journal-2026-02-07/trip-info.json exists (title "🧳 Travel
+  Journal 2026 Desert"), so this trip already shows up in the top-level
+  index.html and common/daily-location-gallery.html's trip picker.
+- common/data/trips-manifest.js has already been regenerated to include
+  it — no need to re-run build-common-trips-manifest.js again unless you
+  later change this trip's title.
+
+Order flexibility
+----------------------
+Steps 3-11 are independent of each other except: step 4 (the
+daily-gallery mirror) needs step 3's catalog to exist first, and should
+be re-run after step 5 or step 6 if you want the gallery to pick up
+what they changed; step 5 (descriptions) needs step 3's catalog first;
+step 6 (no-GPS resolver) needs step 3's catalog too; and step 7
+(location clusters) reads step 3's (and optionally step 6's) catalog.
+Steps 8, 9, 10, and 11 (travel details, notes, events, ride reports)
+don't depend on the multimedia steps at all, or on each other — do them
+in any order, or skip whichever this trip doesn't have (e.g. skip step
+11 entirely if there's no cycling).

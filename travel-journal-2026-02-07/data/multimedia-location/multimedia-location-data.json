@@ -1,0 +1,527 @@
+[
+  {
+    "folder": "photos/2026-02-08",
+    "cluster_idx": 0,
+    "centroid_lat": 33.7279,
+    "centroid_lon": -111.8604,
+    "time_start": "2026-02-08T09:42:18.000Z",
+    "time_end": "2026-02-08T13:26:58.000Z",
+    "location_label": "Pinnacle Peak Park",
+    "place_full": "Pinnacle Peak Park, Scottsdale, Arizona",
+    "country": "United States",
+    "location_source": "resolved_location",
+    "overview-description": "A morning start at a Scottsdale backyard pool gives way to a hike up Pinnacle Peak Park's trail, past rattlesnake-safety signs, saguaro- and cholla-studded boulder slopes, and sweeping views over the valley to the McDowell Mountains -- capped by two blimps (one of them Goodyear's) drifting past in the hazy Phoenix sky and a trio of hikers celebrating the trail's 2,889-foot high point.",
+    "multimedia_files": [
+      "photos/2026-02-08/20260208_094218.jpg",
+      "photos/2026-02-08/20260208_114629.jpg",
+      "photos/2026-02-08/20260208_114721.jpg",
+      "photos/2026-02-08/20260208_114746.jpg",
+      "photos/2026-02-08/20260208_114752.jpg",
+      "photos/2026-02-08/20260208_115629.jpg",
+      "photos/2026-02-08/20260208_115649.jpg",
+      "photos/2026-02-08/20260208_115700.jpg",
+      "photos/2026-02-08/20260208_120642.jpg",
+      "photos/2026-02-08/20260208_120707.jpg",
+      "photos/2026-02-08/20260208_121257.jpg",
+      "photos/2026-02-08/20260208_121804.jpg",
+      "photos/2026-02-08/20260208_122333.jpg",
+      "photos/2026-02-08/20260208_124509.jpg",
+      "photos/2026-02-08/20260208_124540.jpg",
+      "photos/2026-02-08/20260208_125022.jpg",
+      "photos/2026-02-08/20260208_125248.jpg",
+      "photos/2026-02-08/20260208_132658.jpg"
+    ]
+  },
+  {
+    "folder": "photos/2026-02-12",
+    "cluster_idx": 0,
+    "centroid_lat": 33.8734,
+    "centroid_lon": -115.901,
+    "time_start": "2026-02-12T13:20:07.000Z",
+    "time_end": "2026-02-12T19:20:44.000Z",
+    "location_label": "Joshua Tree National Park",
+    "place_full": "Joshua Tree National Park, California",
+    "country": "United States",
+    "location_source": "resolved_location",
+    "overview-description": "The long desert drive west from Arizona -- dry lakebeds, a palm-oasis roadside town, and a Google Maps screenshot charting the route -- ends at Joshua Tree National Park, where blooming Joshua trees, cholla cacti, and jumbled granite outcrops give way to a pink-and-orange sunset and a relaxed evening soak in the hot tub back at The Greenhaus rental.",
+    "multimedia_files": [
+      "photos/2026-02-12/20260212_132007.jpg",
+      "photos/2026-02-12/20260212_132824.jpg",
+      "photos/2026-02-12/20260212_132841.jpg",
+      "photos/2026-02-12/20260212_133949.jpg",
+      "photos/2026-02-12/Screenshot_20260212_134800_Maps.jpg",
+      "photos/2026-02-12/20260212_150728.jpg",
+      "photos/2026-02-12/20260212_153251.jpg",
+      "photos/2026-02-12/20260212_155935.jpg",
+      "photos/2026-02-12/20260212_160526.jpg",
+      "photos/2026-02-12/20260212_160544.jpg",
+      "photos/2026-02-12/20260212_160649.jpg",
+      "photos/2026-02-12/20260212_160709.jpg",
+      "photos/2026-02-12/20260212_161214.jpg",
+      "photos/2026-02-12/20260212_161529.jpg",
+      "photos/2026-02-12/20260212_161542.jpg",
+      "photos/2026-02-12/20260212_161554.jpg",
+      "photos/2026-02-12/20260212_162150.jpg",
+      "photos/2026-02-12/Screenshot_20260212_171957_Maps.jpg",
+      "photos/2026-02-12/20260212_172827.jpg",
+      "photos/2026-02-12/20260212_173153.jpg",
+      "photos/2026-02-12/20260212_191921.jpg",
+      "photos/2026-02-12/20260212_192043.jpg"
+    ]
+  },
+  {
+    "folder": "photos/2026-02-12",
+    "cluster_idx": 1,
+    "centroid_lat": 33.7295,
+    "centroid_lon": -114.7181,
+    "time_start": "2026-02-12T13:46:18.000Z",
+    "time_end": "2026-02-12T13:46:18.000Z",
+    "location_label": "California/Arizona border",
+    "place_full": "California/Arizona state line, Interstate 10 near Blythe, Riverside County, California",
+    "country": "United States",
+    "location_source": "resolved_location",
+    "overview-description": "The 'Welcome to California' roadside monument, a grizzly bear rearing above a field of golden poppies, marking the crossing over from Arizona.",
+    "multimedia_files": [
+      "photos/2026-02-12/20260212_134618.jpg"
+    ]
+  },
+  {
+    "folder": "photos/2026-02-12",
+    "cluster_idx": 2,
+    "centroid_lat": 34.0251,
+    "centroid_lon": -116.1419,
+    "time_start": "2026-02-12T16:24:34.000Z",
+    "time_end": "2026-02-12T16:38:59.000Z",
+    "location_label": "Wall Street Mill",
+    "place_full": "Wall Street Mill, Joshua Tree National Park, San Bernardino County, California",
+    "country": "United States",
+    "location_source": "resolved_location",
+    "overview-description": "The historic Wall Street Mill site in Joshua Tree National Park -- Worth Bagley's 1943 gunfight marker, three rusted vintage car wrecks, and the mill's own collapsing water tank and stamp-mill machinery -- explored in the backlit late-afternoon light on the walk back past one last towering Joshua tree.",
+    "multimedia_files": [
+      "photos/2026-02-12/20260212_162434.jpg",
+      "photos/2026-02-12/20260212_162459.jpg",
+      "photos/2026-02-12/20260212_163253.jpg",
+      "photos/2026-02-12/20260212_163311.jpg",
+      "photos/2026-02-12/20260212_163444.jpg",
+      "photos/2026-02-12/20260212_163529.jpg",
+      "photos/2026-02-12/20260212_163742.jpg",
+      "photos/2026-02-12/20260212_163859.jpg"
+    ]
+  },
+  {
+    "folder": "photos/2026-02-13",
+    "cluster_idx": 0,
+    "centroid_lat": 34.1358,
+    "centroid_lon": -116.0524,
+    "time_start": "2026-02-13T09:11:03.000Z",
+    "time_end": "2026-02-13T09:11:03.000Z",
+    "location_label": "Oasis of Mara",
+    "place_full": "Oasis of Mara, Twentynine Palms, San Bernardino County, California",
+    "country": "United States",
+    "location_source": "resolved_location",
+    "overview-description": "The historic fan-palm oasis at Twentynine Palms, the natural desert spring that gave the town its name, visited in the morning before heading into Joshua Tree National Park.",
+    "multimedia_files": [
+      "photos/2026-02-13/20260213_091103.jpg"
+    ]
+  },
+  {
+    "folder": "photos/2026-02-13",
+    "cluster_idx": 1,
+    "centroid_lat": 34.1355,
+    "centroid_lon": -116.0542,
+    "time_start": "2026-02-13T09:17:50.000Z",
+    "time_end": "2026-02-13T09:17:50.000Z",
+    "location_label": "Twentynine Palms",
+    "place_full": "Twentynine Palms, San Bernardino County, California",
+    "country": "United States",
+    "location_source": "resolved_location",
+    "overview-description": "A morning view over Twentynine Palms toward the snow-dusted San Bernardino Mountains, taken just before the day's drive into the park.",
+    "multimedia_files": [
+      "photos/2026-02-13/20260213_091750.jpg"
+    ]
+  },
+  {
+    "folder": "photos/2026-02-13",
+    "cluster_idx": 2,
+    "centroid_lat": 33.8734,
+    "centroid_lon": -115.901,
+    "time_start": "2026-02-13T10:09:54.000Z",
+    "time_end": "2026-02-13T18:59:25.000Z",
+    "location_label": "Joshua Tree National Park",
+    "place_full": "Joshua Tree National Park, California",
+    "country": "United States",
+    "location_source": "resolved_location",
+    "overview-description": "A long hike through Joshua Tree National Park's boulder fields and Joshua tree groves -- a blooming Indian paintbrush and a flowering yucca, weathered granite towers streaked with desert varnish, a hollow-eyed rock formation, and one of the park's few substantial oak trees -- ending with dinner on a cactus-garden patio at a nearby restaurant.",
+    "multimedia_files": [
+      "photos/2026-02-13/20260213_100954.jpg",
+      "photos/2026-02-13/20260213_101957.jpg",
+      "photos/2026-02-13/20260213_102752.jpg",
+      "photos/2026-02-13/20260213_102907.jpg",
+      "photos/2026-02-13/20260213_112156.jpg",
+      "photos/2026-02-13/20260213_113053.jpg",
+      "photos/2026-02-13/20260213_113111.jpg",
+      "photos/2026-02-13/20260213_113515-EDIT.jpg",
+      "photos/2026-02-13/20260213_114446.jpg",
+      "photos/2026-02-13/20260213_115234.jpg",
+      "photos/2026-02-13/20260213_115507.jpg",
+      "photos/2026-02-13/20260213_115613.jpg",
+      "photos/2026-02-13/20260213_115713.jpg",
+      "photos/2026-02-13/20260213_120758.jpg",
+      "photos/2026-02-13/20260213_121111.jpg",
+      "photos/2026-02-13/20260213_121417.jpg",
+      "photos/2026-02-13/20260213_122136.jpg",
+      "photos/2026-02-13/20260213_122149.jpg",
+      "photos/2026-02-13/20260213_122205.jpg",
+      "photos/2026-02-13/20260213_123755.jpg",
+      "photos/2026-02-13/20260213_131619.jpg",
+      "photos/2026-02-13/20260213_131804.jpg",
+      "photos/2026-02-13/20260213_185925.jpg"
+    ]
+  },
+  {
+    "folder": "photos/2026-02-13",
+    "cluster_idx": 3,
+    "centroid_lat": 33.9922,
+    "centroid_lon": -116.0625,
+    "time_start": "2026-02-13T10:30:43.000Z",
+    "time_end": "2026-02-13T12:55:28.000Z",
+    "location_label": "Jumbo Rocks",
+    "place_full": "Jumbo Rocks, Joshua Tree National Park, San Bernardino County, California",
+    "country": "United States",
+    "location_source": "resolved_location",
+    "overview-description": "The Jumbo Rocks area of Joshua Tree National Park, its jagged granite spires, a quartz vein streaking down one boulder face, and a natural crack splitting another, framed against the hazy desert horizon.",
+    "multimedia_files": [
+      "photos/2026-02-13/20260213_103043.jpg",
+      "photos/2026-02-13/20260213_103729.jpg",
+      "photos/2026-02-13/20260213_104528.jpg",
+      "photos/2026-02-13/20260213_112709.jpg",
+      "photos/2026-02-13/20260213_125527.jpg"
+    ]
+  },
+  {
+    "folder": "photos/2026-02-13",
+    "cluster_idx": 4,
+    "centroid_lat": 33.9269,
+    "centroid_lon": -116.1875,
+    "time_start": "2026-02-13T13:39:04.000Z",
+    "time_end": "2026-02-13T13:43:31.000Z",
+    "location_label": "Keys View",
+    "place_full": "Keys View, Joshua Tree National Park, Riverside County, California",
+    "country": "United States",
+    "location_source": "resolved_location",
+    "overview-description": "The panoramic view from Keys View in Joshua Tree National Park, looking out over the Coachella Valley and the Salton Sea basin to snow-capped Mount San Jacinto and San Gorgonio.",
+    "multimedia_files": [
+      "photos/2026-02-13/20260213_133904.jpg",
+      "photos/2026-02-13/20260213_134038.jpg",
+      "photos/2026-02-13/20260213_134100.jpg",
+      "photos/2026-02-13/20260213_134251.jpg",
+      "photos/2026-02-13/20260213_134325.jpg"
+    ]
+  },
+  {
+    "folder": "photos/2026-02-14",
+    "cluster_idx": 0,
+    "centroid_lat": 33.7161,
+    "centroid_lon": -116.6392,
+    "time_start": "2026-02-14T11:47:43.000Z",
+    "time_end": "2026-02-14T11:56:25.000Z",
+    "location_label": "Coachella Valley Vista Point",
+    "place_full": "Coachella Valley Vista Point, Highway 74 (Pines to Palms Highway), Riverside County, California",
+    "country": "United States",
+    "location_source": "resolved_location",
+    "overview-description": "An overlook along the Pines to Palms Highway above the Coachella Valley, its golf-course communities and a snow-dusted San Jacinto peak spread out below, brittlebush blooming yellow at the roadside.",
+    "multimedia_files": [
+      "photos/2026-02-14/20260214_114743.jpg",
+      "photos/2026-02-14/20260214_114758.jpg",
+      "photos/2026-02-14/20260214_115558.jpg",
+      "photos/2026-02-14/20260214_115625.jpg"
+    ]
+  },
+  {
+    "folder": "photos/2026-02-14",
+    "cluster_idx": 1,
+    "centroid_lat": 33.277916,
+    "centroid_lon": -117.297628,
+    "time_start": "2026-02-14T14:17:36.000Z",
+    "time_end": "2026-02-14T14:17:36.000Z",
+    "location_label": "Vandegrift Boulevard, Oceanside",
+    "place_full": "Vandegrift Boulevard, Arrowood, Oceanside, San Diego County, California, 92057, United States",
+    "country": "United States",
+    "location_source": "gps",
+    "overview-description": "Arriving at the San Luis Rey Gate checkpoint of Marine Corps Base Camp Pendleton for a family visit.",
+    "multimedia_files": [
+      "photos/2026-02-14/20260214_141736.jpg"
+    ]
+  },
+  {
+    "folder": "photos/2026-02-14",
+    "cluster_idx": 2,
+    "centroid_lat": 33.313434,
+    "centroid_lon": -117.30806,
+    "time_start": "2026-02-14T14:35:28.000Z",
+    "time_end": "2026-02-14T14:35:39.000Z",
+    "location_label": "East Street",
+    "place_full": "East Street, San Diego County, California, United States",
+    "country": "United States",
+    "location_source": "gps",
+    "overview-description": "Family portraits outside the barracks courtyard during the Camp Pendleton visit.",
+    "multimedia_files": [
+      "photos/2026-02-14/20260214_143528.jpg",
+      "photos/2026-02-14/20260214_143539.jpg"
+    ]
+  },
+  {
+    "folder": "photos/2026-02-14",
+    "cluster_idx": 3,
+    "centroid_lat": 33.217312,
+    "centroid_lon": -117.402709,
+    "time_start": "2026-02-14T15:55:26.000Z",
+    "time_end": "2026-02-14T15:55:26.000Z",
+    "location_label": "9th Street",
+    "place_full": "9th Street, San Diego County, California, 92051, United States",
+    "country": "United States",
+    "location_source": "gps",
+    "overview-description": "A view of Oceanside Harbor near Camp Pendleton, palm trees framing a marina full of docked sailboats.",
+    "multimedia_files": [
+      "photos/2026-02-14/20260214_155526.jpg"
+    ]
+  },
+  {
+    "folder": "photos/2026-02-15",
+    "cluster_idx": 0,
+    "centroid_lat": 33.520212,
+    "centroid_lon": -117.092263,
+    "time_start": "2026-02-15T10:42:27.000Z",
+    "time_end": "2026-02-15T10:42:27.000Z",
+    "location_label": "Rancho California Road",
+    "place_full": "Rancho California Road, Riverside County, California, 95291, United States",
+    "country": "United States",
+    "location_source": "gps",
+    "overview-description": "Driving under the Temecula Valley Wine Country archway to kick off a day of winery visits.",
+    "multimedia_files": [
+      "photos/2026-02-15/20260215_104227.jpg"
+    ]
+  },
+  {
+    "folder": "photos/2026-02-15",
+    "cluster_idx": 1,
+    "centroid_lat": 33.524447,
+    "centroid_lon": -117.090023,
+    "time_start": "2026-02-15T11:00:13.000Z",
+    "time_end": "2026-02-15T11:54:06.000Z",
+    "location_label": "Rancho California Road",
+    "place_full": "Rancho California Road, Riverside County, California, 95291, United States",
+    "country": "United States",
+    "location_source": "gps",
+    "overview-description": "A tour of Callaway Vineyard & Winery in Temecula -- dormant winter vineyard rows, the Meritage restaurant's ironwork entrance, the stainless fermentation hall, and the barrel room's giant fifty-hectoliter Cask #2 -- capped by family photos at the cask and a quiet coffee on the terrace overlooking the valley.",
+    "multimedia_files": [
+      "photos/2026-02-15/20260215_110012.jpg",
+      "photos/2026-02-15/20260215_110143.jpg",
+      "photos/2026-02-15/20260215_110247-EDIT.jpg",
+      "photos/2026-02-15/20260215_112936.jpg",
+      "photos/2026-02-15/20260215_112959.jpg",
+      "photos/2026-02-15/20260215_114605.jpg",
+      "photos/2026-02-15/20260215_114612.jpg",
+      "photos/2026-02-15/20260215_114619.jpg",
+      "photos/2026-02-15/20260215_114638.jpg",
+      "photos/2026-02-15/20260215_114646.jpg",
+      "photos/2026-02-15/20260215_115354.jpg",
+      "photos/2026-02-15/20260215_115405.jpg"
+    ]
+  },
+  {
+    "folder": "photos/2026-02-15",
+    "cluster_idx": 2,
+    "centroid_lat": 33.536619,
+    "centroid_lon": -117.050621,
+    "time_start": "2026-02-15T14:32:18.000Z",
+    "time_end": "2026-02-15T14:32:18.000Z",
+    "location_label": "Rancho California Road",
+    "place_full": "Rancho California Road, Temecula Valley Wine Country, Riverside County, California, United States",
+    "country": "United States",
+    "location_source": "gps",
+    "overview-description": "The playfully named 'Angry Wife Red' on the wine list at a second Temecula-area winery visited that afternoon.",
+    "multimedia_files": [
+      "photos/2026-02-15/20260215_143218.jpg"
+    ]
+  },
+  {
+    "folder": "photos/2026-02-15",
+    "cluster_idx": 3,
+    "centroid_lat": 33.51179,
+    "centroid_lon": -117.019653,
+    "time_start": "2026-02-15T15:27:25.000Z",
+    "time_end": "2026-02-15T15:27:25.000Z",
+    "location_label": "De Portola Road, GlenOak Hills",
+    "place_full": "Fazeli Cellars Winery, De Portola Road, Glenoaks Country, GlenOak Hills, Riverside County, California, 92592, United States",
+    "country": "United States",
+    "location_source": "gps",
+    "overview-description": "A Tuscan-style winery building in Temecula Valley, its terracotta roofs and cypress-lined entrance evoking the Italian countryside.",
+    "multimedia_files": [
+      "photos/2026-02-15/20260215_152725.jpg"
+    ]
+  },
+  {
+    "folder": "photos/2026-02-15",
+    "cluster_idx": 4,
+    "centroid_lat": 33.495713,
+    "centroid_lon": -117.151765,
+    "time_start": "2026-02-15T17:06:42.000Z",
+    "time_end": "2026-02-15T17:06:42.000Z",
+    "location_label": "Old Town Front Street, Temecula",
+    "place_full": "Old Town Front Street, Villa Del Sol, Old Town Temecula, Old Town, Temecula, Riverside County, California, 92590, United States",
+    "country": "United States",
+    "location_source": "gps",
+    "overview-description": "A Mario and Luigi duo cruising through Old Town Temecula in a red Chevy SSR convertible, a surreal sight on the historic main street.",
+    "multimedia_files": [
+      "photos/2026-02-15/20260215_170642.jpg"
+    ]
+  },
+  {
+    "folder": "photos/2026-02-15",
+    "cluster_idx": 5,
+    "centroid_lat": 33.494617,
+    "centroid_lon": -117.150394,
+    "time_start": "2026-02-15T17:22:03.000Z",
+    "time_end": "2026-02-15T17:22:03.000Z",
+    "location_label": "Old Town Front Street, Temecula",
+    "place_full": "Old Town Front Street, Villa Del Sol, Old Town Temecula, Old Town, Temecula, Riverside County, California, 92590, United States",
+    "country": "United States",
+    "location_source": "gps",
+    "overview-description": "Dinner on a patio in Old Town Temecula, roses on the table and the historic district's shop-directory sign behind them.",
+    "multimedia_files": [
+      "photos/2026-02-15/20260215_172203.jpg"
+    ]
+  },
+  {
+    "folder": "photos/2026-02-16",
+    "cluster_idx": 0,
+    "centroid_lat": 33.194138,
+    "centroid_lon": -117.384698,
+    "time_start": "2026-02-16T09:46:54.000Z",
+    "time_end": "2026-02-16T09:47:40.000Z",
+    "location_label": "Oceanside Pier, Oceanside",
+    "place_full": "Oceanside Pier, Oceanside, San Diego County, California, 92054, United States",
+    "country": "United States",
+    "location_source": "gps",
+    "overview-description": "A cloudy morning walk out onto the Oceanside Pier and along the beachfront, waves churning below and a rock jetty stretching along the shore as storm clouds gather over the playground and picnic shelters.",
+    "multimedia_files": [
+      "photos/2026-02-16/20260216_094654.jpg",
+      "photos/2026-02-16/20260216_094704.jpg",
+      "photos/2026-02-16/20260216_094729.jpg",
+      "photos/2026-02-16/20260216_094740.jpg"
+    ]
+  },
+  {
+    "folder": "photos/2026-02-16",
+    "cluster_idx": 1,
+    "centroid_lat": 33.216391,
+    "centroid_lon": -117.404839,
+    "time_start": "2026-02-16T17:13:19.000Z",
+    "time_end": "2026-02-16T17:16:00.000Z",
+    "location_label": "9th Street",
+    "place_full": "602A, 602B, 9th Street, San Diego County, California, 92051, United States",
+    "country": "United States",
+    "location_source": "gps",
+    "overview-description": "The Oceanside storm clouds beginning to break apart at sunset, golden light spilling onto pink beach cottages and the wet sand as a quiet barefoot moment unfolds on the shore.",
+    "multimedia_files": [
+      "photos/2026-02-16/20260216_171319.jpg",
+      "photos/2026-02-16/20260216_171338.jpg",
+      "photos/2026-02-16/20260216_171356.jpg",
+      "photos/2026-02-16/20260216_171404.jpg",
+      "photos/2026-02-16/20260216_171418.jpg",
+      "photos/2026-02-16/20260216_171600.jpg"
+    ]
+  },
+  {
+    "folder": "photos/2026-02-16",
+    "cluster_idx": 2,
+    "centroid_lat": 33.1959,
+    "centroid_lon": -117.3795,
+    "time_start": "2026-02-16T17:16:22.000Z",
+    "time_end": "2026-02-16T17:22:24.000Z",
+    "location_label": "Oceanside",
+    "place_full": "Oceanside, California",
+    "country": "United States",
+    "location_source": "resolved_location",
+    "overview-description": "Standing in the surf at Oceanside as the sun breaks through the clearing storm, first ankle-deep and then in silhouette against the fading light.",
+    "multimedia_files": [
+      "photos/2026-02-16/20260216_171622.jpg",
+      "photos/2026-02-16/20260216_172224.jpg"
+    ]
+  },
+  {
+    "folder": "photos/2026-02-16",
+    "cluster_idx": 3,
+    "centroid_lat": 33.217947,
+    "centroid_lon": -117.406266,
+    "time_start": "2026-02-16T17:22:17.000Z",
+    "time_end": "2026-02-16T17:23:52.000Z",
+    "location_label": "9th Street",
+    "place_full": "9th Street, San Diego County, California, 92051, United States",
+    "country": "United States",
+    "location_source": "gps",
+    "overview-description": "The sun breaking free of the storm clouds low over the Pacific at Oceanside, and a photo near the beach's lifeguard headquarters as the evening's storm continues rolling through.",
+    "multimedia_files": [
+      "photos/2026-02-16/20260216_172217.jpg",
+      "photos/2026-02-16/20260216_172352.jpg"
+    ]
+  },
+  {
+    "folder": "photos/2026-02-16",
+    "cluster_idx": 4,
+    "centroid_lat": 33.219277,
+    "centroid_lon": -117.406972,
+    "time_start": "2026-02-16T17:25:53.000Z",
+    "time_end": "2026-02-16T17:31:04.000Z",
+    "location_label": "9th Street",
+    "place_full": "9th Street, San Diego County, California, 92051, United States",
+    "country": "United States",
+    "location_source": "gps",
+    "overview-description": "The Oceanside sunset in full drama -- the sun sinking behind the coastal hills as city lights flicker on, two heavily processed shots capturing a halo of orange light around the sun, a willet catching a crab in the shallows, and a final wide panorama as the shoreline buildings light up for the evening.",
+    "multimedia_files": [
+      "photos/2026-02-16/20260216_172553.jpg",
+      "photos/2026-02-16/20260216_172602.jpg",
+      "photos/2026-02-16/20260216_172629.jpg",
+      "photos/2026-02-16/20260216_172643.jpg",
+      "photos/2026-02-16/20260216_172654.jpg",
+      "photos/2026-02-16/20260216_172909.jpg",
+      "photos/2026-02-16/20260216_173042.jpg",
+      "photos/2026-02-16/20260216_173051.jpg",
+      "photos/2026-02-16/20260216_173104.jpg"
+    ]
+  },
+  {
+    "folder": "photos/2026-02-16",
+    "cluster_idx": 5,
+    "centroid_lat": 33.221283,
+    "centroid_lon": -117.408355,
+    "time_start": "2026-02-16T17:35:39.000Z",
+    "time_end": "2026-02-16T17:39:04.000Z",
+    "location_label": "Imhoff Road",
+    "place_full": "210593, Imhoff Road, San Diego County, California, 92051, United States",
+    "country": "United States",
+    "location_source": "gps",
+    "overview-description": "An RV campground strung along the Oceanside shoreline at dusk, and the delicate ripple patterns the retreating tide left in the sand as the day closes.",
+    "multimedia_files": [
+      "photos/2026-02-16/20260216_173539.jpg",
+      "photos/2026-02-16/20260216_173904.jpg"
+    ]
+  },
+  {
+    "folder": "photos/2026-02-17",
+    "cluster_idx": 0,
+    "centroid_lat": 33.205337,
+    "centroid_lon": -117.389187,
+    "time_start": "2026-02-17T10:08:42.000Z",
+    "time_end": "2026-02-17T10:08:42.000Z",
+    "location_label": "South Harbor Drive, Oceanside",
+    "place_full": "South Harbor Drive, Capistrano, Oceanside, San Diego County, California, 92054, United States",
+    "country": "United States",
+    "location_source": "gps",
+    "overview-description": "A morning stroll along Oceanside Harbor, the striped lighthouse and the sportfishing boat Chubasco II visible in the marina behind her.",
+    "multimedia_files": [
+      "photos/2026-02-17/20260217_100842.jpg"
+    ]
+  }
+]
