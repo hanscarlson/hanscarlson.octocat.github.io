@@ -1,0 +1,2337 @@
+{
+  "38.9466,-77.4497": {
+    "country": "United States",
+    "location_label": "Flight Line Road",
+    "place_full": "Flight Line Road, Loudoun County, Virginia, 24965, United States"
+  },
+  "38.9484,-77.4493": {
+    "country": "United States",
+    "location_label": "Saarinen Circle",
+    "place_full": "Kids Stop, 1, Saarinen Circle, Dulles, Loudoun County, Virginia, 20166, United States"
+  },
+  "38.9486,-77.4489": {
+    "country": "United States",
+    "location_label": "Bravo Road",
+    "place_full": "Concourse A & B, 44815, Bravo Road, Dulles, Loudoun County, Virginia, 20166, United States"
+  },
+  "38.9488,-77.4518": {
+    "country": "United States",
+    "location_label": "Bravo Road",
+    "place_full": "Concourse A & B, 44815, Bravo Road, Dulles, Loudoun County, Virginia, 20166, United States"
+  },
+  "50.5528,6.2366": {
+    "country": "Deutschland",
+    "location_label": "Erlebnismuseum Lernort Natur, Monschau",
+    "place_full": "Erlebnismuseum Lernort Natur, 15, Burgau, Heidgen, Höfen, Monschau, Städteregion Aachen, Nordrhein-Westfalen, 52156, Deutschland"
+  },
+  "50.5546,6.2413": {
+    "country": "Deutschland",
+    "location_label": "Auf den Planken, Monschau",
+    "place_full": "Auf den Planken, Mützenich, Monschau, Städteregion Aachen, Nordrhein-Westfalen, 52156, Deutschland"
+  },
+  "50.5546,6.2414": {
+    "country": "Deutschland",
+    "location_label": "Auf den Planken, Monschau",
+    "place_full": "Auf den Planken, Mützenich, Monschau, Städteregion Aachen, Nordrhein-Westfalen, 52156, Deutschland"
+  },
+  "50.5548,6.2408": {
+    "country": "Deutschland",
+    "location_label": "Laufenstraße, Monschau",
+    "place_full": "Laufenstraße, Mützenich, Imgenbroich, Monschau, Städteregion Aachen, Nordrhein-Westfalen, 52156, Deutschland"
+  },
+  "50.5549,6.2408": {
+    "country": "Deutschland",
+    "location_label": "Laufenstraße, Monschau",
+    "place_full": "Laufenstraße, Mützenich, Imgenbroich, Monschau, Städteregion Aachen, Nordrhein-Westfalen, 52156, Deutschland"
+  },
+  "50.5556,6.2409": {
+    "country": "Deutschland",
+    "location_label": "Panoramaweg, Monschau",
+    "place_full": "Panoramaweg, Mützenich, Imgenbroich, Monschau, Städteregion Aachen, Nordrhein-Westfalen, 52156, Deutschland"
+  },
+  "50.5557,6.2412": {
+    "country": "Deutschland",
+    "location_label": "Panoramaweg, Monschau",
+    "place_full": "Panoramaweg, Mützenich, Imgenbroich, Monschau, Städteregion Aachen, Nordrhein-Westfalen, 52156, Deutschland"
+  },
+  "50.556,6.2413": {
+    "country": "Deutschland",
+    "location_label": "Panoramaweg, Monschau",
+    "place_full": "Haller, Panoramaweg, Mützenich, Imgenbroich, Monschau, Städteregion Aachen, Nordrhein-Westfalen, 52156, Deutschland"
+  },
+  "50.5562,6.2413": {
+    "country": "Deutschland",
+    "location_label": "Panoramaweg, Monschau",
+    "place_full": "Haller, Panoramaweg, Mützenich, Imgenbroich, Monschau, Städteregion Aachen, Nordrhein-Westfalen, 52156, Deutschland"
+  },
+  "50.7231,6.0896": {
+    "country": "Deutschland",
+    "location_label": "KuKuK e.V. - Kunst und Kultur im Köpfchen (ehemaliges deutsches Zollhaus), Aachen",
+    "place_full": "KuKuK e.V. - Kunst und Kultur im Köpfchen (ehemaliges deutsches Zollhaus), 420, Eupener Straße, Köpfchen, Aachen-Mitte, Aachen, Städteregion Aachen, Nordrhein-Westfalen, 52076, Deutschland"
+  },
+  "50.7411,6.2417": {
+    "country": "Deutschland",
+    "location_label": "Rüst, Stolberg",
+    "place_full": "Rasenplatz Breinigerberg, Rüst, Breinigerberg, Vicht, Stolberg, Städteregion Aachen, Nordrhein-Westfalen, 52223, Deutschland"
+  },
+  "50.7745,6.0846": {
+    "country": "Deutschland",
+    "location_label": "Münsterplatz, Aachen",
+    "place_full": "Schmetz am Dom, 7-9, Münsterplatz, Burtscheid, Aachen-Mitte, Aachen, Städteregion Aachen, Nordrhein-Westfalen, 52062, Deutschland"
+  },
+  "50.7745,6.0849": {
+    "country": "Deutschland",
+    "location_label": "Hanswurst, Aachen",
+    "place_full": "Hanswurst, 6, Münsterplatz, Burtscheid, Aachen-Mitte, Aachen, Städteregion Aachen, Nordrhein-Westfalen, 52062, Deutschland"
+  },
+  "50.7745,6.0853": {
+    "country": "Deutschland",
+    "location_label": "Ursulinerstraße, Aachen",
+    "place_full": "Photo Preim, 3-5, Ursulinerstraße, Burtscheid, Aachen-Mitte, Aachen, Städteregion Aachen, Nordrhein-Westfalen, 52062, Deutschland"
+  },
+  "50.7748,6.0842": {
+    "country": "Deutschland",
+    "location_label": "Aachener Dom, Aachen",
+    "place_full": "Aachener Dom, 1, Domhof, Burtscheid, Aachen-Mitte, Aachen, Städteregion Aachen, Nordrhein-Westfalen, 52062, Deutschland"
+  },
+  "50.8433,4.3578": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Petite rue du Musée - Korte Museumstraat, Bruxelles - Brussel",
+    "place_full": "Petite rue du Musée - Korte Museumstraat, Quartier Royal - Koninklijke Wijk, Pentagone - Vijfhoek, Bruxelles - Brussel, Brussel-Hoofdstad - Bruxelles-Capitale, Région de Bruxelles-Capitale - Brussels Hoofdstedelijk Gewest, 1000, België / Belgique / Belgien"
+  },
+  "50.8435,4.3574": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Petite rue du Musée - Korte Museumstraat, Bruxelles - Brussel",
+    "place_full": "Petite rue du Musée - Korte Museumstraat, Quartier Royal - Koninklijke Wijk, Pentagone - Vijfhoek, Bruxelles - Brussel, Brussel-Hoofdstad - Bruxelles-Capitale, Région de Bruxelles-Capitale - Brussels Hoofdstedelijk Gewest, 1000, België / Belgique / Belgien"
+  },
+  "50.8437,4.3583": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Palais des Congrès - Paleis voor Congressen, Bruxelles - Brussel",
+    "place_full": "Palais des Congrès - Paleis voor Congressen, Petite rue du Musée - Korte Museumstraat, Quartier Royal - Koninklijke Wijk, Pentagone - Vijfhoek, Bruxelles - Brussel, Brussel-Hoofdstad - Bruxelles-Capitale, Région de Bruxelles-Capitale - Brussels Hoofdstedelijk Gewest, 1000, België / Belgique / Belgien"
+  },
+  "50.8464,4.3524": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Grand-Place - Grote Markt, Bruxelles - Brussel",
+    "place_full": "9, Grand-Place - Grote Markt, Quartier du Centre - Centrumwijk, Pentagone - Vijfhoek, Bruxelles - Brussel, Brussel-Hoofdstad - Bruxelles-Capitale, Région de Bruxelles-Capitale - Brussels Hoofdstedelijk Gewest, 1000, België / Belgique / Belgien"
+  },
+  "50.8465,4.3524": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Grand-Place - Grote Markt, Bruxelles - Brussel",
+    "place_full": "9, Grand-Place - Grote Markt, Quartier du Centre - Centrumwijk, Pentagone - Vijfhoek, Bruxelles - Brussel, Brussel-Hoofdstad - Bruxelles-Capitale, Région de Bruxelles-Capitale - Brussels Hoofdstedelijk Gewest, 1000, België / Belgique / Belgien"
+  },
+  "51.028,3.8389": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Eekhoekstraat, Laarne",
+    "place_full": "Eekhoekstraat, Laarne, Dendermonde, Oost-Vlaanderen, Vlaanderen, 9270, België / Belgique / Belgien"
+  },
+  "51.0281,3.839": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Eekhoekstraat, Laarne",
+    "place_full": "Eekhoekstraat, Laarne, Dendermonde, Oost-Vlaanderen, Vlaanderen, 9270, België / Belgique / Belgien"
+  },
+  "51.0281,3.8396": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Eekhoekstraat, Laarne",
+    "place_full": "Eekhoekstraat, Laarne, Dendermonde, Oost-Vlaanderen, Vlaanderen, 9270, België / Belgique / Belgien"
+  },
+  "51.0281,3.8397": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Eekhoekstraat, Laarne",
+    "place_full": "Eekhoekstraat, Laarne, Dendermonde, Oost-Vlaanderen, Vlaanderen, 9270, België / Belgique / Belgien"
+  },
+  "51.0283,3.839": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Kasteel van Laarne, Laarne",
+    "place_full": "Kasteel van Laarne, 7, Eekhoekstraat, Laarne, Dendermonde, Oost-Vlaanderen, Vlaanderen, 9270, België / Belgique / Belgien"
+  },
+  "51.0288,4.0411": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Appels, Dendermonde",
+    "place_full": "Appels, Hoofdstraat, Appels, Dendermonde, Oost-Vlaanderen, Vlaanderen, 9200, België / Belgique / Belgien"
+  },
+  "51.0288,4.0412": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Appels, Dendermonde",
+    "place_full": "Appels, Hoofdstraat, Appels, Dendermonde, Oost-Vlaanderen, Vlaanderen, 9200, België / Belgique / Belgien"
+  },
+  "51.0292,3.8473": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Dorpsstraat, Laarne",
+    "place_full": "49, Dorpsstraat, Laarne, Dendermonde, Oost-Vlaanderen, Vlaanderen, 9270, België / Belgique / Belgien"
+  },
+  "51.0296,3.8503": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Dorpsstraat, Laarne",
+    "place_full": "15, Dorpsstraat, Laarne, Dendermonde, Oost-Vlaanderen, Vlaanderen, 9270, België / Belgique / Belgien"
+  },
+  "51.0297,3.8506": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Sint-Machariuskerk, Laarne",
+    "place_full": "Sint-Machariuskerk, Dorpsstraat, Laarne, Dendermonde, Oost-Vlaanderen, Vlaanderen, 9270, België / Belgique / Belgien"
+  },
+  "51.0312,4.0979": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Vleeshuismuseum, Dendermonde",
+    "place_full": "Vleeshuismuseum, 32, Grote Markt, Gentse Poort, Dendermonde, Oost-Vlaanderen, Vlaanderen, 9200, België / Belgique / Belgien"
+  },
+  "51.0322,4.1023": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Dansende kinderen, Dendermonde",
+    "place_full": "Dansende kinderen, Kasteelstraat, Mechelse Poort, Dendermonde, Oost-Vlaanderen, Vlaanderen, 9200, België / Belgique / Belgien"
+  },
+  "51.0322,4.1024": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Kasteelstraat, Dendermonde",
+    "place_full": "1-4, Kasteelstraat, Mechelse Poort, Dendermonde, Oost-Vlaanderen, Vlaanderen, 9200, België / Belgique / Belgien"
+  },
+  "51.0458,3.9757": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Brielstraat, Berlare",
+    "place_full": "'t Weiken, Brielstraat, Overmere, Berlare, Dendermonde, Oost-Vlaanderen, Vlaanderen, 9290, België / Belgique / Belgien"
+  },
+  "51.0528,3.7276": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Sint-Baafskathedraal, Gent",
+    "place_full": "Sint-Baafskathedraal, 1A, Sint-Baafsplein, Portus aan de Reep, Gent, Oost-Vlaanderen, Vlaanderen, 9000, België / Belgique / Belgien"
+  },
+  "51.0529,3.7278": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Sint-Baafskathedraal, Gent",
+    "place_full": "Sint-Baafskathedraal, 1A, Sint-Baafsplein, Portus aan de Reep, Gent, Oost-Vlaanderen, Vlaanderen, 9000, België / Belgique / Belgien"
+  },
+  "51.053,3.7264": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Sint-Baafsplein, Gent",
+    "place_full": "25, Sint-Baafsplein, Sint-Jacobs, Gent, Oost-Vlaanderen, Vlaanderen, 9000, België / Belgique / Belgien"
+  },
+  "51.053,3.7268": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Sint-Baafskathedraal, Gent",
+    "place_full": "Sint-Baafskathedraal, 1A, Sint-Baafsplein, Portus aan de Reep, Gent, Oost-Vlaanderen, Vlaanderen, 9000, België / Belgique / Belgien"
+  },
+  "51.053,3.7278": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Sint-Baafskathedraal, Gent",
+    "place_full": "Sint-Baafskathedraal, 1A, Sint-Baafsplein, Portus aan de Reep, Gent, Oost-Vlaanderen, Vlaanderen, 9000, België / Belgique / Belgien"
+  },
+  "51.053,3.7279": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Sint-Baafskathedraal, Gent",
+    "place_full": "Sint-Baafskathedraal, 1A, Sint-Baafsplein, Sint-Jacobs, Gent, Oost-Vlaanderen, Vlaanderen, 9000, België / Belgique / Belgien"
+  },
+  "51.0531,3.7268": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Sint-Baafskathedraal, Gent",
+    "place_full": "Sint-Baafskathedraal, 1A, Sint-Baafsplein, Portus aan de Reep, Gent, Oost-Vlaanderen, Vlaanderen, 9000, België / Belgique / Belgien"
+  },
+  "51.0531,3.7269": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Sint-Baafskathedraal, Gent",
+    "place_full": "Sint-Baafskathedraal, 1A, Sint-Baafsplein, Portus aan de Reep, Gent, Oost-Vlaanderen, Vlaanderen, 9000, België / Belgique / Belgien"
+  },
+  "51.0531,3.727": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Sint-Baafskathedraal, Gent",
+    "place_full": "Sint-Baafskathedraal, 1A, Sint-Baafsplein, Sint-Jacobs, Gent, Oost-Vlaanderen, Vlaanderen, 9000, België / Belgique / Belgien"
+  },
+  "51.0531,3.7277": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Sint-Baafskathedraal, Gent",
+    "place_full": "Sint-Baafskathedraal, 1A, Sint-Baafsplein, Sint-Jacobs, Gent, Oost-Vlaanderen, Vlaanderen, 9000, België / Belgique / Belgien"
+  },
+  "51.0534,3.7256": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "The Glengarry, Gent",
+    "place_full": "The Glengarry, 32, Sint-Baafsplein, Sint-Jacobs, Gent, Oost-Vlaanderen, Vlaanderen, 9000, België / Belgique / Belgien"
+  },
+  "51.0535,3.7246": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Sint-Baafsplein, Gent",
+    "place_full": "2, Sint-Baafsplein, Sint-Jacobs, Gent, Oost-Vlaanderen, Vlaanderen, 9000, België / Belgique / Belgien"
+  },
+  "51.0535,3.7253": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Sint-Baafsplein, Gent",
+    "place_full": "Chocolatier L. Van Hoorebeke, 15, Sint-Baafsplein, Sint-Jacobs, Gent, Oost-Vlaanderen, Vlaanderen, 9000, België / Belgique / Belgien"
+  },
+  "51.0536,3.7243": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Emile Braunplein, Gent",
+    "place_full": "1-5, Emile Braunplein, Sint-Jacobs, Gent, Oost-Vlaanderen, Vlaanderen, 9000, België / Belgique / Belgien"
+  },
+  "51.0536,3.7246": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Sint-Baafsplein, Gent",
+    "place_full": "2, Sint-Baafsplein, Sint-Jacobs, Gent, Oost-Vlaanderen, Vlaanderen, 9000, België / Belgique / Belgien"
+  },
+  "51.0536,3.7249": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Botermarkt, Gent",
+    "place_full": "Belfort, 17, Botermarkt, Sint-Jacobs, Gent, Oost-Vlaanderen, Vlaanderen, 9000, België / Belgique / Belgien"
+  },
+  "51.0537,3.7225": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Cataloniëstraat, Gent",
+    "place_full": "10-15, Cataloniëstraat, Patershol, Gent, Oost-Vlaanderen, Vlaanderen, 9000, België / Belgique / Belgien"
+  },
+  "51.0537,3.7237": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Joey, Gent",
+    "place_full": "Joey, 12, Emile Braunplein, Sint-Jacobs, Gent, Oost-Vlaanderen, Vlaanderen, 9000, België / Belgique / Belgien"
+  },
+  "51.0537,3.7246": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Emile Braunplein, Gent",
+    "place_full": "40, Emile Braunplein, Sint-Jacobs, Gent, Oost-Vlaanderen, Vlaanderen, 9000, België / Belgique / Belgien"
+  },
+  "51.0537,3.7247": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Emile Braunplein, Gent",
+    "place_full": "40, Emile Braunplein, Sint-Jacobs, Gent, Oost-Vlaanderen, Vlaanderen, 9000, België / Belgique / Belgien"
+  },
+  "51.0537,3.7249": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Belfort, Gent",
+    "place_full": "Belfort, 17, Botermarkt, Sint-Jacobs, Gent, Oost-Vlaanderen, Vlaanderen, 9000, België / Belgique / Belgien"
+  },
+  "51.0537,3.725": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Lakenhalle, Gent",
+    "place_full": "Lakenhalle, Botermarkt, Sint-Jacobs, Gent, Oost-Vlaanderen, Vlaanderen, 9000, België / Belgique / Belgien"
+  },
+  "51.0537,3.7254": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Sint-Baafsplein, Gent",
+    "place_full": "Chocolatier L. Van Hoorebeke, 15, Sint-Baafsplein, Sint-Jacobs, Gent, Oost-Vlaanderen, Vlaanderen, 9000, België / Belgique / Belgien"
+  },
+  "51.0538,3.722": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Korenmarkt, Gent",
+    "place_full": "14;14A-14C, Korenmarkt, Patershol, Gent, Oost-Vlaanderen, Vlaanderen, 9000, België / Belgique / Belgien"
+  },
+  "51.0538,3.7248": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Emile Braunplein, Gent",
+    "place_full": "40, Emile Braunplein, Sint-Jacobs, Gent, Oost-Vlaanderen, Vlaanderen, 9000, België / Belgique / Belgien"
+  },
+  "51.0538,3.7249": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Botermarkt, Gent",
+    "place_full": "Mammelokker, 17, Botermarkt, Sint-Jacobs, Gent, Oost-Vlaanderen, Vlaanderen, 9000, België / Belgique / Belgien"
+  },
+  "51.0538,3.725": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Botermarkt, Gent",
+    "place_full": "Mammelokker, 17, Botermarkt, Sint-Jacobs, Gent, Oost-Vlaanderen, Vlaanderen, 9000, België / Belgique / Belgien"
+  },
+  "51.0543,3.7256": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Artevelde Brouwerij, Gent",
+    "place_full": "Artevelde Brouwerij, 5, Botermarkt, Sint-Jacobs, Gent, Oost-Vlaanderen, Vlaanderen, 9000, België / Belgique / Belgien"
+  },
+  "51.0559,4.2006": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Kaai, Sint-Amands",
+    "place_full": "Kaai, Sint-Amands, Puurs-Sint-Amands, Mechelen, Antwerpen, Vlaanderen, 2890, België / Belgique / Belgien"
+  },
+  "51.1456,4.3027": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Achter den Berg, Bazel",
+    "place_full": "Achter den Berg, Parkwijk, Bazel, Beveren-Kruibeke-Zwijndrecht, Sint-Niklaas, Oost-Vlaanderen, Vlaanderen, 9150, België / Belgique / Belgien"
+  },
+  "51.1457,4.3023": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Lange Gaanweg, Bazel",
+    "place_full": "Lange Gaanweg, Ter Linden, Bazel, Beveren-Kruibeke-Zwijndrecht, Sint-Niklaas, Oost-Vlaanderen, Vlaanderen, 9150, België / Belgique / Belgien"
+  },
+  "51.1457,4.3026": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Achter den Berg, Bazel",
+    "place_full": "Achter den Berg, Parkwijk, Bazel, Beveren-Kruibeke-Zwijndrecht, Sint-Niklaas, Oost-Vlaanderen, Vlaanderen, 9150, België / Belgique / Belgien"
+  },
+  "51.1457,4.3028": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Achter den Berg, Bazel",
+    "place_full": "Achter den Berg, Parkwijk, Bazel, Beveren-Kruibeke-Zwijndrecht, Sint-Niklaas, Oost-Vlaanderen, Vlaanderen, 9150, België / Belgique / Belgien"
+  },
+  "51.2038,3.2247": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Katelijnestraat, Brugge",
+    "place_full": "1, Katelijnestraat, Onze-Lieve-Vrouwekwartier, Brugge-Centrum, Brugge, West-Vlaanderen, Vlaanderen, 8000, België / Belgique / Belgien"
+  },
+  "51.2044,3.2247": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Madonna met Kind, Brugge",
+    "place_full": "Madonna met Kind, Onze-Lieve-Vrouwekerkhof-Zuid, Onze-Lieve-Vrouwekwartier, Brugge-Centrum, Brugge, West-Vlaanderen, Vlaanderen, 8000, België / Belgique / Belgien"
+  },
+  "51.2044,3.2248": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Onze-Lieve-Vrouwekerkhof-Zuid, Brugge",
+    "place_full": "Onze-Lieve-Vrouwekerkhof-Zuid, Onze-Lieve-Vrouwekwartier, Brugge-Centrum, Brugge, West-Vlaanderen, Vlaanderen, 8000, België / Belgique / Belgien"
+  },
+  "51.2045,3.2243": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Madonna met Kind, Brugge",
+    "place_full": "Madonna met Kind, Onze-Lieve-Vrouwekerkhof-Zuid, Onze-Lieve-Vrouwekwartier, Brugge-Centrum, Brugge, West-Vlaanderen, Vlaanderen, 8000, België / Belgique / Belgien"
+  },
+  "51.2045,3.2246": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Madonna met Kind, Brugge",
+    "place_full": "Madonna met Kind, Onze-Lieve-Vrouwekerkhof-Zuid, Onze-Lieve-Vrouwekwartier, Brugge-Centrum, Brugge, West-Vlaanderen, Vlaanderen, 8000, België / Belgique / Belgien"
+  },
+  "51.2046,3.2244": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Madonna met Kind, Brugge",
+    "place_full": "Madonna met Kind, Onze-Lieve-Vrouwekerkhof-Zuid, Onze-Lieve-Vrouwekwartier, Brugge-Centrum, Brugge, West-Vlaanderen, Vlaanderen, 8000, België / Belgique / Belgien"
+  },
+  "51.2047,3.2242": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Madonna met Kind, Brugge",
+    "place_full": "Madonna met Kind, Onze-Lieve-Vrouwekerkhof-Zuid, Onze-Lieve-Vrouwekwartier, Brugge-Centrum, Brugge, West-Vlaanderen, Vlaanderen, 8000, België / Belgique / Belgien"
+  },
+  "51.2047,3.2246": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Madonna met Kind, Brugge",
+    "place_full": "Madonna met Kind, Onze-Lieve-Vrouwekerkhof-Zuid, Onze-Lieve-Vrouwekwartier, Brugge-Centrum, Brugge, West-Vlaanderen, Vlaanderen, 8000, België / Belgique / Belgien"
+  },
+  "51.2048,3.2242": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Madonna met Kind, Brugge",
+    "place_full": "Madonna met Kind, Onze-Lieve-Vrouwekerkhof-Zuid, Onze-Lieve-Vrouwekwartier, Brugge-Centrum, Brugge, West-Vlaanderen, Vlaanderen, 8000, België / Belgique / Belgien"
+  },
+  "51.2048,3.2246": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Madonna met Kind, Brugge",
+    "place_full": "Madonna met Kind, Onze-Lieve-Vrouwekerkhof-Zuid, Onze-Lieve-Vrouwekwartier, Brugge-Centrum, Brugge, West-Vlaanderen, Vlaanderen, 8000, België / Belgique / Belgien"
+  },
+  "51.2065,3.2229": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Simon Stevinplein, Brugge",
+    "place_full": "Simon Stevinplein, Steenstraatkwartier, Brugge-Centrum, Brugge, West-Vlaanderen, Vlaanderen, 8000, België / Belgique / Belgien"
+  },
+  "51.2078,3.2251": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Hallen, Brugge",
+    "place_full": "Hallen, Steenstraatkwartier, Brugge-Centrum, Brugge, West-Vlaanderen, Vlaanderen, 8000, België / Belgique / Belgien"
+  },
+  "51.2082,3.2268": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Burg, Brugge",
+    "place_full": "13, Burg, Sint-Walburgakwartier, Brugge-Centrum, Brugge, West-Vlaanderen, Vlaanderen, 8000, België / Belgique / Belgien"
+  },
+  "51.2087,3.2244": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "De Vier Winden, Brugge",
+    "place_full": "De Vier Winden, 9, Markt, Steenstraatkwartier, Brugge-Centrum, Brugge, West-Vlaanderen, Vlaanderen, 8000, België / Belgique / Belgien"
+  },
+  "51.2088,3.2244": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Markt, Brugge",
+    "place_full": "1, Markt, Steenstraatkwartier, Brugge-Centrum, Brugge, West-Vlaanderen, Vlaanderen, 8000, België / Belgique / Belgien"
+  },
+  "51.2088,3.2245": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Markt, Brugge",
+    "place_full": "1, Markt, Steenstraatkwartier, Brugge-Centrum, Brugge, West-Vlaanderen, Vlaanderen, 8000, België / Belgique / Belgien"
+  },
+  "51.209,3.2241": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Le Panier d'Or, Brugge",
+    "place_full": "Le Panier d'Or, 28, Markt, Steenstraatkwartier, Brugge-Centrum, Brugge, West-Vlaanderen, Vlaanderen, 8000, België / Belgique / Belgien"
+  },
+  "51.2105,3.2246": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Kraanplein, Brugge",
+    "place_full": "Kraanplein, Sint-Walburgakwartier, Brugge-Centrum, Brugge, West-Vlaanderen, Vlaanderen, 8000, België / Belgique / Belgien"
+  },
+  "51.2109,3.2281": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Engelsestraat, Brugge",
+    "place_full": "2, Engelsestraat, Sint-Walburgakwartier, Brugge-Centrum, Brugge, West-Vlaanderen, Vlaanderen, 8000, België / Belgique / Belgien"
+  },
+  "51.2112,3.2243": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Academiestraat, Brugge",
+    "place_full": "Academiestraat, Sint-Walburgakwartier, Brugge-Centrum, Brugge, West-Vlaanderen, Vlaanderen, 8000, België / Belgique / Belgien"
+  },
+  "51.2115,3.2259": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Jan van Eyckplein, Brugge",
+    "place_full": "9, Jan van Eyckplein, Sint-Walburgakwartier, Brugge-Centrum, Brugge, West-Vlaanderen, Vlaanderen, 8000, België / Belgique / Belgien"
+  },
+  "51.2116,3.2259": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Jan van Eyckplein, Brugge",
+    "place_full": "9, Jan van Eyckplein, Sint-Walburgakwartier, Brugge-Centrum, Brugge, West-Vlaanderen, Vlaanderen, 8000, België / Belgique / Belgien"
+  },
+  "51.2116,3.2261": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Jan van Eyckplein, Brugge",
+    "place_full": "Jan van Eyckplein, Sint-Walburgakwartier, Brugge-Centrum, Brugge, West-Vlaanderen, Vlaanderen, 8000, België / Belgique / Belgien"
+  },
+  "51.2121,3.2273": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Spiegelrei, Brugge",
+    "place_full": "8, Spiegelrei, Sint-Walburgakwartier, Brugge-Centrum, Brugge, West-Vlaanderen, Vlaanderen, 8000, België / Belgique / Belgien"
+  },
+  "51.2122,3.2278": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Spiegelrei, Brugge",
+    "place_full": "13, Spiegelrei, Sint-Walburgakwartier, Brugge-Centrum, Brugge, West-Vlaanderen, Vlaanderen, 8000, België / Belgique / Belgien"
+  },
+  "51.22,4.4018": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Sint-Pieterstraat, Antwerpen",
+    "place_full": "Nieuwerck, Sint-Pieterstraat, Historisch Centrum, Antwerpen, Vlaanderen, 2000, België / Belgique / Belgien"
+  },
+  "51.2201,4.4017": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Groenplaats, Antwerpen",
+    "place_full": "Kathedraal, 21, Groenplaats, Historisch Centrum, Antwerpen, Vlaanderen, 2000, België / Belgique / Belgien"
+  },
+  "51.2202,4.4008": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Groenplaats, Antwerpen",
+    "place_full": "Kathedraal, 21, Groenplaats, Historisch Centrum, Antwerpen, Vlaanderen, 2000, België / Belgique / Belgien"
+  },
+  "51.2202,4.4013": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Groenplaats, Antwerpen",
+    "place_full": "Kathedraal, 21, Groenplaats, Historisch Centrum, Antwerpen, Vlaanderen, 2000, België / Belgique / Belgien"
+  },
+  "51.2202,4.4016": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Onze-Lieve-Vrouwekathedraal, Antwerpen",
+    "place_full": "Onze-Lieve-Vrouwekathedraal, 21, Groenplaats, Historisch Centrum, Antwerpen, Vlaanderen, 2000, België / Belgique / Belgien"
+  },
+  "51.2202,4.4017": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Groenplaats, Antwerpen",
+    "place_full": "Kathedraal, 21, Groenplaats, Historisch Centrum, Antwerpen, Vlaanderen, 2000, België / Belgique / Belgien"
+  },
+  "51.2202,4.4019": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Onze-Lieve-Vrouwekathedraal, Antwerpen",
+    "place_full": "Onze-Lieve-Vrouwekathedraal, 21, Groenplaats, Historisch Centrum, Antwerpen, Vlaanderen, 2000, België / Belgique / Belgien"
+  },
+  "51.2203,4.4016": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Groenplaats, Antwerpen",
+    "place_full": "Kathedraal, 21, Groenplaats, Historisch Centrum, Antwerpen, Vlaanderen, 2000, België / Belgique / Belgien"
+  },
+  "51.2203,4.4017": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Groenplaats, Antwerpen",
+    "place_full": "Kathedraal, 21, Groenplaats, Historisch Centrum, Antwerpen, Vlaanderen, 2000, België / Belgique / Belgien"
+  },
+  "51.2204,4.4008": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Groenplaats, Antwerpen",
+    "place_full": "Kathedraal, 21, Groenplaats, Historisch Centrum, Antwerpen, Vlaanderen, 2000, België / Belgique / Belgien"
+  },
+  "51.2204,4.4015": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Onze-Lieve-Vrouwekathedraal, Antwerpen",
+    "place_full": "Onze-Lieve-Vrouwekathedraal, 21, Groenplaats, Historisch Centrum, Antwerpen, Vlaanderen, 2000, België / Belgique / Belgien"
+  },
+  "51.2204,4.4021": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Onze-Lieve-Vrouwekathedraal, Antwerpen",
+    "place_full": "Onze-Lieve-Vrouwekathedraal, 21, Groenplaats, Historisch Centrum, Antwerpen, Vlaanderen, 2000, België / Belgique / Belgien"
+  },
+  "51.2205,4.4001": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "House of Waffles, Antwerpen",
+    "place_full": "House of Waffles, 17/21, Handschoenmarkt, Historisch Centrum, Antwerpen, Vlaanderen, 2000, België / Belgique / Belgien"
+  },
+  "51.2205,4.4002": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "House of Waffles, Antwerpen",
+    "place_full": "House of Waffles, 17/21, Handschoenmarkt, Historisch Centrum, Antwerpen, Vlaanderen, 2000, België / Belgique / Belgien"
+  },
+  "51.2205,4.4009": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Groenplaats, Antwerpen",
+    "place_full": "Kathedraal, 21, Groenplaats, Historisch Centrum, Antwerpen, Vlaanderen, 2000, België / Belgique / Belgien"
+  },
+  "51.2205,4.4011": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Groenplaats, Antwerpen",
+    "place_full": "Kathedraal, 21, Groenplaats, Historisch Centrum, Antwerpen, Vlaanderen, 2000, België / Belgique / Belgien"
+  },
+  "51.2206,4.4011": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Witzli-Poetzli, Antwerpen",
+    "place_full": "Witzli-Poetzli, 8, Blauwmoezelstraat, Historisch Centrum, Antwerpen, Vlaanderen, 2000, België / Belgique / Belgien"
+  },
+  "51.2209,4.3987": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Buildrager, Antwerpen",
+    "place_full": "Buildrager, Suikerrui, Historisch Centrum, Antwerpen, Vlaanderen, 2000, België / Belgique / Belgien"
+  },
+  "51.2209,4.3988": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Buildrager, Antwerpen",
+    "place_full": "Buildrager, Suikerrui, Historisch Centrum, Antwerpen, Vlaanderen, 2000, België / Belgique / Belgien"
+  },
+  "51.2212,4.3998": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Grote Markt, Antwerpen",
+    "place_full": "Grote Markt, Historisch Centrum, Antwerpen, Vlaanderen, 2000, België / Belgique / Belgien"
+  },
+  "51.2212,4.3999": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Grote Markt, Antwerpen",
+    "place_full": "20, Grote Markt, Historisch Centrum, Antwerpen, Vlaanderen, 2000, België / Belgique / Belgien"
+  },
+  "51.2212,4.4": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Grote Markt, Antwerpen",
+    "place_full": "Grote Markt, Historisch Centrum, Antwerpen, Vlaanderen, 2000, België / Belgique / Belgien"
+  },
+  "51.2213,4.3997": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Grote Markt, Antwerpen",
+    "place_full": "Grote Markt, Historisch Centrum, Antwerpen, Vlaanderen, 2000, België / Belgique / Belgien"
+  },
+  "51.2213,4.4005": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Grote Markt, Antwerpen",
+    "place_full": "Grote Markt, Historisch Centrum, Antwerpen, Vlaanderen, 2000, België / Belgique / Belgien"
+  },
+  "51.2216,4.3975": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Ernest Van Dijckkaai, Antwerpen",
+    "place_full": "8, Ernest Van Dijckkaai, Historisch Centrum, Antwerpen, Vlaanderen, 2000, België / Belgique / Belgien"
+  },
+  "51.2216,4.3994": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Grote Markt, Antwerpen",
+    "place_full": "Stadhuis Antwerpen, 1, Grote Markt, Historisch Centrum, Antwerpen, Vlaanderen, 2000, België / Belgique / Belgien"
+  },
+  "51.2217,4.3958": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Steenplein, Antwerpen",
+    "place_full": "Steenplein, ponton aan het Steen > Kruibeke & Hemiksem, Historisch Centrum, Antwerpen, Vlaanderen, 2000, België / Belgique / Belgien"
+  },
+  "51.2217,4.3994": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "d'Eeckhorenken, Antwerpen",
+    "place_full": "d'Eeckhorenken, 31, Zilversmidstraat, Historisch Centrum, Antwerpen, Vlaanderen, 2000, België / Belgique / Belgien"
+  },
+  "51.2217,4.3995": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Zilversmidstraat, Antwerpen",
+    "place_full": "d'Eeckhorenken, 31, Zilversmidstraat, Historisch Centrum, Antwerpen, Vlaanderen, 2000, België / Belgique / Belgien"
+  },
+  "51.2221,4.3979": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "de Bomma, Antwerpen",
+    "place_full": "de Bomma, 3, Willem Ogierplaats, Historisch Centrum, Antwerpen, Vlaanderen, 2000, België / Belgique / Belgien"
+  },
+  "51.2225,4.4042": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Pottenbrug, Antwerpen",
+    "place_full": "Pottenbrug, Historisch Centrum, Antwerpen, Vlaanderen, 2000, België / Belgique / Belgien"
+  },
+  "51.2227,4.3983": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Vleeshuisstraat, Antwerpen",
+    "place_full": "1-3, Vleeshuisstraat, Historisch Centrum, Antwerpen, Vlaanderen, 2000, België / Belgique / Belgien"
+  },
+  "51.2273,4.405": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Havenbuilding, Antwerpen",
+    "place_full": "Havenbuilding, 39, Brouwersvliet, Nieuwstad-Cadix, Eilandje, Antwerpen, Vlaanderen, 2000, België / Belgique / Belgien"
+  },
+  "51.2279,4.4042": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Sint-Aldegondiskaai, Antwerpen",
+    "place_full": "42, Sint-Aldegondiskaai, Nieuwstad-Cadix, Eilandje, Antwerpen, Vlaanderen, 2000, België / Belgique / Belgien"
+  },
+  "51.228,4.4031": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Sint-Aldegondiskaai, Antwerpen",
+    "place_full": "Sint-Aldegondiskaai, Nieuwstad-Cadix, Eilandje, Antwerpen, Vlaanderen, 2000, België / Belgique / Belgien"
+  },
+  "51.2281,4.4022": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Sint-Aldegondiskaai, Antwerpen",
+    "place_full": "Sint-Aldegondiskaai, Nieuwstad-Cadix, Eilandje, Antwerpen, Vlaanderen, 2000, België / Belgique / Belgien"
+  },
+  "51.2281,4.405": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Hanzestedenplaats, Antwerpen",
+    "place_full": "Hanzestedenplaats, Nieuwstad-Cadix, Eilandje, Antwerpen, Vlaanderen, 2000, België / Belgique / Belgien"
+  },
+  "51.2778,3.0289": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Paname, De Haan",
+    "place_full": "Paname, 13, Zeedijk-De Haan, Concessiewijk, De Haan, Klemskerke, De Haan, Oostende, West-Vlaanderen, Vlaanderen, 8420, België / Belgique / Belgien"
+  },
+  "51.2783,3.0302": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Kerlinga, De Haan",
+    "place_full": "Kerlinga, 21, Zeedijk-De Haan, Concessiewijk, De Haan, Klemskerke, De Haan, Oostende, West-Vlaanderen, Vlaanderen, 8420, België / Belgique / Belgien"
+  },
+  "51.2789,3.0284": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Zeedijk-De Haan, De Haan",
+    "place_full": "Speelplein Strand De Haan - Centrum, Zeedijk-De Haan, Concessiewijk, De Haan, Klemskerke, De Haan, Oostende, West-Vlaanderen, Vlaanderen, 8420, België / Belgique / Belgien"
+  },
+  "51.2812,3.0365": {
+    "country": "België / Belgique / Belgien",
+    "location_label": "Villa Zilverschoon, De Haan",
+    "place_full": "Villa Zilverschoon, 46, Zeedijk-De Haan, Concessiewijk, De Haan, Klemskerke, De Haan, Oostende, West-Vlaanderen, Vlaanderen, 8421, België / Belgique / Belgien"
+  },
+  "51.4724,-0.482": {
+    "country": "United Kingdom",
+    "location_label": "Uncontrolled taxiway crossing, Greater London",
+    "place_full": "B34, Uncontrolled taxiway crossing, Harmondsworth, London Borough of Hillingdon, Greater London, England, TW6 2GB, United Kingdom"
+  },
+  "51.5016,4.3305": {
+    "country": "Nederland",
+    "location_label": "Ruytershoveweg, Bergen op Zoom",
+    "place_full": "Ruytershoveweg, Bergen op Zoom, Noord-Brabant, Nederland, 4622 RK, Nederland"
+  },
+  "51.502,4.3294": {
+    "country": "Nederland",
+    "location_label": "Ruytershoveweg, Bergen op Zoom",
+    "place_full": "Ruytershoveweg, Bergen op Zoom, Noord-Brabant, Nederland, 4622 RK, Nederland"
+  },
+  "51.5022,4.33": {
+    "country": "Nederland",
+    "location_label": "Ruytershoveweg, Bergen op Zoom",
+    "place_full": "Ruytershoveweg, Bergen op Zoom, Noord-Brabant, Nederland, 4622 RK, Nederland"
+  },
+  "51.5022,4.3301": {
+    "country": "Nederland",
+    "location_label": "Ruytershoveweg, Bergen op Zoom",
+    "place_full": "Ruytershoveweg, Bergen op Zoom, Noord-Brabant, Nederland, 4622 RK, Nederland"
+  },
+  "51.5022,4.3302": {
+    "country": "Nederland",
+    "location_label": "Ruytershoveweg, Bergen op Zoom",
+    "place_full": "Ruytershoveweg, Bergen op Zoom, Noord-Brabant, Nederland, 4622 RK, Nederland"
+  },
+  "51.5024,4.3293": {
+    "country": "Nederland",
+    "location_label": "Gareelweg, Bergen op Zoom",
+    "place_full": "Gareelweg, Bergen op Zoom, Noord-Brabant, Nederland, 4622 RS, Nederland"
+  },
+  "51.5026,4.3296": {
+    "country": "Nederland",
+    "location_label": "Gareelweg, Bergen op Zoom",
+    "place_full": "Gareelweg, Bergen op Zoom, Noord-Brabant, Nederland, 4622 RS, Nederland"
+  },
+  "51.5026,4.33": {
+    "country": "Nederland",
+    "location_label": "Ruytershoveweg, Bergen op Zoom",
+    "place_full": "Ruytershoveweg, Bergen op Zoom, Noord-Brabant, Nederland, 4622 RK, Nederland"
+  },
+  "51.5288,4.3007": {
+    "country": "Nederland",
+    "location_label": "Mozesbrug, Bergen op Zoom",
+    "place_full": "Mozesbrug, Halsteren, Bergen op Zoom, Noord-Brabant, Nederland, 4661 PM, Nederland"
+  },
+  "51.529,4.3008": {
+    "country": "Nederland",
+    "location_label": "Mozesbrug, Bergen op Zoom",
+    "place_full": "Mozesbrug, Halsteren, Bergen op Zoom, Noord-Brabant, Nederland, 4661 PM, Nederland"
+  },
+  "51.5292,4.3011": {
+    "country": "Nederland",
+    "location_label": "Ligneweg, Bergen op Zoom",
+    "place_full": "3a, Ligneweg, Halsteren, Bergen op Zoom, Noord-Brabant, Nederland, 4661 PM, Nederland"
+  },
+  "51.5297,4.3015": {
+    "country": "Nederland",
+    "location_label": "Schansbaan, Bergen op Zoom",
+    "place_full": "Schansbaan, Halsteren, Bergen op Zoom, Noord-Brabant, Nederland, 4661 PM, Nederland"
+  },
+  "51.5297,4.3016": {
+    "country": "Nederland",
+    "location_label": "Schansbaan, Bergen op Zoom",
+    "place_full": "Schansbaan, Halsteren, Bergen op Zoom, Noord-Brabant, Nederland, 4661 PM, Nederland"
+  },
+  "51.5304,4.2195": {
+    "country": "Nederland",
+    "location_label": "Vlasmarkt, Tholen",
+    "place_full": "2, Vlasmarkt, Tholen, Zeeland, Nederland, 4691 BH, Nederland"
+  },
+  "51.5309,4.2201": {
+    "country": "Nederland",
+    "location_label": "Venkelstraat, Tholen",
+    "place_full": "13, Venkelstraat, Tholen, Zeeland, Nederland, 4691 BG, Nederland"
+  },
+  "51.5312,4.221": {
+    "country": "Nederland",
+    "location_label": "Markt, Tholen",
+    "place_full": "19, Markt, Tholen, Zeeland, Nederland, 4691 BX, Nederland"
+  },
+  "51.5314,4.2216": {
+    "country": "Nederland",
+    "location_label": "Stoofstraat, Tholen",
+    "place_full": "5, Stoofstraat, Tholen, Zeeland, Nederland, 4691 BZ, Nederland"
+  },
+  "51.5317,4.2197": {
+    "country": "Nederland",
+    "location_label": "Oudelandsestraat, Tholen",
+    "place_full": "2, Oudelandsestraat, Tholen, Zeeland, Nederland, 4691 BK, Nederland"
+  },
+  "51.5318,4.2197": {
+    "country": "Nederland",
+    "location_label": "Kerkplein, Tholen",
+    "place_full": "1, Kerkplein, Tholen, Zeeland, Nederland, 4691 CE, Nederland"
+  },
+  "51.8168,4.6797": {
+    "country": "Nederland",
+    "location_label": "Lange Wantijkade, Dordrecht",
+    "place_full": "83, Lange Wantijkade, Stadswerven, Dordrecht, Zuid-Holland, Nederland, 3311 MC, Nederland"
+  },
+  "51.8169,4.6802": {
+    "country": "Nederland",
+    "location_label": "Lange Wantijkade, Dordrecht",
+    "place_full": "Lange Wantijkade, Stadswerven, Dordrecht, Zuid-Holland, Nederland, 3311 MC, Nederland"
+  },
+  "51.817,4.6795": {
+    "country": "Nederland",
+    "location_label": "Lange Wantijkade, Dordrecht",
+    "place_full": "71, Lange Wantijkade, Stadswerven, Dordrecht, Zuid-Holland, Nederland, 3311 MC, Nederland"
+  },
+  "51.817,4.6799": {
+    "country": "Nederland",
+    "location_label": "Lange Wantijkade, Dordrecht",
+    "place_full": "Lange Wantijkade, Stadswerven, Dordrecht, Zuid-Holland, Nederland, 3311 MC, Nederland"
+  },
+  "51.8171,4.6799": {
+    "country": "Nederland",
+    "location_label": "Lange Wantijkade, Dordrecht",
+    "place_full": "Lange Wantijkade, Stadswerven, Dordrecht, Zuid-Holland, Nederland, 3311 MC, Nederland"
+  },
+  "51.8623,4.6503": {
+    "country": "Nederland",
+    "location_label": "Alblasserdam, Kade, Alblasserdam",
+    "place_full": "Alblasserdam, Kade, Jan Smitkade, Alblasserdam, Zuid-Holland, Nederland, 2951 JH, Nederland"
+  },
+  "51.8624,4.6503": {
+    "country": "Nederland",
+    "location_label": "Alblasserdam, Kade, Alblasserdam",
+    "place_full": "Alblasserdam, Kade, Jan Smitkade, Alblasserdam, Zuid-Holland, Nederland, 2951 JH, Nederland"
+  },
+  "51.8808,4.7411": {
+    "country": "Nederland",
+    "location_label": "Zijdeweg, Bleskensgraaf ca",
+    "place_full": "Zijdeweg, Bleskensgraaf ca, Molenlanden, Zuid-Holland, Nederland, 2959 LC, Nederland"
+  },
+  "51.8824,4.7429": {
+    "country": "Nederland",
+    "location_label": "Achterdijk, Streefkerk",
+    "place_full": "1, Achterdijk, Streefkerk, Molenlanden, Zuid-Holland, Nederland, 2959 LC, Nederland"
+  },
+  "51.8824,4.743": {
+    "country": "Nederland",
+    "location_label": "Achterdijk, Streefkerk",
+    "place_full": "1, Achterdijk, Streefkerk, Molenlanden, Zuid-Holland, Nederland, 2959 LC, Nederland"
+  },
+  "51.9114,4.8319": {
+    "country": "Nederland",
+    "location_label": "Molenkade, Groot-Ammers",
+    "place_full": "4-N01, Molenkade, Groot-Ammers, Molenlanden, Zuid-Holland, Nederland, 2964 LB, Nederland"
+  },
+  "51.9162,4.8255": {
+    "country": "Nederland",
+    "location_label": "Molenkade, Groot-Ammers",
+    "place_full": "Molenkade, Groot-Ammers, Molenlanden, Zuid-Holland, Nederland, 2964 LB, Nederland"
+  },
+  "51.9425,4.8526": {
+    "country": "Nederland",
+    "location_label": "Buiten de Veerpoort, Schoonhoven",
+    "place_full": "Buiten de Veerpoort, Schoonhoven, Krimpenerwaard, Zuid-Holland, Nederland, 2871 CD, Nederland"
+  },
+  "51.9425,4.8529": {
+    "country": "Nederland",
+    "location_label": "Theunis Kok, Schoonhoven",
+    "place_full": "Theunis Kok, Buiten de Veerpoort, Schoonhoven, Krimpenerwaard, Zuid-Holland, Nederland, 2871 CD, Nederland"
+  },
+  "51.9428,4.8529": {
+    "country": "Nederland",
+    "location_label": "Buiten de Veerpoort, Schoonhoven",
+    "place_full": "Buiten de Veerpoort, Schoonhoven, Krimpenerwaard, Zuid-Holland, Nederland, 2871 CD, Nederland"
+  },
+  "51.9429,4.8527": {
+    "country": "Nederland",
+    "location_label": "Buiten de Veerpoort, Schoonhoven",
+    "place_full": "1m, Buiten de Veerpoort, Schoonhoven, Krimpenerwaard, Zuid-Holland, Nederland, 2871 CC, Nederland"
+  },
+  "52.0196,5.1132": {
+    "country": "Nederland",
+    "location_label": "Sluispad zuid, Nieuwegein",
+    "place_full": "Sluispad zuid, De Wiers, Nieuwegein, Utrecht, Nederland, 3433 KT, Nederland"
+  },
+  "52.1494,5.0114": {
+    "country": "Nederland",
+    "location_label": "Kanaaldijk West, Breukelen",
+    "place_full": "Kanaaldijk West, Breukelen, Stichtse Vecht, Utrecht, Nederland, 3621 NS, Nederland"
+  },
+  "52.1551,5.0012": {
+    "country": "Nederland",
+    "location_label": "Kanaaldijk West, Breukelen",
+    "place_full": "Kanaaldijk West, Kortrijk, Breukelen, Stichtse Vecht, Utrecht, Nederland, 3621 MT, Nederland"
+  },
+  "52.1568,4.9993": {
+    "country": "Nederland",
+    "location_label": "Kanaaldijk West, Breukelen",
+    "place_full": "Kanaaldijk West, Kortrijk, Breukelen, Stichtse Vecht, Utrecht, Nederland, 3621 MT, Nederland"
+  },
+  "52.1603,4.9928": {
+    "country": "Nederland",
+    "location_label": "Keulschevaart, Breukelen",
+    "place_full": "Pluimveeslachterij C. van Miert, 16, Keulschevaart, Kortrijk, Breukelen, Stichtse Vecht, Utrecht, Nederland, 3621 MX, Nederland"
+  },
+  "52.3715,4.9134": {
+    "country": "Nederland",
+    "location_label": "Prins Hendrikkade, Amsterdam",
+    "place_full": "602, Prins Hendrikkade, Kadijken, Centrum, Amsterdam, Noord-Holland, Nederland, 1011 VX, Nederland"
+  },
+  "52.373,4.883": {
+    "country": "Nederland",
+    "location_label": "Prinsengracht, Amsterdam",
+    "place_full": "311A, Prinsengracht, De 9 Straatjes, Grachtengordel, Centrum, Amsterdam, Noord-Holland, Nederland, 1016 GX, Nederland"
+  },
+  "52.3769,4.6233": {
+    "country": "Nederland",
+    "location_label": "Leidsevaart, Haarlem",
+    "place_full": "146, Leidsevaart, Haarlem, Noord-Holland, Nederland, 2014 HE, Nederland"
+  },
+  "52.3771,4.6274": {
+    "country": "Nederland",
+    "location_label": "Raamvest, Haarlem",
+    "place_full": "3, Raamvest, Haarlem, Noord-Holland, Nederland, 2011 ZH, Nederland"
+  },
+  "52.3777,4.6387": {
+    "country": "Nederland",
+    "location_label": "Turfmarkt, Haarlem",
+    "place_full": "Turfmarkt, Haarlem, Noord-Holland, Nederland, 2011 CB, Nederland"
+  },
+  "52.3791,4.6371": {
+    "country": "Nederland",
+    "location_label": "Kleine Houtstraat, Haarlem",
+    "place_full": "11D, Kleine Houtstraat, Haarlem, Noord-Holland, Nederland, 2011 DD, Nederland"
+  },
+  "52.3797,4.6379": {
+    "country": "Nederland",
+    "location_label": "Spaarne, Haarlem",
+    "place_full": "64, Spaarne, Haarlem, Noord-Holland, Nederland, 2011 CK, Nederland"
+  },
+  "52.3797,4.6399": {
+    "country": "Nederland",
+    "location_label": "Spaarne, Haarlem",
+    "place_full": "Hodshon Huis, 17, Spaarne, Haarlem, Noord-Holland, Nederland, 2011 CD, Nederland"
+  },
+  "52.3798,4.6374": {
+    "country": "Nederland",
+    "location_label": "Lange Veerstraat, Haarlem",
+    "place_full": "34, Lange Veerstraat, Haarlem, Noord-Holland, Nederland, 2011 DB, Nederland"
+  },
+  "52.3798,4.6376": {
+    "country": "Nederland",
+    "location_label": "Lange Veerstraat, Haarlem",
+    "place_full": "28, Lange Veerstraat, Haarlem, Noord-Holland, Nederland, 2011 DB, Nederland"
+  },
+  "52.3798,4.6399": {
+    "country": "Nederland",
+    "location_label": "Spaarne, Haarlem",
+    "place_full": "15A-RD, Spaarne, Haarlem, Noord-Holland, Nederland, 2011 CC, Nederland"
+  },
+  "52.3808,4.6399": {
+    "country": "Nederland",
+    "location_label": "Parkeergarage Appelaar, Haarlem",
+    "place_full": "Parkeergarage Appelaar, 12, Damstraat, Haarlem, Noord-Holland, Nederland, 2011 CJ, Nederland"
+  },
+  "52.3811,4.6382": {
+    "country": "Nederland",
+    "location_label": "Grote of St. Bavokerk, Haarlem",
+    "place_full": "Grote of St. Bavokerk, 22, Grote Markt, Haarlem, Noord-Holland, Nederland, 2011 RD, Nederland"
+  },
+  "52.3812,4.6298": {
+    "country": "Nederland",
+    "location_label": "Jopenkerk, Haarlem",
+    "place_full": "Jopenkerk, 2, Gedempte Voldersgracht, Haarlem, Noord-Holland, Nederland, 2011 WD, Nederland"
+  },
+  "52.3812,4.6303": {
+    "country": "Nederland",
+    "location_label": "Gedempte Voldersgracht, Haarlem",
+    "place_full": "1, Gedempte Voldersgracht, Haarlem, Noord-Holland, Nederland, 2011 WB, Nederland"
+  },
+  "52.3813,4.6402": {
+    "country": "Nederland",
+    "location_label": "Nauwe Appelaarsteeg, Haarlem",
+    "place_full": "1, Nauwe Appelaarsteeg, Haarlem, Noord-Holland, Nederland, 2011 HA, Nederland"
+  },
+  "52.3814,4.6401": {
+    "country": "Nederland",
+    "location_label": "Philip Frankplein, Haarlem",
+    "place_full": "1, Philip Frankplein, Haarlem, Noord-Holland, Nederland, 2019 HB, Nederland"
+  },
+  "52.3816,4.6401": {
+    "country": "Nederland",
+    "location_label": "Bakenesserkamer, Haarlem",
+    "place_full": "Bakenesserkamer, Philip Frankplein, Haarlem, Noord-Holland, Nederland, 2019 HB, Nederland"
+  },
+  "52.3818,4.6427": {
+    "country": "Nederland",
+    "location_label": "Teylers Hofje, Haarlem",
+    "place_full": "Teylers Hofje, Valkestraat, Haarlem, Noord-Holland, Nederland, 2011 JL, Nederland"
+  },
+  "52.3818,4.6428": {
+    "country": "Nederland",
+    "location_label": "Teylers Hofje, Haarlem",
+    "place_full": "Teylers Hofje, Valkestraat, Haarlem, Noord-Holland, Nederland, 2011 JL, Nederland"
+  },
+  "52.3819,4.643": {
+    "country": "Nederland",
+    "location_label": "Teylers Hofje, Haarlem",
+    "place_full": "Teylers Hofje, Valkestraat, Haarlem, Noord-Holland, Nederland, 2011 JL, Nederland"
+  },
+  "52.382,4.6405": {
+    "country": "Nederland",
+    "location_label": "Begijnebrug, Haarlem",
+    "place_full": "Begijnebrug, Haarlem, Noord-Holland, Nederland, 2011 JT, Nederland"
+  },
+  "52.382,4.6432": {
+    "country": "Nederland",
+    "location_label": "Teylers Hofje, Haarlem",
+    "place_full": "Teylers Hofje, Valkestraat, Haarlem, Noord-Holland, Nederland, 2011 JL, Nederland"
+  },
+  "52.3831,4.6352": {
+    "country": "Nederland",
+    "location_label": "Kruisstraat, Haarlem",
+    "place_full": "Kruisstraat, Haarlem, Noord-Holland, Nederland, 2011 PZ, Nederland"
+  },
+  "52.3832,4.637": {
+    "country": "Nederland",
+    "location_label": "Lange Wijngaardstraat, Haarlem",
+    "place_full": "3C, Lange Wijngaardstraat, Haarlem, Noord-Holland, Nederland, 2011 RK, Nederland"
+  },
+  "52.3833,4.6375": {
+    "country": "Nederland",
+    "location_label": "Jansstraat, Haarlem",
+    "place_full": "Noord-Hollands Archief, 40, Jansstraat, Haarlem, Noord-Holland, Nederland, 2011 RX, Nederland"
+  },
+  "52.3842,4.6421": {
+    "country": "Nederland",
+    "location_label": "Hooimarkt, Haarlem",
+    "place_full": "Zandersbrug, Hooimarkt, Haarlem, Noord-Holland, Nederland, 2011 NE, Nederland"
+  },
+  "52.385,4.6362": {
+    "country": "Nederland",
+    "location_label": "Kruisbrug, Haarlem",
+    "place_full": "Kruisbrug, Haarlem, Noord-Holland, Nederland, 2011 LG, Nederland"
+  },
+  "52.4001,4.8742": {
+    "country": "Nederland",
+    "location_label": "Danzigerkade, Amsterdam",
+    "place_full": "Danzigerkade, Minervahaven, Westpoort, Amsterdam, Noord-Holland, Nederland, 1013 AR, Nederland"
+  },
+  "52.4004,4.5936": {
+    "country": "Nederland",
+    "location_label": "Koeienpad, Overveen",
+    "place_full": "Koeienpad, Overveen, Bloemendaal, Noord-Holland, Nederland, 2061 AH, Nederland"
+  },
+  "52.4018,4.8813": {
+    "country": "Nederland",
+    "location_label": "Danzigerkade, Amsterdam",
+    "place_full": "Strekdam, Danzigerkade, Minervahaven, Westpoort, Amsterdam, Noord-Holland, Nederland, 1013 AP, Nederland"
+  },
+  "52.4186,4.5536": {
+    "country": "Nederland",
+    "location_label": "Parnassiaweg, Overveen",
+    "place_full": "Parnassiaweg, Bloemendaal aan Zee, Overveen, Bloemendaal, Noord-Holland, Nederland, 2051 EA, Nederland"
+  },
+  "52.4198,4.5516": {
+    "country": "Nederland",
+    "location_label": "Parnassiaweg, Overveen",
+    "place_full": "Parnassiaweg, Bloemendaal aan Zee, Overveen, Bloemendaal, Noord-Holland, Nederland, 2051 EA, Nederland"
+  },
+  "52.4199,4.5513": {
+    "country": "Nederland",
+    "location_label": "Parnassiaweg, Overveen",
+    "place_full": "Parnassiaweg, Bloemendaal aan Zee, Overveen, Bloemendaal, Noord-Holland, Nederland, 2051 EA, Nederland"
+  },
+  "52.42,4.5511": {
+    "country": "Nederland",
+    "location_label": "Parnassiaweg, Overveen",
+    "place_full": "Parnassiaweg, Bloemendaal aan Zee, Overveen, Bloemendaal, Noord-Holland, Nederland, 2051 EA, Nederland"
+  },
+  "52.4203,4.5724": {
+    "country": "Nederland",
+    "location_label": "Vogelweg, Overveen",
+    "place_full": "Vogelweg, Overveen, Bloemendaal, Noord-Holland, Nederland"
+  },
+  "54.7814,9.4352": {
+    "country": "Deutschland",
+    "location_label": "Die Weinstube im Krusehof, Flensburg",
+    "place_full": "Die Weinstube im Krusehof, 24, Rote Straße, St. Nikolai, Altstadt, Flensburg, Schleswig-Holstein, 24937, Deutschland"
+  },
+  "54.7826,9.4361": {
+    "country": "Deutschland",
+    "location_label": "ALEX, Flensburg",
+    "place_full": "ALEX, 13, Südermarkt, St. Nikolai, Altstadt, Flensburg, Schleswig-Holstein, 24937, Deutschland"
+  },
+  "54.7828,9.4364": {
+    "country": "Deutschland",
+    "location_label": "Holm, Flensburg",
+    "place_full": "Timmermann, 63, Holm, St. Nikolai, Altstadt, Flensburg, Schleswig-Holstein, 24937, Deutschland"
+  },
+  "54.7846,9.4336": {
+    "country": "Deutschland",
+    "location_label": "Südergraben, Flensburg",
+    "place_full": "31, Südergraben, St. Nikolai, Altstadt, Flensburg, Schleswig-Holstein, 24937, Deutschland"
+  },
+  "54.7848,9.4331": {
+    "country": "Deutschland",
+    "location_label": "Südergraben, Flensburg",
+    "place_full": "16, Südergraben, Museumsberg, Friesischer Berg, Flensburg, Schleswig-Holstein, 24937, Deutschland"
+  },
+  "54.7854,9.4319": {
+    "country": "Deutschland",
+    "location_label": "Flensburg",
+    "place_full": "Museumsberg, Friesischer Berg, Flensburg, Schleswig-Holstein, 24937, Deutschland"
+  },
+  "54.7854,9.432": {
+    "country": "Deutschland",
+    "location_label": "Flensburg",
+    "place_full": "Museumsberg, Friesischer Berg, Flensburg, Schleswig-Holstein, 24937, Deutschland"
+  },
+  "54.7856,9.4316": {
+    "country": "Deutschland",
+    "location_label": "Flensburg",
+    "place_full": "Museumsberg, Friesischer Berg, Flensburg, Schleswig-Holstein, 24937, Deutschland"
+  },
+  "54.7856,9.4317": {
+    "country": "Deutschland",
+    "location_label": "Museumsberg Flensburg, Flensburg",
+    "place_full": "Museumsberg Flensburg, 1, Museumsberg, Friesischer Berg, Flensburg, Schleswig-Holstein, 24937, Deutschland"
+  },
+  "54.7857,9.4315": {
+    "country": "Deutschland",
+    "location_label": "Flensburg",
+    "place_full": "Museumsberg, Friesischer Berg, Flensburg, Schleswig-Holstein, 24937, Deutschland"
+  },
+  "54.7857,9.4319": {
+    "country": "Deutschland",
+    "location_label": "Museumsberg Flensburg, Flensburg",
+    "place_full": "Museumsberg Flensburg, 1, Museumsberg, Friesischer Berg, Flensburg, Schleswig-Holstein, 24937, Deutschland"
+  },
+  "54.7859,9.4319": {
+    "country": "Deutschland",
+    "location_label": "Flensburg",
+    "place_full": "Museumsberg, Friesischer Berg, Flensburg, Schleswig-Holstein, 24937, Deutschland"
+  },
+  "54.7881,9.4323": {
+    "country": "Deutschland",
+    "location_label": "Große Straße, Flensburg",
+    "place_full": "53-55, Große Straße, Altstadt, St. Marien, Altstadt, Flensburg, Schleswig-Holstein, 24937, Deutschland"
+  },
+  "54.7923,9.4334": {
+    "country": "Deutschland",
+    "location_label": "Schiffbrücke, Flensburg",
+    "place_full": "32, Schiffbrücke, Nordertor, Altstadt, Flensburg, Schleswig-Holstein, 24939, Deutschland"
+  },
+  "54.7924,9.4334": {
+    "country": "Deutschland",
+    "location_label": "Schiffbrücke, Flensburg",
+    "place_full": "32, Schiffbrücke, Nordertor, Altstadt, Flensburg, Schleswig-Holstein, 24939, Deutschland"
+  },
+  "54.7924,9.4339": {
+    "country": "Deutschland",
+    "location_label": "Schiffbrücke, Flensburg",
+    "place_full": "Schiffbrücke, Nordertor, Altstadt, Flensburg, Schleswig-Holstein, 24939, Deutschland"
+  },
+  "54.7926,9.4336": {
+    "country": "Deutschland",
+    "location_label": "Schiffbrücke, Flensburg",
+    "place_full": "Schiffbrücke, Nordertor, Altstadt, Flensburg, Schleswig-Holstein, 24939, Deutschland"
+  },
+  "54.7936,9.434": {
+    "country": "Deutschland",
+    "location_label": "Bens Fischhütte, Flensburg",
+    "place_full": "Bens Fischhütte, Schiffbrücke, Nordertor, Altstadt, Flensburg, Schleswig-Holstein, 24939, Deutschland"
+  },
+  "54.7957,9.4313": {
+    "country": "Deutschland",
+    "location_label": "Am Nordertor, Flensburg",
+    "place_full": "Am Nordertor, Nordertor, Altstadt, Flensburg, Schleswig-Holstein, 24939, Deutschland"
+  },
+  "55.6379,12.6552": {
+    "country": "Danmark",
+    "location_label": "Kastrup Strandpark, Kastrup",
+    "place_full": "Kastrup Strandpark, Kastrup, Tårnby Kommune, Region Hovedstaden, 2770, Danmark"
+  },
+  "55.6379,12.6553": {
+    "country": "Danmark",
+    "location_label": "Den Blå Planet, Kastrup",
+    "place_full": "Den Blå Planet, Jacob Fortlingsvej, Kastrup, Tårnby Kommune, Region Hovedstaden, 2770, Danmark"
+  },
+  "55.6408,12.6526": {
+    "country": "Danmark",
+    "location_label": "Restaurant Kastrup Strandpark, Kastrup",
+    "place_full": "Restaurant Kastrup Strandpark, Kastrup Strandpark, Kastrup, Tårnby Kommune, Region Hovedstaden, 2770, Danmark"
+  },
+  "56.0387,12.6211": {
+    "country": "Danmark",
+    "location_label": "Kronborg, Helsingør",
+    "place_full": "Castle Shop, Kronborg, Helsingør, Helsingør Kommune, Region Hovedstaden, 3000, Danmark"
+  },
+  "56.0387,12.6212": {
+    "country": "Danmark",
+    "location_label": "Kronborg, Helsingør",
+    "place_full": "Castle Shop, Kronborg, Helsingør, Helsingør Kommune, Region Hovedstaden, 3000, Danmark"
+  },
+  "56.0387,12.622": {
+    "country": "Danmark",
+    "location_label": "Kronborg, Helsingør",
+    "place_full": "Kronborg, Helsingør, Helsingør Kommune, Region Hovedstaden, 3000, Danmark"
+  },
+  "56.0388,12.6212": {
+    "country": "Danmark",
+    "location_label": "Kronborg, Helsingør",
+    "place_full": "Castle Shop, Kronborg, Helsingør, Helsingør Kommune, Region Hovedstaden, 3000, Danmark"
+  },
+  "56.039,12.6218": {
+    "country": "Danmark",
+    "location_label": "Kronborg, Helsingør",
+    "place_full": "Kronborg, Helsingør, Helsingør Kommune, Region Hovedstaden, 3000, Danmark"
+  },
+  "56.039,12.6219": {
+    "country": "Danmark",
+    "location_label": "Kronborg, Helsingør",
+    "place_full": "Kronborg, Helsingør, Helsingør Kommune, Region Hovedstaden, 3000, Danmark"
+  },
+  "56.039,12.622": {
+    "country": "Danmark",
+    "location_label": "Kronborg, Helsingør",
+    "place_full": "Kronborg, Helsingør, Helsingør Kommune, Region Hovedstaden, 3000, Danmark"
+  },
+  "56.0392,12.6199": {
+    "country": "Danmark",
+    "location_label": "Kronborg, Helsingør",
+    "place_full": "2B, Kronborg, Helsingør, Helsingør Kommune, Region Hovedstaden, 3000, Danmark"
+  },
+  "56.0392,12.6215": {
+    "country": "Danmark",
+    "location_label": "Kronborg, Helsingør",
+    "place_full": "Kronborg, Helsingør, Helsingør Kommune, Region Hovedstaden, 3000, Danmark"
+  },
+  "56.0392,12.6226": {
+    "country": "Danmark",
+    "location_label": "Kronborg, Helsingør",
+    "place_full": "Kronborg, Helsingør, Helsingør Kommune, Region Hovedstaden, 3000, Danmark"
+  },
+  "56.0393,12.6224": {
+    "country": "Danmark",
+    "location_label": "Kronborg, Helsingør",
+    "place_full": "Kronborg, Helsingør, Helsingør Kommune, Region Hovedstaden, 3000, Danmark"
+  },
+  "56.0394,12.6197": {
+    "country": "Danmark",
+    "location_label": "Kronborg, Helsingør",
+    "place_full": "2A, Kronborg, Helsingør, Helsingør Kommune, Region Hovedstaden, 3000, Danmark"
+  },
+  "56.0394,12.6218": {
+    "country": "Danmark",
+    "location_label": "Kronborg, Helsingør",
+    "place_full": "1B, Kronborg, Helsingør, Helsingør Kommune, Region Hovedstaden, 3000, Danmark"
+  },
+  "56.0394,12.622": {
+    "country": "Danmark",
+    "location_label": "Kronborg, Helsingør",
+    "place_full": "1B, Kronborg, Helsingør, Helsingør Kommune, Region Hovedstaden, 3000, Danmark"
+  },
+  "56.0394,12.6227": {
+    "country": "Danmark",
+    "location_label": "Kronborg, Helsingør",
+    "place_full": "Kronborg, Helsingør, Helsingør Kommune, Region Hovedstaden, 3000, Danmark"
+  },
+  "56.0395,12.6183": {
+    "country": "Danmark",
+    "location_label": "Kronborg, Helsingør",
+    "place_full": "Kronværksbroen, Kronborg, Helsingør, Helsingør Kommune, Region Hovedstaden, 3000, Danmark"
+  },
+  "56.0395,12.6229": {
+    "country": "Danmark",
+    "location_label": "Kronborg, Helsingør",
+    "place_full": "Kronborg, Helsingør, Helsingør Kommune, Region Hovedstaden, 3000, Danmark"
+  },
+  "56.0396,12.6217": {
+    "country": "Danmark",
+    "location_label": "Kronborg, Helsingør",
+    "place_full": "Slotsbroen, Kronborg, Helsingør, Helsingør Kommune, Region Hovedstaden, 3000, Danmark"
+  },
+  "56.0408,12.6177": {
+    "country": "Danmark",
+    "location_label": "21, Helsingør",
+    "place_full": "21, Helsingør, Helsingør Kommune, Region Hovedstaden, 3000, Danmark"
+  },
+  "56.0412,12.6159": {
+    "country": "Danmark",
+    "location_label": "Strandpromenaden, Helsingør",
+    "place_full": "Strandpromenaden, Helsingør, Helsingør Kommune, Region Hovedstaden, 3000, Danmark"
+  },
+  "56.0444,12.6926": {
+    "country": "Sverige",
+    "location_label": "Bishop's Arms, Helsingborg",
+    "place_full": "Bishop's Arms, 6, Kungstorget, Centrum, Helsingborg, Helsingborgs kommun, Skåne län, 252 78, Sverige"
+  },
+  "56.047,12.6982": {
+    "country": "Sverige",
+    "location_label": "Hallbergs Trappor, Helsingborg",
+    "place_full": "Hallbergs Trappor, Centrum, Helsingborg, Helsingborgs kommun, Skåne län, 252 23, Sverige"
+  },
+  "56.0471,12.6986": {
+    "country": "Sverige",
+    "location_label": "Hallbergs Trappor, Helsingborg",
+    "place_full": "Hallbergs Trappor, Centrum, Helsingborg, Helsingborgs kommun, Skåne län, 252 23, Sverige"
+  },
+  "56.0472,12.6959": {
+    "country": "Sverige",
+    "location_label": "Konsul Trapps plats, Helsingborg",
+    "place_full": "Konsul Trapps plats, Centrum, Helsingborg, Helsingborgs kommun, Skåne län, 252 23, Sverige"
+  },
+  "56.0476,12.6962": {
+    "country": "Sverige",
+    "location_label": "Terrasstrapporna, Helsingborg",
+    "place_full": "Terrasstrapporna, Centrum, Helsingborg, Helsingborgs kommun, Skåne län, 252 23, Sverige"
+  },
+  "56.0476,12.6964": {
+    "country": "Sverige",
+    "location_label": "Terrasstrapporna, Helsingborg",
+    "place_full": "Terrasstrapporna, Centrum, Helsingborg, Helsingborgs kommun, Skåne län, 252 23, Sverige"
+  },
+  "56.0476,12.6965": {
+    "country": "Sverige",
+    "location_label": "Terrasstrapporna, Helsingborg",
+    "place_full": "Terrasstrapporna, Centrum, Helsingborg, Helsingborgs kommun, Skåne län, 252 23, Sverige"
+  },
+  "56.0479,12.697": {
+    "country": "Sverige",
+    "location_label": "Terrasstrapporna, Helsingborg",
+    "place_full": "Terrasstrapporna, Centrum, Helsingborg, Helsingborgs kommun, Skåne län, 252 34, Sverige"
+  },
+  "56.048,12.6976": {
+    "country": "Sverige",
+    "location_label": "Slottshagsgatan, Helsingborg",
+    "place_full": "Kärnan, Slottshagsgatan, Centrum, Helsingborg, Helsingborgs kommun, Skåne län, 252 34, Sverige"
+  },
+  "56.0484,12.6938": {
+    "country": "Sverige",
+    "location_label": "Norra Storgatan, Helsingborg",
+    "place_full": "17, Norra Storgatan, Centrum, Helsingborg, Helsingborgs kommun, Skåne län, 252 20, Sverige"
+  },
+  "56.0484,12.6939": {
+    "country": "Sverige",
+    "location_label": "Norra Storgatan, Helsingborg",
+    "place_full": "17, Norra Storgatan, Centrum, Helsingborg, Helsingborgs kommun, Skåne län, 252 20, Sverige"
+  },
+  "56.0485,12.6937": {
+    "country": "Sverige",
+    "location_label": "Norra Storgatan, Helsingborg",
+    "place_full": "18, Norra Storgatan, Centrum, Helsingborg, Helsingborgs kommun, Skåne län, 252 20, Sverige"
+  },
+  "56.0487,12.6936": {
+    "country": "Sverige",
+    "location_label": "Tycho Brahes plats, Helsingborg",
+    "place_full": "Tycho Brahes plats, Centrum, Helsingborg, Helsingborgs kommun, Skåne län, 252 20, Sverige"
+  },
+  "56.0838,12.6596": {
+    "country": "Sverige",
+    "location_label": "Sofiero slott, Laröd",
+    "place_full": "Sofiero slott, 131, Sofierovägen, Norr, Laröd, Helsingborgs kommun, Skåne län, 252 84, Sverige"
+  },
+  "56.0847,12.6595": {
+    "country": "Sverige",
+    "location_label": "Fårhagevägen, Laröd",
+    "place_full": "Fårhagevägen, Norr, Laröd, Helsingborgs kommun, Skåne län, 252 86, Sverige"
+  },
+  "56.0851,12.6623": {
+    "country": "Sverige",
+    "location_label": "Sofierovägen, Laröd",
+    "place_full": "Sofierovägen, Norr, Laröd, Helsingborgs kommun, Skåne län, 252 86, Sverige"
+  },
+  "56.0854,12.6603": {
+    "country": "Sverige",
+    "location_label": "Gamla Larödsvägen, Laröd",
+    "place_full": "Gamla Larödsvägen, Norr, Laröd, Helsingborgs kommun, Skåne län, 252 86, Sverige"
+  },
+  "56.0854,12.6604": {
+    "country": "Sverige",
+    "location_label": "Gamla Larödsvägen, Laröd",
+    "place_full": "Gamla Larödsvägen, Norr, Laröd, Helsingborgs kommun, Skåne län, 252 86, Sverige"
+  },
+  "56.0854,12.6609": {
+    "country": "Sverige",
+    "location_label": "Sofierovägen, Laröd",
+    "place_full": "Sofierovägen, Norr, Laröd, Helsingborgs kommun, Skåne län, 252 86, Sverige"
+  },
+  "56.0858,12.6607": {
+    "country": "Sverige",
+    "location_label": "Gamla Larödsvägen, Laröd",
+    "place_full": "Gamla Larödsvägen, Norr, Laröd, Helsingborgs kommun, Skåne län, 252 86, Sverige"
+  },
+  "56.0859,12.66": {
+    "country": "Sverige",
+    "location_label": "Slottsvägen, Laröd",
+    "place_full": "Slottsvägen, Laröd, Helsingborgs kommun, Skåne län, 252 86, Sverige"
+  },
+  "56.0859,12.6607": {
+    "country": "Sverige",
+    "location_label": "Gamla Larödsvägen, Laröd",
+    "place_full": "Gamla Larödsvägen, Norr, Laröd, Helsingborgs kommun, Skåne län, 252 86, Sverige"
+  },
+  "56.0865,12.66": {
+    "country": "Sverige",
+    "location_label": "Gamla Larödsvägen, Laröd",
+    "place_full": "1, Gamla Larödsvägen, Laröd, Helsingborgs kommun, Skåne län, 252 84, Sverige"
+  },
+  "56.0865,12.6604": {
+    "country": "Sverige",
+    "location_label": "Slottsvägen, Laröd",
+    "place_full": "Slottsvägen, Laröd, Helsingborgs kommun, Skåne län, 252 86, Sverige"
+  },
+  "56.0866,12.6609": {
+    "country": "Sverige",
+    "location_label": "Gamla Larödsvägen, Laröd",
+    "place_full": "Gamla Larödsvägen, Norr, Laröd, Helsingborgs kommun, Skåne län, 252 86, Sverige"
+  },
+  "56.1035,13.7133": {
+    "country": "Sverige",
+    "location_label": "Tormestorp",
+    "place_full": "Tormestorp, Hässleholms kommun, Skåne län, 281 92, Sverige"
+  },
+  "56.1036,13.7139": {
+    "country": "Sverige",
+    "location_label": "Tormestorp",
+    "place_full": "Tormestorp, Hässleholms kommun, Skåne län, 281 92, Sverige"
+  },
+  "56.1037,13.7138": {
+    "country": "Sverige",
+    "location_label": "Tormestorp",
+    "place_full": "Tormestorp, Hässleholms kommun, Skåne län, 281 92, Sverige"
+  },
+  "56.1037,13.714": {
+    "country": "Sverige",
+    "location_label": "Tormestorp",
+    "place_full": "Tormestorp, Hässleholms kommun, Skåne län, 281 92, Sverige"
+  },
+  "56.1039,13.713": {
+    "country": "Sverige",
+    "location_label": "Björnstigen, Tormestorp",
+    "place_full": "Hovdala slott, Björnstigen, Björkviken, Tormestorp, Hässleholms kommun, Skåne län, 281 46, Sverige"
+  },
+  "56.1045,13.7129": {
+    "country": "Sverige",
+    "location_label": "Björnstigen, Tormestorp",
+    "place_full": "Hovdala slott, Björnstigen, Björkviken, Tormestorp, Hässleholms kommun, Skåne län, 281 46, Sverige"
+  },
+  "56.1046,13.7125": {
+    "country": "Sverige",
+    "location_label": "Björnstigen, Tormestorp",
+    "place_full": "Hovdala slott, Björnstigen, Björkviken, Tormestorp, Hässleholms kommun, Skåne län, 281 46, Sverige"
+  },
+  "56.1048,13.7124": {
+    "country": "Sverige",
+    "location_label": "Björnstigen, Tormestorp",
+    "place_full": "Hovdala slott, Björnstigen, Björkviken, Tormestorp, Hässleholms kommun, Skåne län, 281 46, Sverige"
+  },
+  "56.1049,13.7129": {
+    "country": "Sverige",
+    "location_label": "Björnstigen, Tormestorp",
+    "place_full": "Hovdala slott, Björnstigen, Björkviken, Tormestorp, Hässleholms kommun, Skåne län, 281 46, Sverige"
+  },
+  "56.1054,13.7153": {
+    "country": "Sverige",
+    "location_label": "Björnstigen, Tormestorp",
+    "place_full": "Björnstigen, Björkviken, Tormestorp, Hässleholms kommun, Skåne län, 281 46, Sverige"
+  },
+  "56.1054,13.7154": {
+    "country": "Sverige",
+    "location_label": "Björnstigen, Tormestorp",
+    "place_full": "Björnstigen, Björkviken, Tormestorp, Hässleholms kommun, Skåne län, 281 46, Sverige"
+  },
+  "56.1055,13.7122": {
+    "country": "Sverige",
+    "location_label": "Björnstigen, Tormestorp",
+    "place_full": "Hovdala slott, Björnstigen, Björkviken, Tormestorp, Hässleholms kommun, Skåne län, 281 46, Sverige"
+  },
+  "56.1057,13.7142": {
+    "country": "Sverige",
+    "location_label": "Björnstigen, Tormestorp",
+    "place_full": "Björnstigen, Björkviken, Tormestorp, Hässleholms kommun, Skåne län, 281 46, Sverige"
+  },
+  "56.1059,13.7142": {
+    "country": "Sverige",
+    "location_label": "Björnstigen, Tormestorp",
+    "place_full": "Björnstigen, Björkviken, Tormestorp, Hässleholms kommun, Skåne län, 281 46, Sverige"
+  },
+  "56.1128,13.6984": {
+    "country": "Sverige",
+    "location_label": "Hundslingan, Hässleholms kommun",
+    "place_full": "Hundslingan, Hässleholms kommun, Skåne län, 281 92, Sverige"
+  },
+  "56.1133,13.6993": {
+    "country": "Sverige",
+    "location_label": "Hundslingan, Hässleholms kommun",
+    "place_full": "Hundslingan, Hässleholms kommun, Skåne län, 281 92, Sverige"
+  },
+  "56.114,13.6974": {
+    "country": "Sverige",
+    "location_label": "Trädhuset, Hässleholms kommun",
+    "place_full": "Trädhuset, 6222, Hundslingan, Hässleholms kommun, Skåne län, 281 92, Sverige"
+  },
+  "56.1142,13.698": {
+    "country": "Sverige",
+    "location_label": "Trädhuset, Hässleholms kommun",
+    "place_full": "Trädhuset, 6222, Hundslingan, Hässleholms kommun, Skåne län, 281 92, Sverige"
+  },
+  "56.1142,13.6981": {
+    "country": "Sverige",
+    "location_label": "Hundslingan, Hässleholms kommun",
+    "place_full": "Hundslingan, Hässleholms kommun, Skåne län, 281 92, Sverige"
+  },
+  "56.1142,13.6982": {
+    "country": "Sverige",
+    "location_label": "Hundslingan, Hässleholms kommun",
+    "place_full": "Hundslingan, Hässleholms kommun, Skåne län, 281 92, Sverige"
+  },
+  "56.1142,13.6984": {
+    "country": "Sverige",
+    "location_label": "Hundslingan, Hässleholms kommun",
+    "place_full": "Hundslingan, Hässleholms kommun, Skåne län, 281 92, Sverige"
+  },
+  "56.1583,13.7655": {
+    "country": "Sverige",
+    "location_label": "Madrix, Hässleholm",
+    "place_full": "Madrix, 1, Stortorget, Bokeberg, Hässleholm, Hässleholms kommun, Skåne län, 281 31, Sverige"
+  },
+  "56.1588,13.7437": {
+    "country": "Sverige",
+    "location_label": "Helsingborgsvägen, Hässleholm",
+    "place_full": "Helsingborgsvägen, Fredentorp, Skönabäck, Hässleholm, Hässleholms kommun, Skåne län, 281 49, Sverige"
+  },
+  "56.2432,12.8478": {
+    "country": "Sverige",
+    "location_label": "Lasarettslinjen, Ängelholm",
+    "place_full": "Lasarettslinjen, Ängelholm, Ängelholms kommun, Skåne län, 262 53, Sverige"
+  },
+  "56.2445,12.8446": {
+    "country": "Sverige",
+    "location_label": "Lasarettslinjen, Ängelholm",
+    "place_full": "Lasarettslinjen, Ängelholm, Ängelholms kommun, Skåne län, 262 53, Sverige"
+  },
+  "56.2447,12.8602": {
+    "country": "Sverige",
+    "location_label": "Sockerbruksbron, Ängelholm",
+    "place_full": "Sockerbruksbron, Ängelholm, Ängelholms kommun, Skåne län, 262 21, Sverige"
+  },
+  "56.2448,12.86": {
+    "country": "Sverige",
+    "location_label": "Sockerbruksbron, Ängelholm",
+    "place_full": "Sockerbruksbron, Ängelholm, Ängelholms kommun, Skåne län, 262 21, Sverige"
+  },
+  "56.2458,12.8377": {
+    "country": "Sverige",
+    "location_label": "Blocklinjen, Ängelholm",
+    "place_full": "Blocklinjen, Ängelholm, Ängelholms kommun, Skåne län, 262 64, Sverige"
+  },
+  "56.2495,12.8283": {
+    "country": "Sverige",
+    "location_label": "Blocklinjen, Ängelholm",
+    "place_full": "Blocklinjen, Ängelholm, Ängelholms kommun, Skåne län, 262 53, Sverige"
+  },
+  "56.2496,12.8276": {
+    "country": "Sverige",
+    "location_label": "Blocklinjen, Ängelholm",
+    "place_full": "Blocklinjen, Ängelholm, Ängelholms kommun, Skåne län, 262 53, Sverige"
+  },
+  "56.2497,12.8266": {
+    "country": "Sverige",
+    "location_label": "Blocklinjen, Ängelholm",
+    "place_full": "Värn 794, Blocklinjen, Ängelholm, Ängelholms kommun, Skåne län, 262 53, Sverige"
+  },
+  "56.2497,12.8269": {
+    "country": "Sverige",
+    "location_label": "Blocklinjen, Ängelholm",
+    "place_full": "Värn 794, Blocklinjen, Ängelholm, Ängelholms kommun, Skåne län, 262 53, Sverige"
+  },
+  "56.2501,12.8261": {
+    "country": "Sverige",
+    "location_label": "Lasarettslinjen, Ängelholm",
+    "place_full": "Lasarettslinjen, Ängelholm, Ängelholms kommun, Skåne län, 262 54, Sverige"
+  },
+  "56.2502,12.826": {
+    "country": "Sverige",
+    "location_label": "Blocklinjen, Ängelholm",
+    "place_full": "Värn 794, Blocklinjen, Ängelholm, Ängelholms kommun, Skåne län, 262 53, Sverige"
+  },
+  "56.2503,12.8259": {
+    "country": "Sverige",
+    "location_label": "Lasarettslinjen, Ängelholm",
+    "place_full": "Lasarettslinjen, Ängelholm, Ängelholms kommun, Skåne län, 262 54, Sverige"
+  },
+  "56.2854,12.4932": {
+    "country": "Sverige",
+    "location_label": "Grand Hôtel Mölle, Mölle",
+    "place_full": "Grand Hôtel Mölle, Bökebolsvägen, Aldal, Mölle, Höganäs kommun, Skåne län, 263 77, Sverige"
+  },
+  "56.2859,12.4925": {
+    "country": "Sverige",
+    "location_label": "Bökebolsvägen, Mölle",
+    "place_full": "Bökebolsvägen, Aldal, Mölle, Höganäs kommun, Skåne län, 263 77, Sverige"
+  },
+  "56.2913,12.4743": {
+    "country": "Sverige",
+    "location_label": "Italienska vägen, Mölle",
+    "place_full": "Italienska vägen, Aldal, Mölle, Höganäs kommun, Skåne län, 263 77, Sverige"
+  },
+  "56.2913,12.4745": {
+    "country": "Sverige",
+    "location_label": "Italienska vägen, Mölle",
+    "place_full": "Italienska vägen, Aldal, Mölle, Höganäs kommun, Skåne län, 263 77, Sverige"
+  },
+  "56.2914,12.4749": {
+    "country": "Sverige",
+    "location_label": "Italienska vägen, Mölle",
+    "place_full": "Italienska vägen, Aldal, Mölle, Höganäs kommun, Skåne län, 263 77, Sverige"
+  },
+  "56.2915,12.4749": {
+    "country": "Sverige",
+    "location_label": "Italienska vägen, Mölle",
+    "place_full": "Italienska vägen, Aldal, Mölle, Höganäs kommun, Skåne län, 263 77, Sverige"
+  },
+  "56.2915,12.4753": {
+    "country": "Sverige",
+    "location_label": "Italienska vägen, Mölle",
+    "place_full": "Italienska vägen, Aldal, Mölle, Höganäs kommun, Skåne län, 263 77, Sverige"
+  },
+  "56.2915,12.4756": {
+    "country": "Sverige",
+    "location_label": "Italienska vägen, Mölle",
+    "place_full": "Italienska vägen, Aldal, Mölle, Höganäs kommun, Skåne län, 263 77, Sverige"
+  },
+  "56.2916,12.4763": {
+    "country": "Sverige",
+    "location_label": "Italienska vägen, Mölle",
+    "place_full": "Italienska vägen, Aldal, Mölle, Höganäs kommun, Skåne län, 263 77, Sverige"
+  },
+  "56.2921,12.4731": {
+    "country": "Sverige",
+    "location_label": "Italienska vägen, Mölle",
+    "place_full": "Italienska vägen, Aldal, Mölle, Höganäs kommun, Skåne län, 263 77, Sverige"
+  },
+  "56.2926,12.4696": {
+    "country": "Sverige",
+    "location_label": "Italienska vägen, Mölle",
+    "place_full": "Italienska vägen, Hjorthagen, Mölle, Höganäs kommun, Skåne län, 263 77, Sverige"
+  },
+  "56.2927,12.4696": {
+    "country": "Sverige",
+    "location_label": "Italienska vägen, Mölle",
+    "place_full": "Italienska vägen, Hjorthagen, Mölle, Höganäs kommun, Skåne län, 263 77, Sverige"
+  },
+  "56.2934,12.4816": {
+    "country": "Sverige",
+    "location_label": "Italienska vägen, Mölle",
+    "place_full": "Kullamannens grav, Italienska vägen, Aldal, Mölle, Höganäs kommun, Skåne län, 263 77, Sverige"
+  },
+  "56.2941,12.4802": {
+    "country": "Sverige",
+    "location_label": "Italienska vägen, Mölle",
+    "place_full": "Kullamannens grav, Italienska vägen, Aldal, Mölle, Höganäs kommun, Skåne län, 263 77, Sverige"
+  },
+  "56.2942,12.4801": {
+    "country": "Sverige",
+    "location_label": "Italienska vägen, Mölle",
+    "place_full": "Kullamannens grav, Italienska vägen, Aldal, Mölle, Höganäs kommun, Skåne län, 263 77, Sverige"
+  },
+  "56.2951,12.4798": {
+    "country": "Sverige",
+    "location_label": "Italienska vägen, Mölle",
+    "place_full": "Kullamannens grav, Italienska vägen, Aldal, Mölle, Höganäs kommun, Skåne län, 263 77, Sverige"
+  },
+  "56.2952,12.4682": {
+    "country": "Sverige",
+    "location_label": "Italienska vägen, Mölle",
+    "place_full": "Italienska vägen, Hjorthagen, Mölle, Höganäs kommun, Skåne län, 263 77, Sverige"
+  },
+  "56.2968,12.469": {
+    "country": "Sverige",
+    "location_label": "Italienska vägen, Mölle",
+    "place_full": "Italienska vägen, Hjorthagen, Mölle, Höganäs kommun, Skåne län, 263 77, Sverige"
+  },
+  "56.2969,12.4635": {
+    "country": "Sverige",
+    "location_label": "Italienska vägen, Mölle",
+    "place_full": "Italienska vägen, Mölle, Höganäs kommun, Skåne län, 263 77, Sverige"
+  },
+  "56.2969,12.4636": {
+    "country": "Sverige",
+    "location_label": "Italienska vägen, Mölle",
+    "place_full": "Italienska vägen, Mölle, Höganäs kommun, Skåne län, 263 77, Sverige"
+  },
+  "56.2972,12.4603": {
+    "country": "Sverige",
+    "location_label": "Italienska vägen, Mölle",
+    "place_full": "Italienska vägen, Mölle, Höganäs kommun, Skåne län, 263 77, Sverige"
+  },
+  "56.2974,12.4576": {
+    "country": "Sverige",
+    "location_label": "Italienska vägen, Höganäs kommun",
+    "place_full": "Italienska vägen, Höganäs kommun, Skåne län, 263 77, Sverige"
+  },
+  "56.2975,12.4616": {
+    "country": "Sverige",
+    "location_label": "Italienska vägen, Mölle",
+    "place_full": "Italienska vägen, Mölle, Höganäs kommun, Skåne län, 263 77, Sverige"
+  },
+  "56.2982,12.455": {
+    "country": "Sverige",
+    "location_label": "Italienska vägen, Höganäs kommun",
+    "place_full": "Italienska vägen, Höganäs kommun, Skåne län, 263 77, Sverige"
+  },
+  "56.2987,12.4832": {
+    "country": "Sverige",
+    "location_label": "Blåkullavägen, Mölle",
+    "place_full": "Blåkullavägen, Hjorthagen, Mölle, Höganäs kommun, Skåne län, 263 77, Sverige"
+  },
+  "56.2991,12.4555": {
+    "country": "Sverige",
+    "location_label": "Italienska vägen, Höganäs kommun",
+    "place_full": "Italienska vägen, Höganäs kommun, Skåne län, 263 77, Sverige"
+  },
+  "56.2992,12.4815": {
+    "country": "Sverige",
+    "location_label": "Italienska vägen, Mölle",
+    "place_full": "Frederick VII's grotta, Italienska vägen, Aldal, Mölle, Höganäs kommun, Skåne län, 263 77, Sverige"
+  },
+  "56.2992,12.4824": {
+    "country": "Sverige",
+    "location_label": "Josefinelust, Mölle",
+    "place_full": "Josefinelust, Italienska vägen, Aldal, Mölle, Höganäs kommun, Skåne län, 263 77, Sverige"
+  },
+  "56.2993,12.4825": {
+    "country": "Sverige",
+    "location_label": "Josefinelust, Mölle",
+    "place_full": "Josefinelust, Italienska vägen, Aldal, Mölle, Höganäs kommun, Skåne län, 263 77, Sverige"
+  },
+  "56.2997,12.4794": {
+    "country": "Sverige",
+    "location_label": "Italienska vägen, Mölle",
+    "place_full": "Italienska vägen, Aldal, Mölle, Höganäs kommun, Skåne län, 263 77, Sverige"
+  },
+  "56.2998,12.477": {
+    "country": "Sverige",
+    "location_label": "Italienska vägen, Mölle",
+    "place_full": "Italienska vägen, Aldal, Mölle, Höganäs kommun, Skåne län, 263 77, Sverige"
+  },
+  "56.2999,12.4693": {
+    "country": "Sverige",
+    "location_label": "Italienska vägen, Mölle",
+    "place_full": "Mölle Golfklubb, Italienska vägen, Hjorthagen, Mölle, Höganäs kommun, Skåne län, 263 77, Sverige"
+  },
+  "56.3005,12.4698": {
+    "country": "Sverige",
+    "location_label": "Italienska vägen, Mölle",
+    "place_full": "Italienska vägen, Hjorthagen, Mölle, Höganäs kommun, Skåne län, 263 77, Sverige"
+  },
+  "56.301,12.4701": {
+    "country": "Sverige",
+    "location_label": "Italienska vägen, Mölle",
+    "place_full": "Italienska vägen, Hjorthagen, Mölle, Höganäs kommun, Skåne län, 263 77, Sverige"
+  },
+  "56.301,12.4702": {
+    "country": "Sverige",
+    "location_label": "Italienska vägen, Mölle",
+    "place_full": "Italienska vägen, Hjorthagen, Mölle, Höganäs kommun, Skåne län, 263 77, Sverige"
+  },
+  "56.3012,12.4697": {
+    "country": "Sverige",
+    "location_label": "Italienska vägen, Mölle",
+    "place_full": "Italienska vägen, Hjorthagen, Mölle, Höganäs kommun, Skåne län, 263 77, Sverige"
+  },
+  "56.3116,13.0507": {
+    "country": "Sverige",
+    "location_label": "Nedre Västersjövägen, Ängelholms kommun",
+    "place_full": "Nedre Västersjövägen, Tollsjö, Ängelholms kommun, Skåne län, Sverige"
+  },
+  "56.3666,13.4697": {
+    "country": "Sverige",
+    "location_label": "Gamla E4:an, Skånes-Fagerhult",
+    "place_full": "Gamla E4:an, Killhult, Skånes-Fagerhult, Örkelljunga kommun, Skåne län, 280 40, Sverige"
+  },
+  "56.3746,13.4731": {
+    "country": "Sverige",
+    "location_label": "Björkgatan, Skånes-Fagerhult",
+    "place_full": "Björkgatan, Killhult, Skånes-Fagerhult, Örkelljunga kommun, Skåne län, 280 40, Sverige"
+  },
+  "56.3754,13.4667": {
+    "country": "Sverige",
+    "location_label": "Floragatan, Skånes-Fagerhult",
+    "place_full": "Floragatan, Björnholm, Skånes-Fagerhult, Örkelljunga kommun, Skåne län, 286 73, Sverige"
+  },
+  "56.3754,13.4668": {
+    "country": "Sverige",
+    "location_label": "Floragatan, Skånes-Fagerhult",
+    "place_full": "Floragatan, Björnholm, Skånes-Fagerhult, Örkelljunga kommun, Skåne län, 286 73, Sverige"
+  },
+  "56.3754,13.4669": {
+    "country": "Sverige",
+    "location_label": "Floragatan, Skånes-Fagerhult",
+    "place_full": "Floragatan, Björnholm, Skånes-Fagerhult, Örkelljunga kommun, Skåne län, 286 73, Sverige"
+  },
+  "56.3755,13.4667": {
+    "country": "Sverige",
+    "location_label": "Floragatan, Skånes-Fagerhult",
+    "place_full": "Floragatan, Björnholm, Skånes-Fagerhult, Örkelljunga kommun, Skåne län, 286 73, Sverige"
+  },
+  "56.3755,13.4669": {
+    "country": "Sverige",
+    "location_label": "Floragatan, Skånes-Fagerhult",
+    "place_full": "Floragatan, Björnholm, Skånes-Fagerhult, Örkelljunga kommun, Skåne län, 286 73, Sverige"
+  },
+  "56.3755,13.467": {
+    "country": "Sverige",
+    "location_label": "Floragatan, Skånes-Fagerhult",
+    "place_full": "Floragatan, Björnholm, Skånes-Fagerhult, Örkelljunga kommun, Skåne län, 286 73, Sverige"
+  },
+  "56.3785,13.4691": {
+    "country": "Sverige",
+    "location_label": "Badvägen, Skånes-Fagerhult",
+    "place_full": "Badvägen, Björnholm, Skånes-Fagerhult, Örkelljunga kommun, Skåne län, 286 73, Sverige"
+  },
+  "56.3786,13.4692": {
+    "country": "Sverige",
+    "location_label": "Badvägen, Skånes-Fagerhult",
+    "place_full": "Badvägen, Björnholm, Skånes-Fagerhult, Örkelljunga kommun, Skåne län, 286 73, Sverige"
+  },
+  "56.3787,13.4692": {
+    "country": "Sverige",
+    "location_label": "Badvägen, Skånes-Fagerhult",
+    "place_full": "Badvägen, Björnholm, Skånes-Fagerhult, Örkelljunga kommun, Skåne län, 286 73, Sverige"
+  },
+  "56.3788,13.4692": {
+    "country": "Sverige",
+    "location_label": "Badvägen, Skånes-Fagerhult",
+    "place_full": "Badvägen, Björnholm, Skånes-Fagerhult, Örkelljunga kommun, Skåne län, 286 73, Sverige"
+  },
+  "56.3928,12.6374": {
+    "country": "Sverige",
+    "location_label": "Klavaslättsvägen, Båstads kommun",
+    "place_full": "Klavaslättsvägen, Faritslöv, Båstads kommun, Skåne län, 269 78, Sverige"
+  },
+  "56.393,12.6375": {
+    "country": "Sverige",
+    "location_label": "Klavaslättsvägen, Båstads kommun",
+    "place_full": "Klavaslättsvägen, Faritslöv, Båstads kommun, Skåne län, 269 78, Sverige"
+  },
+  "56.4089,13.4963": {
+    "country": "Sverige",
+    "location_label": "Sjöhult, Markaryds kommun",
+    "place_full": "Sjöhult, Köphult, Markaryds kommun, Kronobergs län, 285 91, Sverige"
+  },
+  "56.4154,13.5095": {
+    "country": "Sverige",
+    "location_label": "Sjöhult, Markaryds kommun",
+    "place_full": "Södra Århults Torv AB, 1244, Sjöhult, Köphult, Markaryds kommun, Kronobergs län, 285 91, Sverige"
+  },
+  "56.4251,12.6296": {
+    "country": "Sverige",
+    "location_label": "Storgatan, Torekov",
+    "place_full": "Storgatan, Torekov, Båstads kommun, Skåne län, 269 77, Sverige"
+  },
+  "56.4257,12.6253": {
+    "country": "Sverige",
+    "location_label": "Storgatan, Torekov",
+    "place_full": "Storgatan, Torekov, Båstads kommun, Skåne län, 269 77, Sverige"
+  },
+  "56.4266,12.6235": {
+    "country": "Sverige",
+    "location_label": "Hamnplanen, Torekov",
+    "place_full": "Pirate, Hamnplanen, Torekov, Båstads kommun, Skåne län, 269 77, Sverige"
+  },
+  "56.4266,12.6238": {
+    "country": "Sverige",
+    "location_label": "Hamnplanen, Torekov",
+    "place_full": "Pirate, Hamnplanen, Torekov, Båstads kommun, Skåne län, 269 77, Sverige"
+  },
+  "56.4267,12.6237": {
+    "country": "Sverige",
+    "location_label": "Hamnplanen, Torekov",
+    "place_full": "Pirate, Hamnplanen, Torekov, Båstads kommun, Skåne län, 269 77, Sverige"
+  },
+  "56.4268,12.6235": {
+    "country": "Sverige",
+    "location_label": "Hamnplanen, Torekov",
+    "place_full": "Pirate, Hamnplanen, Torekov, Båstads kommun, Skåne län, 269 77, Sverige"
+  },
+  "56.4268,12.6251": {
+    "country": "Sverige",
+    "location_label": "Moby's Shack, Torekov",
+    "place_full": "Moby's Shack, Peder Wessels väg, Torekov, Båstads kommun, Skåne län, 269 77, Sverige"
+  },
+  "56.4278,12.6251": {
+    "country": "Sverige",
+    "location_label": "Peder Wessels väg, Torekov",
+    "place_full": "Peder Wessels väg, Torekov, Båstads kommun, Skåne län, 269 77, Sverige"
+  },
+  "56.428,13.3096": {
+    "country": "Sverige",
+    "location_label": "Markarydsvägen, Hishult",
+    "place_full": "Markarydsvägen, Hishult, Laholms kommun, Hallands län, 310 21, Sverige"
+  },
+  "56.4293,12.6326": {
+    "country": "Sverige",
+    "location_label": "Strandridaregatan, Torekov",
+    "place_full": "Strandridaregatan, Torekov, Båstads kommun, Skåne län, 269 77, Sverige"
+  },
+  "56.4341,12.6345": {
+    "country": "Sverige",
+    "location_label": "First Camp Torekov-Båstad, Torekov",
+    "place_full": "First Camp Torekov-Båstad, Kaprifolvägen, Torekov, Båstads kommun, Skåne län, 269 77, Sverige"
+  },
+  "56.4343,12.6344": {
+    "country": "Sverige",
+    "location_label": "First Camp Torekov-Båstad, Torekov",
+    "place_full": "First Camp Torekov-Båstad, Flymossavägen, Lugnet, Torekov, Båstads kommun, Skåne län, 269 77, Sverige"
+  },
+  "56.4368,12.6355": {
+    "country": "Sverige",
+    "location_label": "Flymossavägen, Torekov",
+    "place_full": "Flymossavägen, Lugnet, Torekov, Båstads kommun, Skåne län, 269 77, Sverige"
+  },
+  "56.4372,12.6356": {
+    "country": "Sverige",
+    "location_label": "Flymossavägen, Torekov",
+    "place_full": "Flymossavägen, Lugnet, Torekov, Båstads kommun, Skåne län, 269 77, Sverige"
+  },
+  "56.4375,12.635": {
+    "country": "Sverige",
+    "location_label": "Flymossavägen, Torekov",
+    "place_full": "Flymossavägen, Lugnet, Torekov, Båstads kommun, Skåne län, 269 77, Sverige"
+  },
+  "56.4376,12.6349": {
+    "country": "Sverige",
+    "location_label": "Flymossavägen, Torekov",
+    "place_full": "Flymossavägen, Lugnet, Torekov, Båstads kommun, Skåne län, 269 77, Sverige"
+  },
+  "56.4393,12.6382": {
+    "country": "Sverige",
+    "location_label": "Källrevägen, Torekov",
+    "place_full": "Källrevägen, Perstorp, Torekov, Båstads kommun, Skåne län, 269 78, Sverige"
+  },
+  "56.4441,12.5644": {
+    "country": "Sverige",
+    "location_label": "Sandhamn, Båstads kommun",
+    "place_full": "Sandhamn, Båstads kommun, Skåne län, 269 77, Sverige"
+  },
+  "56.4442,12.5639": {
+    "country": "Sverige",
+    "location_label": "Sandhamn, Båstads kommun",
+    "place_full": "Sandhamn, Båstads kommun, Skåne län, 269 77, Sverige"
+  },
+  "56.4442,12.5642": {
+    "country": "Sverige",
+    "location_label": "Sandhamn, Båstads kommun",
+    "place_full": "Sandhamn, Båstads kommun, Skåne län, 269 77, Sverige"
+  },
+  "56.4443,12.5639": {
+    "country": "Sverige",
+    "location_label": "Sandhamn, Båstads kommun",
+    "place_full": "Sandhamn, Båstads kommun, Skåne län, 269 77, Sverige"
+  },
+  "56.4452,12.5636": {
+    "country": "Sverige",
+    "location_label": "Sandhamn, Båstads kommun",
+    "place_full": "Sandhamn, Båstads kommun, Skåne län, 269 77, Sverige"
+  },
+  "56.4461,12.5635": {
+    "country": "Sverige",
+    "location_label": "Sandhamn, Båstads kommun",
+    "place_full": "Sandhamn, Båstads kommun, Skåne län, 269 77, Sverige"
+  },
+  "56.4506,12.5425": {
+    "country": "Sverige",
+    "location_label": "Båstads kommun",
+    "place_full": "Hallands Väderö fyr, Båstads kommun, Skåne län, Sverige"
+  },
+  "56.4509,12.5418": {
+    "country": "Sverige",
+    "location_label": "Båstads kommun",
+    "place_full": "Hallands Väderö fyr, Båstads kommun, Skåne län, Sverige"
+  },
+  "56.4593,13.6337": {
+    "country": "Sverige",
+    "location_label": "Smedjegatan, Markaryd",
+    "place_full": "Smedjegatan, Misterhult, Markaryd, Markaryds kommun, Kronobergs län, 285 91, Sverige"
+  },
+  "56.4596,13.633": {
+    "country": "Sverige",
+    "location_label": "Smedjegatan, Markaryd",
+    "place_full": "Smedjegatan, Misterhult, Markaryd, Markaryds kommun, Kronobergs län, 285 91, Sverige"
+  },
+  "56.4596,13.6331": {
+    "country": "Sverige",
+    "location_label": "Smedjegatan, Markaryd",
+    "place_full": "Smedjegatan, Misterhult, Markaryd, Markaryds kommun, Kronobergs län, 285 91, Sverige"
+  },
+  "56.4621,13.6344": {
+    "country": "Sverige",
+    "location_label": "Smålandet Älgsafari, Markaryd",
+    "place_full": "Smålandet Älgsafari, E 4, Misterhult, Markaryd, Markaryds kommun, Kronobergs län, 285 93, Sverige"
+  },
+  "56.4626,13.6332": {
+    "country": "Sverige",
+    "location_label": "Smålandet Älgsafari, Markaryd",
+    "place_full": "Smålandet Älgsafari, E 4, Misterhult, Markaryd, Markaryds kommun, Kronobergs län, 285 93, Sverige"
+  },
+  "56.4631,13.6346": {
+    "country": "Sverige",
+    "location_label": "Smålandet Älgsafari, Markaryd",
+    "place_full": "Smålandet Älgsafari, E 4, Misterhult, Markaryd, Markaryds kommun, Kronobergs län, 285 93, Sverige"
+  },
+  "56.4637,13.6355": {
+    "country": "Sverige",
+    "location_label": "Smålandet Älgsafari, Markaryd",
+    "place_full": "Smålandet Älgsafari, 15, Fjärholma, Markaryd, Markaryds kommun, Kronobergs län, 285 93, Sverige"
+  },
+  "56.4639,13.6353": {
+    "country": "Sverige",
+    "location_label": "Smålandet Älgsafari, Markaryd",
+    "place_full": "Smålandet Älgsafari, E 4, Misterhult, Markaryd, Markaryds kommun, Kronobergs län, 285 93, Sverige"
+  },
+  "56.4642,13.6358": {
+    "country": "Sverige",
+    "location_label": "Smålandet Älgsafari, Markaryd",
+    "place_full": "Smålandet Älgsafari, 15, Fjärholma, Markaryd, Markaryds kommun, Kronobergs län, 285 93, Sverige"
+  },
+  "56.4646,13.6348": {
+    "country": "Sverige",
+    "location_label": "Smålandet Älgsafari, Markaryd",
+    "place_full": "Smålandet Älgsafari, E 4, Misterhult, Markaryd, Markaryds kommun, Kronobergs län, 285 93, Sverige"
+  },
+  "56.4648,13.6357": {
+    "country": "Sverige",
+    "location_label": "Smålandet Älgsafari, Markaryd",
+    "place_full": "Smålandet Älgsafari, E 4, Misterhult, Markaryd, Markaryds kommun, Kronobergs län, 285 93, Sverige"
+  },
+  "56.4971,13.5088": {
+    "country": "Sverige",
+    "location_label": "G 513, Markaryds kommun",
+    "place_full": "G 513, Sjöaryd, Markaryds kommun, Kronobergs län, Sverige"
+  },
+  "56.5112,13.4634": {
+    "country": "Sverige",
+    "location_label": "N 580, Laholms kommun",
+    "place_full": "N 580, Sjöared, Laholms kommun, Hallands län, Sverige"
+  },
+  "56.5117,13.0392": {
+    "country": "Sverige",
+    "location_label": "Vingesgatan, Laholm",
+    "place_full": "Vingesgatan, Laholm, Laholms kommun, Hallands län, 312 30, Sverige"
+  },
+  "56.5119,13.4626": {
+    "country": "Sverige",
+    "location_label": "N 580, Laholms kommun",
+    "place_full": "N 580, Sjöared, Laholms kommun, Hallands län, Sverige"
+  },
+  "56.5119,13.4638": {
+    "country": "Sverige",
+    "location_label": "G 513, Markaryds kommun",
+    "place_full": "G 513, Sjöaryd, Markaryds kommun, Kronobergs län, Sverige"
+  },
+  "56.512,13.0394": {
+    "country": "Sverige",
+    "location_label": "Sankt Clemens kyrka, Laholm",
+    "place_full": "Sankt Clemens kyrka, Kyrkogatan, Laholm, Laholms kommun, Hallands län, 312 45, Sverige"
+  },
+  "56.512,13.4626": {
+    "country": "Sverige",
+    "location_label": "N 580, Laholms kommun",
+    "place_full": "N 580, Sjöared, Laholms kommun, Hallands län, Sverige"
+  },
+  "56.512,13.4628": {
+    "country": "Sverige",
+    "location_label": "N 580, Laholms kommun",
+    "place_full": "N 580, Sjöared, Laholms kommun, Hallands län, Sverige"
+  },
+  "56.5124,13.04": {
+    "country": "Sverige",
+    "location_label": "Kyrkogatan, Laholm",
+    "place_full": "5, Kyrkogatan, Laholm, Laholms kommun, Hallands län, 312 45, Sverige"
+  },
+  "56.5133,13.0435": {
+    "country": "Sverige",
+    "location_label": "Milles Lunch & Café, Laholm",
+    "place_full": "Milles Lunch & Café, 3, Stortorget, Laholm, Laholms kommun, Hallands län, 312 30, Sverige"
+  },
+  "56.514,13.0418": {
+    "country": "Sverige",
+    "location_label": "Gamlebygatan, Laholm",
+    "place_full": "Gamlebygatan, Laholm, Laholms kommun, Hallands län, 312 30, Sverige"
+  },
+  "56.5161,13.0502": {
+    "country": "Sverige",
+    "location_label": "Lagavägen, Laholm",
+    "place_full": "Lagavägen, Kungsladugården, Laholm, Laholms kommun, Hallands län, 312 30, Sverige"
+  },
+  "56.5165,13.0502": {
+    "country": "Sverige",
+    "location_label": "Lagaholm, Laholm",
+    "place_full": "Lagaholm, Lagavägen, Kungsladugården, Laholm, Laholms kommun, Hallands län, 312 30, Sverige"
+  },
+  "56.5165,13.0507": {
+    "country": "Sverige",
+    "location_label": "Lagavägen, Laholm",
+    "place_full": "Lagaholm, Lagavägen, Kungsladugården, Laholm, Laholms kommun, Hallands län, 312 30, Sverige"
+  },
+  "56.6417,12.7756": {
+    "country": "Sverige",
+    "location_label": "Grötviksvägen, Halmstad",
+    "place_full": "Grötviksvägen, Stenhuggeriet, Halmstad, Halmstads kommun, Hallands län, 302 40, Sverige"
+  },
+  "56.6427,12.7743": {
+    "country": "Sverige",
+    "location_label": "Grötviksvägen, Halmstad",
+    "place_full": "Grötviksvägen, Stenhuggeriet, Halmstad, Halmstads kommun, Hallands län, 302 40, Sverige"
+  },
+  "56.6428,12.7742": {
+    "country": "Sverige",
+    "location_label": "Halmstads Wakepark, Halmstad",
+    "place_full": "Halmstads Wakepark, Grötviksvägen, Stenhuggeriet, Halmstad, Halmstads kommun, Hallands län, 302 40, Sverige"
+  },
+  "56.7501,12.9435": {
+    "country": "Sverige",
+    "location_label": "Munkflyvägen, Åled",
+    "place_full": "Munkflyvägen, Spånstad, Åled, Halmstads kommun, Hallands län, 313 50, Sverige"
+  },
+  "56.7501,12.9436": {
+    "country": "Sverige",
+    "location_label": "Munkflyvägen, Åled",
+    "place_full": "Munkflyvägen, Spånstad, Åled, Halmstads kommun, Hallands län, 313 50, Sverige"
+  },
+  "56.8461,13.5002": {
+    "country": "Sverige",
+    "location_label": "Ljungby kommun",
+    "place_full": "Yttra Röshult, Ljungby kommun, Kronobergs län, Sverige"
+  },
+  "56.851,13.5163": {
+    "country": "Sverige",
+    "location_label": "Ljungby kommun",
+    "place_full": "Killingudden, Strömma, Ljungby kommun, Kronobergs län, 314 52, Sverige"
+  },
+  "56.8511,13.5165": {
+    "country": "Sverige",
+    "location_label": "Ljungby kommun",
+    "place_full": "Killingudden, Strömma, Ljungby kommun, Kronobergs län, 314 52, Sverige"
+  },
+  "56.8512,13.5164": {
+    "country": "Sverige",
+    "location_label": "Ljungby kommun",
+    "place_full": "Killingudden, Strömma, Ljungby kommun, Kronobergs län, 314 52, Sverige"
+  },
+  "56.8514,13.5167": {
+    "country": "Sverige",
+    "location_label": "Ljungby kommun",
+    "place_full": "Killingudden, Strömma, Ljungby kommun, Kronobergs län, 314 52, Sverige"
+  },
+  "56.9038,12.492": {
+    "country": "Sverige",
+    "location_label": "Torgatan, Falkenberg",
+    "place_full": "Torgatan, Skrea Strand, Falkenberg, Falkenbergs kommun, Hallands län, 311 21, Sverige"
+  },
+  "57.1052,12.2406": {
+    "country": "Sverige",
+    "location_label": "Varbergs Strandpromenad, Varberg",
+    "place_full": "Varbergs Strandpromenad, Brunnsberg, Varberg, Varbergs kommun, Hallands län, 432 44, Sverige"
+  },
+  "57.1053,12.2502": {
+    "country": "Sverige",
+    "location_label": "Stora torget, Varberg",
+    "place_full": "Stora torget, Mariedal, Brunnsberg, Varberg, Varbergs kommun, Hallands län, 432 41, Sverige"
+  },
+  "57.1057,12.2421": {
+    "country": "Sverige",
+    "location_label": "Allan Kanjes promenad, Varberg",
+    "place_full": "Allan Kanjes promenad, Mariedal, Brunnsberg, Varberg, Varbergs kommun, Hallands län, 432 44, Sverige"
+  },
+  "57.1058,12.2389": {
+    "country": "Sverige",
+    "location_label": "Strandgatan, Varberg",
+    "place_full": "Varbergs Fästning, Strandgatan, Mariedal, Brunnsberg, Varberg, Varbergs kommun, Hallands län, 432 44, Sverige"
+  },
+  "57.1059,12.2396": {
+    "country": "Sverige",
+    "location_label": "Hallands kulturhistoriska museum, Varberg",
+    "place_full": "Hallands kulturhistoriska museum, 1, Fästningen, Brunnsberg, Varberg, Varbergs kommun, Hallands län, 432 44, Sverige"
+  },
+  "57.1062,12.2398": {
+    "country": "Sverige",
+    "location_label": "Hallands kulturhistoriska museum, Varberg",
+    "place_full": "Hallands kulturhistoriska museum, 1, Fästningen, Brunnsberg, Varberg, Varbergs kommun, Hallands län, 432 44, Sverige"
+  },
+  "57.1064,12.2394": {
+    "country": "Sverige",
+    "location_label": "Fästningen, Varberg",
+    "place_full": "Fästningen, Brunnsberg, Varberg, Varbergs kommun, Hallands län, 432 44, Sverige"
+  },
+  "57.1065,12.2398": {
+    "country": "Sverige",
+    "location_label": "Fästningen, Varberg",
+    "place_full": "Fästningen, Brunnsberg, Varberg, Varbergs kommun, Hallands län, 432 44, Sverige"
+  },
+  "57.1067,12.2395": {
+    "country": "Sverige",
+    "location_label": "Fästningen, Varberg",
+    "place_full": "Fästningen, Brunnsberg, Varberg, Varbergs kommun, Hallands län, 432 44, Sverige"
+  },
+  "57.1068,12.2396": {
+    "country": "Sverige",
+    "location_label": "Fästningen, Varberg",
+    "place_full": "Fästningen, Brunnsberg, Varberg, Varbergs kommun, Hallands län, 432 44, Sverige"
+  },
+  "57.1069,12.2388": {
+    "country": "Sverige",
+    "location_label": "Varbergs Strandpromenad, Varberg",
+    "place_full": "Varbergs Strandpromenad, Brunnsberg, Varberg, Varbergs kommun, Hallands län, 432 44, Sverige"
+  },
+  "57.107,12.2406": {
+    "country": "Sverige",
+    "location_label": "Fästningens våffelkafé, Varberg",
+    "place_full": "Fästningens våffelkafé, 13, Varbergs Strandpromenad, Brunnsberg, Varberg, Varbergs kommun, Hallands län, 432 44, Sverige"
+  },
+  "57.107,12.2426": {
+    "country": "Sverige",
+    "location_label": "Allan Kanjes promenad, Varberg",
+    "place_full": "Allan Kanjes promenad, Mariedal, Brunnsberg, Varberg, Varbergs kommun, Hallands län, 432 44, Sverige"
+  },
+  "57.1071,12.2389": {
+    "country": "Sverige",
+    "location_label": "Varbergs Strandpromenad, Varberg",
+    "place_full": "10, Varbergs Strandpromenad, Brunnsberg, Varberg, Varbergs kommun, Hallands län, 432 44, Sverige"
+  },
+  "57.1071,12.2408": {
+    "country": "Sverige",
+    "location_label": "Fästningens våffelkafé, Varberg",
+    "place_full": "Fästningens våffelkafé, 13, Varbergs Strandpromenad, Brunnsberg, Varberg, Varbergs kommun, Hallands län, 432 44, Sverige"
+  },
+  "57.1075,12.2403": {
+    "country": "Sverige",
+    "location_label": "Fästningens vandrarhem, Varberg",
+    "place_full": "Fästningens vandrarhem, 10, Varbergs Strandpromenad, Brunnsberg, Varberg, Varbergs kommun, Hallands län, 432 44, Sverige"
+  },
+  "57.1076,12.2399": {
+    "country": "Sverige",
+    "location_label": "Varbergs Strandpromenad, Varberg",
+    "place_full": "10, Varbergs Strandpromenad, Brunnsberg, Varberg, Varbergs kommun, Hallands län, 432 44, Sverige"
+  },
+  "57.1078,12.2413": {
+    "country": "Sverige",
+    "location_label": "Albert Sandklefs promenad, Varberg",
+    "place_full": "13, Albert Sandklefs promenad, Brunnsberg, Varberg, Varbergs kommun, Hallands län, 432 44, Sverige"
+  },
+  "57.1082,12.2419": {
+    "country": "Sverige",
+    "location_label": "Varbergs havsbad, Varberg",
+    "place_full": "Varbergs havsbad, Brunnsberg, Varberg, Varbergs kommun, Hallands län, 432 44, Sverige"
+  },
+  "57.7838,14.1596": {
+    "country": "Sverige",
+    "location_label": "Västra Storgatan, Jönköping",
+    "place_full": "Västra Storgatan, Tändsticksområdet, Väster, Jönköping, Jönköpings kommun, Jönköpings län, 553 15, Sverige"
+  },
+  "57.7841,14.159": {
+    "country": "Sverige",
+    "location_label": "Västra Storgatan, Jönköping",
+    "place_full": "Västra Storgatan, Tändsticksområdet, Väster, Jönköping, Jönköpings kommun, Jönköpings län, 553 15, Sverige"
+  },
+  "57.8595,14.282": {
+    "country": "Sverige",
+    "location_label": "Kaxholmen",
+    "place_full": "Bosgård, Kaxholmen, Jönköpings kommun, Jönköpings län, 561 92, Sverige"
+  },
+  "58.0224,14.4674": {
+    "country": "Sverige",
+    "location_label": "Lergränd, Gränna",
+    "place_full": "Lergränd, Norra Boarp, Gränna, Jönköpings kommun, Jönköpings län, 563 32, Sverige"
+  },
+  "58.0227,14.4679": {
+    "country": "Sverige",
+    "location_label": "Gränna torg, Gränna",
+    "place_full": "Gränna torg, Norra Boarp, Gränna, Jönköpings kommun, Jönköpings län, 563 32, Sverige"
+  },
+  "58.2785,14.6348": {
+    "country": "Sverige",
+    "location_label": "Hamngatan, Hästholmen",
+    "place_full": "Hamngatan, Tägneby, Västra Tollstad, Hästholmen, Ödeshögs kommun, Östergötlands län, 599 39, Sverige"
+  },
+  "58.279,14.6353": {
+    "country": "Sverige",
+    "location_label": "Hamngatan, Hästholmen",
+    "place_full": "Hamngatan, Tägneby, Västra Tollstad, Hästholmen, Ödeshögs kommun, Östergötlands län, 599 39, Sverige"
+  },
+  "58.2796,14.6343": {
+    "country": "Sverige",
+    "location_label": "Hamngatan, Hästholmen",
+    "place_full": "Hamngatan, Tägneby, Västra Tollstad, Hästholmen, Ödeshögs kommun, Östergötlands län, 599 39, Sverige"
+  },
+  "58.2797,14.6346": {
+    "country": "Sverige",
+    "location_label": "Hamngatan, Hästholmen",
+    "place_full": "Hamngatan, Tägneby, Västra Tollstad, Hästholmen, Ödeshögs kommun, Östergötlands län, 599 39, Sverige"
+  },
+  "58.2798,14.6346": {
+    "country": "Sverige",
+    "location_label": "Hamngatan, Hästholmen",
+    "place_full": "Hamngatan, Tägneby, Västra Tollstad, Hästholmen, Ödeshögs kommun, Östergötlands län, 599 39, Sverige"
+  },
+  "58.2799,14.6351": {
+    "country": "Sverige",
+    "location_label": "Hamngatan, Hästholmen",
+    "place_full": "Hamngatan, Tägneby, Västra Tollstad, Hästholmen, Ödeshögs kommun, Östergötlands län, 599 39, Sverige"
+  },
+  "58.3173,14.6294": {
+    "country": "Sverige",
+    "location_label": "Norra Sjövägen, Ödeshögs kommun",
+    "place_full": "Norra Sjövägen, Västra Tollstad, Ödeshögs kommun, Östergötlands län, 599 93, Sverige"
+  },
+  "58.3194,14.631": {
+    "country": "Sverige",
+    "location_label": "Norra Sjövägen, Ödeshögs kommun",
+    "place_full": "Norra Sjövägen, Västra Tollstad, Ödeshögs kommun, Östergötlands län, 599 93, Sverige"
+  },
+  "58.3818,14.6815": {
+    "country": "Sverige",
+    "location_label": "Borghamn Strand, Borghamn",
+    "place_full": "Borghamn Strand, 1 A, Borghamnsvägen, Rogslösa, Borghamn, Vadstena kommun, Östergötlands län, 592 93, Sverige"
+  },
+  "58.3822,14.6822": {
+    "country": "Sverige",
+    "location_label": "Borghamnsvägen, Borghamn",
+    "place_full": "Borghamnsvägen, Rogslösa, Borghamn, Vadstena kommun, Östergötlands län, 592 93, Sverige"
+  },
+  "58.3826,14.6852": {
+    "country": "Sverige",
+    "location_label": "Borghamnsvägen, Borghamn",
+    "place_full": "Borghamnsvägen, Rogslösa, Borghamn, Vadstena kommun, Östergötlands län, 592 93, Sverige"
+  },
+  "58.383,14.6866": {
+    "country": "Sverige",
+    "location_label": "Borghamnsvägen, Borghamn",
+    "place_full": "Borghamnsvägen, Rogslösa, Borghamn, Vadstena kommun, Östergötlands län, 592 93, Sverige"
+  },
+  "58.383,14.6867": {
+    "country": "Sverige",
+    "location_label": "Borghamnsvägen, Borghamn",
+    "place_full": "Borghamnsvägen, Rogslösa, Borghamn, Vadstena kommun, Östergötlands län, 592 93, Sverige"
+  }
+}

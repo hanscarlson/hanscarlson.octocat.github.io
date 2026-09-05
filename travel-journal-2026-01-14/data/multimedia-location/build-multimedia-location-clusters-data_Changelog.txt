@@ -1,0 +1,165 @@
+BUILD MULTIMEDIA LOCATION CLUSTERS DATA — TRIP CHANGELOG (travel-journal-2026-01-14)
+========================================================================================
+
+This trip-specific execution history was split out of the combined
+build-multimedia-location-clusters-data_Instructions.txt in August 2026,
+when build-multimedia-location-clusters-data.js itself was moved to the
+shared travel-journals/scripts/javascript/ location (one copy now serves
+every trip). See scripts/javascript/build-multimedia-location-clusters-
+data_Instructions.txt for the generic mechanics, current CLI usage, and
+the general (non-trip-specific) design history. Everything in this file
+is specific to this trip's own catalog and cluster history.
+
+Update — GPS-less resolved_location fallback (option 2)
+-----------------------------------------------------------
+Query (verbatim)
+"remove entries from data/multimedia-location/multimedia-location-data.json"
+followed, after Claude reported that a normal run now produces zero
+clusters (every one of the 785 records in data/multimedia/
+multimedia-data.json at the time had multimedia_metadata.has_gps: false —
+the no-gps-location-resolver tool had already resolved 478 of them from
+caption text instead, and this script never looked at that field), by a
+choice among two options Claude offered: "option 2" — extend the script
+itself with a GPS-less fallback, rather than switching to the other
+script (build-multimedia-location-data.js).
+
+See the shared Instructions.txt's "What it does" for the fallback's
+current, generic description; this note covers what happened when it was
+first exercised against this trip's own catalog.
+
+Result of first run after this change
+-----------------------------------------
+Run against this trip's catalog: 28 clusters across 8 days (2026-01-14
+through 2026-01-22), all 28 via the new resolved_location fallback (0 via
+GPS — none of the 785 catalog records at the time had real device GPS),
+478 multimedia files clustered in total (matching the no-gps-location-
+resolver's cumulative resolved count at the time). data/multimedia-
+location/multimedia-location-data.json and its .js mirror, which had both
+been cleared to an empty array/array literal as part of the "remove
+entries" request above, were regenerated with this output — overview-
+description for every cluster written by Claude in the usual two-step,
+Claude-mediated process.
+
+Update — resolved_location clusters now carry real centroid_lat/centroid_lon
+------------------------------------------------------------------------------
+Query (verbatim, to the no-gps-location-resolver tool)
+"update and execute the travel-journal-2026-01-14/scripts/python/no-gps-
+location-resolver so that it creates a "centroid_lat" and a "centroid_lon"
+for each location that is used to populate the multimedia-location-
+data.json and update instructions"
+
+Resolved query
+Previously, every `location_source: "resolved_location"` cluster in this
+trip's data/multimedia-location/multimedia-location-data.json had
+centroid_lat/centroid_lon: null unconditionally — clusterFolder()'s
+GPS-less fallback path always pushed `lat: null, lon: null` for a
+label-grouped file, since a caption-inferred location has no device GPS
+of its own to measure. That was correct as far as it went, but it meant
+GPS-less clusters (all 31 of them, in this trip's catalog at the time)
+could never report a mappable position at all.
+
+scripts/python/no-gps-location-resolver/resolve_no_gps_locations.py was
+updated first (see that tool's own README.md changelog, "v4") to record
+each matched gazetteer landmark's own real-world centroid_lat/centroid_lon
+on resolved_location, and run against this trip's data/multimedia/
+multimedia-data.json to both resolve new records and backfill the 478
+already resolved by earlier runs. The clustering script was then updated
+to make use of that — see the shared Instructions.txt for what changed
+in the script itself; this note covers only the results of running it
+against this trip's data.
+
+Executed this session: ran resolve_no_gps_locations.py --in-place first
+(8 newly resolved, 478 backfilled with centroid_lat/centroid_lon only, 248
+skipped -- unrelated Jan 23-30 records outside this gazetteer's Iceland/
+Sweden coverage, not in scope here), then this script's usual two-step
+process (--list-clusters, then a synthesis file, reusing the 28 overview-
+description values already on record and writing 3 new ones for clusters
+that hadn't existed in a prior run -- photos/2026-01-23::0, photos/2026-
+01-30::0, photos/2026-01-30::1 -- since new resolved_location records had
+accumulated in multimedia-data.json since multimedia-location-data.json
+was last regenerated). Result: 31 clusters total, 30 with real
+centroid_lat/centroid_lon (up from 0 previously reporting one), 1 still
+null (the tectonic-exhibit cluster, correctly -- no confirmed coordinates
+exist for it). This trip's data/multimedia-location/multimedia-location-data.json
+and its .js runtime mirror were both regenerated with this output.
+
+Update — Stockholm leg clusters (Jan 23-26)
+------------------------------------------------
+Query (verbatim, to the no-gps-location-resolver tool)
+"extend gazetteer for that leg"
+(following up on the previous update's note that 248 Jan 23-30 records
+were still unresolved because the gazetteer only covered the trip's
+Iceland/Kiruna/Abisko/Jukkasjarvi leg)
+
+Resolved query
+scripts/python/no-gps-location-resolver/gazetteer.json (this trip's own
+copy) gained 25 new rules covering Stockholm (see that tool's own
+README.md changelog, "v5", for the full rule list and design notes) plus
+one keyword addition to abisko_sky_station. No changes were needed in the
+clustering script itself -- clusterFolder()'s GPS-less fallback already
+groups by exact resolved_location.location_label match and reads
+centroid_lat/centroid_lon generically, regardless of which gazetteer rule
+produced them.
+
+Executed this session: after the resolver ran (209 newly resolved, all
+with real coordinates), reran this script's usual two-step process. The
+new Stockholm/Vaxholm records changed 2026-01-23's own clustering (it
+previously held one single-file cluster; the resolver now separates its
+62 Royal-Palace-labeled files, its Riksdag/Storkyrkan/Tyska-kyrkan/
+National-Museum/Kungstradgarden singles, and a stockholm_generic
+catch-all into 9 clusters, and moved that same day's one already-existing
+ICEHOTEL WhatsApp-share cluster from cluster_idx 0 to cluster_idx 8) and
+added clusters to 2026-01-24, -25, and -26 (previously zero, since every
+record on those three days had been unresolved "no_gps" until this
+update). Because 2026-01-23's cluster_idx numbering shifted, the
+synthesis file's stale "photos/2026-01-23::0" entry (from the previous
+session, describing the ICEHOTEL photo) was discarded rather than reused
+-- reusing a synthesis file across a clustering change that alters
+cluster_idx assignments for a day is NOT safe (clustering is only
+deterministic between two runs of the SAME underlying catalog; the
+resolver run in between changed which records cluster together on
+2026-01-23, so a fresh --list-clusters + synthesis round-trip was
+required for every cluster, not just the new ones). Result: 63 clusters
+total (up from 31), 62 with real centroid_lat/centroid_lon (up from 30),
+695 multimedia files clustered (up from 486).
+
+Update — daily-location-gallery.html moved to common/
+------------------------------------------------------------------------------------------
+Query (verbatim, on the "move daily-location-gallery.html" task)
+"move travel-journal-2026-07-01/daily-location-gallery.html to the
+common folder"
+
+Followed by a clarifying answer: "travel-journal-2026-01-14 has its own
+separate (older) copy of daily-location-gallery.html, which won't have
+the day-jump links or British-voice change from last time. Should it
+also switch over to the common page now?" -> "Switch it to the common
+page too"
+
+This trip had its own independent, slightly older copy of daily-
+location-gallery.html (it never received the "First/Prev/Next/Last
+day-jump links + British female Read Aloud voice" update recorded in
+travel-journal-2026-07-01's own build-multimedia-location-clusters-data
+changelog, since that edit was made directly to that trip's copy only).
+On 2026-08-27 this trip's own copy was retired and it now points at the
+single shared common/daily-location-gallery.html instead (chosen via
+?trip=travel-journal-2026-01-14) -- the same page travel-journal-
+2026-07-01 uses, already carrying every update made to it, including the
+day-jump links and voice change this trip's old copy had been missing.
+This trip's own build-multimedia-location-clusters-data.js output
+(multimedia-location-data.json/.js) is unaffected -- the shared page
+still reads them the exact same way, just from one directory up.
+
+Going forward, changes to daily-location-gallery.html's own markup/CSS/JS
+are recorded in common/daily-location-gallery_Instructions.txt, not here.
+
+Update — August 2026, script became shared
+-----------------------------------------------
+build-multimedia-location-clusters-data.js itself moved to
+travel-journals/scripts/javascript/ (one copy for every trip); this
+trip's data/multimedia-location/multimedia-location-data.json, its .js
+mirror, and this changelog are unaffected and still live here. Every
+command now takes a required first argument naming the trip, e.g.:
+
+    node scripts/javascript/build-multimedia-location-clusters-data.js travel-journal-2026-01-14 --list-clusters <clusters-file>
+
+See the shared Instructions.txt for full current usage.

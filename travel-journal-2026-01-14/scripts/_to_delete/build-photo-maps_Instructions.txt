@@ -1,0 +1,279 @@
+BUILD PHOTO MAPS SCRIPT — INSTRUCTIONS
+=======================================
+
+What it does
+------------
+build-photo-maps.py turns every dated photos/YYYY-MM-DD/ folder into a
+single, portable editorial document: photoLocationDocument.html (a
+map-and-write-up page) plus mapPreview.png (a small thumbnail of the same
+map), written directly into that folder next to its photos.
+
+For each folder, it works out the story in this order:
+  1. Reads GPS coordinates (converted from EXIF's degrees/minutes/seconds
+     to decimal) and the DateTimeOriginal timestamp from every photo, and
+     from every video too if ffprobe is available.
+  2. Groups photos into "locations": shots taken within roughly 150
+     metres and close in time count as one stop, one numbered pin — not
+     one pin per photo.
+  3. Loads the researched historical/cultural write-up for each location
+     from photoMapsData/writeups/YYYY-MM-DD.json (one entry per stop,
+     written once by hand or by asking Claude to research it, then reused
+     every time the script reruns).
+  4. Renders photoLocationDocument.html: a sizable embedded Leaflet/
+     OpenStreetMap map with a numbered pin per location at the top, a
+     "🔊 Read Aloud" button next to the date line (see "Read Aloud" below),
+     followed by one section per location — place name, coordinates, the
+     write-up (max ~2 short paragraphs per stop), and a chronological
+     photo/video gallery for that stop. Photos with no GPS data are never
+     dropped silently — they're collected in an "Off the Map" section at
+     the end so you know to add coordinates manually if you want them
+     included. A folder whose media has NO usable GPS at all is skipped
+     entirely (there'd be nothing to put on a map); it's reported in the
+     run summary so you know to check it.
+  5. Also renders mapPreview.png, an 880x600 plain edge-to-edge crop of
+     that same real OpenStreetMap map — same tile colors, same numbered
+     pins and dashed route in the exact styling
+     photoLocationDocument.html's own embedded Leaflet map already uses.
+     No recoloring, no decorative frame, no compass — it's meant to read
+     as a screenshot of the real map, not a themed illustration of it
+     (index.html's own CSS already adds a border/rounded corners/shadow
+     when this thumbnail is displayed, so baking a second decorative
+     treatment into the file itself would be redundant). This needs
+     internet access to fetch map tiles; if that fails (no connection,
+     tiles blocked, sandboxed environment, etc.) it silently falls back to
+     a plain neutral placeholder instead (same pins/route, no real tiles),
+     so the script never blocks on network access. See "Real map tiles vs.
+     the schematic fallback" below if you're seeing the fallback version
+     and want the real one.
+
+Both output files stay inside the same dated folder as the source
+photos, so the whole folder — photos, HTML, and thumbnail together —
+stays portable if you move or share it.
+
+Where it lives
+---------------
+    travelJournal/
+      photos/            <- one YYYY-MM-DD folder per day; script writes
+                            photoLocationDocument.html + mapPreview.png
+                            into each one
+      photoMapsData/
+        writeups/YYYY-MM-DD.json   <- researched write-up per location
+        overrides.json             <- headline/leg-label/country per day
+      scripts/
+        build-photo-maps.py
+        build-photo-maps_Instructions.txt
+
+The script resolves photos/ and photoMapsData/ as siblings of its own
+parent folder (i.e. one level up from scripts/build-photo-maps.py). Run
+it from anywhere; paths are always relative to the script's own
+location, not your current directory. (organize_photos.py, this
+project's other Python script, used this same one-level-up convention
+until it moved to scripts/python/ — one level deeper — at which point
+its own project-root calculation was adjusted to match; see
+scripts/python/organize_photos_Instructions.txt.)
+
+How to run it
+--------------
+Requires Python 3.8+ with Pillow installed:
+
+    pip3 install Pillow
+
+ffprobe (part of ffmpeg) is optional — only needed to geo-locate
+.mp4/.mov clips. Videos are flagged "no GPS" if it isn't on PATH.
+
+1. Rebuild every dated folder:
+
+       python3 scripts/build-photo-maps.py
+
+2. Rebuild just one day:
+
+       python3 scripts/build-photo-maps.py 2026-07-09
+
+3. Check which locations still need research, without writing anything:
+
+       python3 scripts/build-photo-maps.py --list-missing
+
+   Add --json to get structured output instead (folder, cluster_idx,
+   centroid lat/lon, time range, photo count, sample filenames) with all
+   other output suppressed — meant for a script (or Claude) to consume
+   programmatically, not for reading yourself:
+
+       python3 scripts/build-photo-maps.py --list-missing --json
+
+   This is what powers the automated "research photo write-ups" workflow —
+   see "Researching write-ups automatically" below.
+
+4. List EVERY cluster for a folder — researched or not — with its full
+   photo filename list, as JSON:
+
+       python3 scripts/build-photo-maps.py --list-clusters 2026-07-09
+       python3 scripts/build-photo-maps.py --list-clusters   (every folder)
+
+   Unlike --list-missing (which only covers unresearched clusters and caps
+   each one at 5 sample filenames), this is meant for Claude to actually
+   open a cluster's photos and ground its write-up in what they show — see
+   "Enhancing narratives with photo subjects" below.
+
+Read Aloud
+------------
+Every photoLocationDocument.html has a "🔊 Read Aloud" button in its
+masthead, next to the date line. Click it and the browser reads the
+day's write-up aloud — each location's title, any "Unconfirmed"/landmark
+note, then its prose paragraphs, in order — using the Web Speech API
+(SpeechSynthesis) already built into the browser. No server, no network,
+no external service: just whatever voice the browser/OS already has.
+
+As each piece is read, the page auto-scrolls it into view and gives it a
+soft brass highlight, so you can follow along visually while it's spoken,
+then moves on to the next piece automatically. Click the button again
+(it relabels itself "⏹ Stop Reading" while active) to stop immediately —
+the highlight clears right away.
+
+Only the title/note/prose text is read — not coordinates, time, photo
+counts, photo captions, or the footer. Nothing needs configuring: this is
+baked into every photoLocationDocument.html build-photo-maps.py writes,
+with no separate flag or step.
+
+The button only ever appears on browsers that actually support
+speechSynthesis (checked by the page's own JS before unhiding it) — on
+the rare browser without it, there's simply no button, rather than one
+that does nothing when clicked. There's no server-side fallback for this;
+speech synthesis has to come from the browser/OS itself.
+
+Real map tiles vs. the schematic fallback
+--------------------------------------------
+On your own machine, with ordinary internet access, mapPreview.png just
+gets the real OpenStreetMap tile version automatically — nothing to do.
+
+If you're asking Claude to run this script, though, mapPreview.png will
+always come out as the plain neutral-placeholder fallback instead of the
+real map. That's not a bug and not something Claude can currently
+fix on its own: Claude's tool sandbox can't reach tile.openstreetmap.org
+directly, and — unlike, say, Google Drive or Calendar, which Claude can
+reach through a proper connector — there's no working bridge for map
+tiles specifically. Claude's browser tools do have normal internet access
+and technically can fetch a tile image, but handing that fetched image
+data back to Claude is itself blocked, by design, as a safeguard against
+exfiltrating binary data through browser automation. So neither path
+(sandbox or browser) currently gets a real tile image into Claude's hands.
+
+If you want the real-tile version, run the script yourself:
+
+    python3 scripts/build-photo-maps.py               # every day
+    python3 scripts/build-photo-maps.py 2026-07-09     # just one day
+
+Two more flags exist as a general escape hatch for this situation
+(regardless of *why* the network is unreachable — sandbox, an offline
+laptop, a restrictive proxy, whatever), for whoever has some other way to
+get tile images onto disk:
+
+    python3 scripts/build-photo-maps.py --list-tiles 2026-07-09
+        Prints (as JSON) the exact center/zoom/tile-URL list mapPreview.png
+        would need for that one folder, then exits without writing
+        anything.
+
+    python3 scripts/build-photo-maps.py 2026-07-09 --tile-cache DIR
+        Rebuilds that folder using any <zoom>_<x>_<y>.png tiles already
+        present in DIR, only hitting the network for tiles not already
+        cached (and caching what it does fetch there for next time).
+
+Neither flag is a working Claude-automation pipeline today — they're
+there so a human with tiles in hand (from any source) can feed them in.
+
+Adding a new day or new photos
+-------------------------------
+Drop photos/videos into photos/YYYY-MM-DD/ (create the folder if it's a
+new date) and run the script. It always produces a document — locations
+that don't have researched text yet get an honest, clearly-labeled
+placeholder paragraph instead of invented history, so the script never
+blocks on unresearched days. To add the real write-up:
+  1. Run --list-missing (or check the run summary) to see which
+     folder/cluster indices need research.
+  2. Add or edit photoMapsData/writeups/YYYY-MM-DD.json — one entry per
+     location, keyed by cluster_idx (see an existing file for the exact
+     shape: location_label, place_full, landmark_confirmed,
+     landmark_note, same_stop_as_cluster_idx, paragraphs). Or ask Claude
+     to research and fill it in (see below).
+  3. Rerun the script.
+
+Researching write-ups automatically
+--------------------------------------
+Instead of steps 1-2 above, ask Claude to "research photo write-ups" (or
+similar) and it will do the whole thing end to end: run
+--list-missing --json to find every unresearched (or newly re-clustered)
+location, research each one, and apply the results by running
+    node scripts/apply-photo-writeups.js <researched-file>
+which merges the new write-ups into photoMapsData/writeups/*.json and
+automatically reruns this script for every folder it touched, then
+rebuilds the journal. See apply-photo-writeups_Instructions.txt for the
+full two-step, Claude-mediated workflow (same shape as refresh-notes.js)
+— including the reminder it prints about mapPreview.png needing a real
+run afterward on your own machine (see "Real map tiles vs. the schematic
+fallback" above; the same limitation applies here since this workflow
+also rebuilds photoLocationDocument.html + mapPreview.png).
+Headline / leg-label / country text per day lives in
+photoMapsData/overrides.json; any day not listed there falls back to an
+auto-generated headline built from the researched place names.
+
+Enhancing narratives with photo subjects
+-------------------------------------------
+GPS coordinates and web research get a write-up's facts right, but they
+can't tell you what a photo actually shows — and an existing write-up's
+story can be perfectly plausible and still not match what's in the
+pictures. Ask Claude to "use the photos to enhance the narrative" (or
+similar) and it will:
+  1. Run --list-clusters (above) to get every cluster's full filename list
+     for the folder(s) in question — not just the unresearched ones.
+  2. Open a representative handful of photos per cluster (the Read tool
+     displays images natively) and note concrete, specific things they
+     depict — a named landmark, an inscription, a particular view, an
+     object or activity — that generic location history wouldn't capture.
+  3. Write (or correct) that cluster's entry the same way "Researching
+     write-ups automatically" does, then apply it with
+       node scripts/apply-photo-writeups.js <file>
+     which upserts by cluster_idx — so correcting a mislabeled entry works
+     exactly the same as filling in a fresh one, no separate flag or step.
+This is additive to, not a replacement for, coordinate-based research:
+most write-ups still lead with where and when; the photo-grounded detail
+sharpens what's already there rather than replacing it. The same
+research bar applies as everywhere else — see
+apply-photo-writeups_Instructions.txt's "Enhancing narratives with photo
+subjects" section for the full workflow and the honesty bar it holds to.
+
+Identifying artwork in churches and museums
+------------------------------------------------
+A photo taken inside a church or museum is exactly where photo-grounded
+narrative pays off most: a specific altarpiece, painting, sculpture, or
+other named artwork that GPS coordinates and generic location history
+can never surface on their own, and that sometimes identifies itself —
+a signature, an inscribed motto, a date, a museum label — right there in
+the photo. Ask Claude to "identify artwork in the churches and museums"
+(or similar) and it runs the same --list-clusters-driven workflow above,
+specifically looking at interior/gallery photos and reading whatever the
+object itself says before reaching for outside sources to confirm or add
+context. An identification based only on what's legible in the photo
+(rather than an independently verified catalog entry) is labeled as such
+in landmark_note, not asserted as settled fact — this can also catch
+outright mislabeled clusters, where an existing write-up's story is
+plausible on paper but simply doesn't match what the photos show once
+someone actually looks.
+
+Merging nearby clusters into one location
+-------------------------------------------
+The 150m/time clustering is automatic, but judgment calls about what
+counts as "the same stop" (e.g. a viewpoint and the cove just below it)
+are made in the write-up JSON, not the script: set a later cluster's
+same_stop_as_cluster_idx to an earlier cluster's index, and it folds into
+that location's article as a sub-section (its own sub-heading and photo
+gallery) under one shared map pin, instead of getting a separate pin.
+
+Notes and safety
+-----------------
+- Nothing under photos/ is ever deleted, moved, or renamed — the script
+  only ever writes photoLocationDocument.html and mapPreview.png inside
+  each dated folder.
+- A day with no GPS data at all produces no document (there's nothing to
+  map) but is reported by name in the run summary, so it never fails
+  silently.
+- Landmarks the research couldn't confirm are always labeled as such in
+  the document itself (an "Unconfirmed" note), rather than guessed at.

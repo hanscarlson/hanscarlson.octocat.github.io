@@ -1,0 +1,206 @@
+window.EVENTS_DATA = {
+  "generatedAt": "2026-08-21T22:32:07.463Z",
+  "range": {
+    "start": "2026-01-14",
+    "end": "2026-01-31"
+  },
+  "sourceCalendars": [
+    "Birthdays",
+    "Events Hans",
+    "Holidays in Sweden",
+    "Travel",
+    "Victoria Arthaud"
+  ],
+  "priorityOrder": [
+    "Events Hans",
+    "Travel",
+    "Birthdays",
+    "Holidays in Sweden",
+    "Victoria Arthaud"
+  ],
+  "events": {
+    "2026-01-14": [
+      {
+        "time": "5:00 PM EST",
+        "title": "Reservation at Seafood Grill",
+        "cal": "Travel",
+        "description": "conf #8292860"
+      }
+    ],
+    "2026-01-15": [
+      {
+        "time": "6:00 PM EST",
+        "title": "bells",
+        "cal": "Victoria Arthaud"
+      },
+      {
+        "time": "8:00 PM EST",
+        "title": "Restaurant Höfnin Restaurant",
+        "cal": "Travel",
+        "description": "Your confirmation number is #8292949"
+      }
+    ],
+    "2026-01-16": [
+      {
+        "time": "All Day",
+        "title": "Stay at Radisson Blu Arlandia Hotel (thru Jan 17)",
+        "cal": "Events Hans",
+        "description": "To see detailed information for automatically created events like this one, use the official Google Calendar app. https://g.co/calendar\n\nThis event was created from an email you received in Gmail. https://mail.google.com/mail?extsrc=cal&plid=ACUX6DP0uxsR6ITlFY0wIFhJ9LVhSAXYyMEK244"
+      },
+      {
+        "time": "7:35 AM EST",
+        "title": " Iceland Air - Reykjavík KEF to Stockholm ARN",
+        "cal": "Travel",
+        "description": "Booking BCTAD5\nFlight FI306"
+      },
+      {
+        "time": "8:35 AM CET",
+        "title": "Flight to Stockholm (FI 306)",
+        "cal": "Events Hans",
+        "description": "To see detailed information for automatically created events like this one, use the official Google Calendar app. https://g.co/calendar\n\nThis event was created from an email you received in Gmail. https://mail.google.com/mail?extsrc=cal&plid=ACUX6DMurIxaos_JWAqSFam8xitZEPXEb9Z7ur0"
+      },
+      {
+        "time": "11:00 AM EST",
+        "title": "Reservation at Båthuset Krog Bar",
+        "cal": "Events Hans",
+        "description": "To see detailed information for automatically created events like this one, use the official Google Calendar app. https://g.co/calendar\n\nThis event was created from an email you received in Gmail. https://mail.google.com/mail?extsrc=cal&plid=ACUX6DNiAHWa1EG-4IN85qHctncHWjytQticOVY"
+      },
+      {
+        "time": "2:00 PM EST",
+        "title": "Stay at Radisson Blu Arlandia Hotel, Stockholm-Arlanda (thru Jan 17)",
+        "cal": "Travel",
+        "description": "Check-in: 2026-01-16 14:00\nCheck-out: 2026-01-17 12:00"
+      }
+    ],
+    "2026-01-17": [
+      {
+        "time": "All Day",
+        "title": "Stay at Elite Hotel Frost, Kiruna (thru Jan 22)",
+        "cal": "Events Hans",
+        "description": "To see detailed information for automatically created events like this one, use the official Google Calendar app. https://g.co/calendar\n\nThis event was created from an email you received in Gmail. https://mail.google.com/mail?extsrc=cal&plid=ACUX6DMvdtAUBXEc5NFwm_O-jJdMeVMBCFghWtM"
+      },
+      {
+        "time": "3:45 AM EST",
+        "title": "Flight to Kiruna (SK 1042)",
+        "cal": "Events Hans",
+        "description": "To see detailed information for automatically created events like this one, use the official Google Calendar app. https://g.co/calendar\n\nThis event was created from an email you received in Gmail. https://mail.google.com/mail?extsrc=cal&plid=ACUX6DPp1f9gmKZLSsCbq1DRDq94bgyG-Klh6Kk"
+      },
+      {
+        "time": "12:00 PM EST",
+        "title": "Snowmobile Aurora Expedition with Dinner with Kiruna Guidetur",
+        "cal": "Events Hans",
+        "description": "Booking #327904951\n\nView details: https://fareharbor.com/embeds/book/kirunaguidetur/items/563377/booking/cdd56e24-f4c7-4504-b31b-b6a6b7df36e0/"
+      }
+    ],
+    "2026-01-19": [
+      {
+        "time": "All Day",
+        "title": "Lain and Skip Wagner, (and Linda Carlson)'s birthday",
+        "cal": "Birthdays",
+        "description": "This is Lain and Skip Wagner, (and Linda Carlson)'s birthday!"
+      }
+    ],
+    "2026-01-22": [
+      {
+        "time": "All Day",
+        "title": "Stay at Nobis Hotel Stockholm (thru Jan 26)",
+        "cal": "Events Hans",
+        "description": "To see detailed information for automatically created events like this one, use the official Google Calendar app. https://g.co/calendar\n\nThis event was created from an email you received in Gmail. https://mail.google.com/mail?extsrc=cal&plid=ACUX6DM-ib7_Z9YHA2fqJC5aEOhhnQAAWjBJQx8"
+      },
+      {
+        "time": "All Day",
+        "title": "Nobis Hotel Stockholm (thru Jan 26)",
+        "cal": "Travel"
+      },
+      {
+        "time": "All Day",
+        "title": "per and susane",
+        "cal": "Victoria Arthaud"
+      },
+      {
+        "time": "4:35 AM EST",
+        "title": "Flight to Stockholm (SK 1041)",
+        "cal": "Events Hans",
+        "description": "To see detailed information for automatically created events like this one, use the official Google Calendar app. https://g.co/calendar\n\nThis event was created from an email you received in Gmail. https://mail.google.com/mail?extsrc=cal&plid=ACUX6DPp1f9gmKZLSsCbq1DRDq94bgyG-Klh6Kk"
+      },
+      {
+        "time": "6:00 PM EST",
+        "title": "bells",
+        "cal": "Victoria Arthaud"
+      },
+      {
+        "time": "6:30 PM EST",
+        "title": "Meet Per and Sussanne for dinner",
+        "cal": "Travel"
+      }
+    ],
+    "2026-01-24": [
+      {
+        "time": "All Day",
+        "title": "Catherine bday",
+        "cal": "Victoria Arthaud"
+      }
+    ],
+    "2026-01-26": [
+      {
+        "time": "12:45 PM CET",
+        "title": "Flight to Reykjavik (FI 307)",
+        "cal": "Events Hans",
+        "description": "To see detailed information for automatically created events like this one, use the official Google Calendar app. https://g.co/calendar\n\nThis event was created from an email you received in Gmail. https://mail.google.com/mail?extsrc=cal&plid=ACUX6DOjxJ4Ptq9eGZYn_5BasbyacS2YqPtUnrs"
+      },
+      {
+        "time": "12:45 PM CET",
+        "title": " Iceland Air - Stockholm ARN to Reykjavík KEF",
+        "cal": "Travel",
+        "description": "Booking BCTAD5\nFlight FI307"
+      },
+      {
+        "time": "5:00 PM GMT",
+        "title": " Iceland Air - Reykjavík KEF to Baltimore BWI",
+        "cal": "Travel",
+        "description": "Booking BCTAD5\nFlight FI643"
+      },
+      {
+        "time": "6:00 PM CET",
+        "title": "Flight to Washington (FI 643) (thru Jan 27)",
+        "cal": "Events Hans",
+        "description": "To see detailed information for automatically created events like this one, use the official Google Calendar app. https://g.co/calendar\n\nThis event was created from an email you received in Gmail. https://mail.google.com/mail?extsrc=cal&plid=ACUX6DOjxJ4Ptq9eGZYn_5BasbyacS2YqPtUnrs"
+      }
+    ],
+    "2026-01-28": [
+      {
+        "time": "8:00 AM EST",
+        "title": "Raging reef",
+        "cal": "Victoria Arthaud"
+      }
+    ],
+    "2026-01-29": [
+      {
+        "time": "6:00 PM EST",
+        "title": "bells",
+        "cal": "Victoria Arthaud"
+      }
+    ],
+    "2026-01-31": [
+      {
+        "time": "4:00 PM EST",
+        "title": "pedalers winter gathering",
+        "cal": "Victoria Arthaud"
+      }
+    ]
+  },
+  "duplicatesSkipped": [
+    {
+      "date": "2026-01-26",
+      "title": " Iceland Air - Reykjavík KEF to Baltimore BWI",
+      "keptCal": "Travel",
+      "droppedCal": "Victoria Arthaud"
+    },
+    {
+      "date": "2026-01-26",
+      "title": " Iceland Air - Stockholm ARN to Reykjavík KEF",
+      "keptCal": "Travel",
+      "droppedCal": "Victoria Arthaud"
+    }
+  ]
+};

@@ -1,0 +1,12 @@
+all python script with instructions are in scripts/python folder
+all javascript scripts with instructions are in scripts/javascript folder
+all project data is in data folder
+
+1. run scripts/python/organize_photos.py
+	Moves all files in the photos-unsorted folder and moves them to the appropriate photos/* folder by metadata date, file name date, or system date
+2. run scripts/python/build-multimedia-data.py
+	script that creates the data/multimedia/multimedia-data.json
+- make sure relative location and subject descriptions are completed
+3. run script that creates the data/multimedia-location/multimedia-location-data.json
+4. run script to create data/dailyNotes/daily-notes-data.json
+5. run script to create data/events/events-data.json

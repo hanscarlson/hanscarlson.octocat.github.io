@@ -1,0 +1,125 @@
+BUILD MULTIMEDIA DATA — TRIP CHANGELOG (travel-journal-2026-01-14)
+========================================================================
+
+This trip-specific execution history was split out of the combined
+build-multimedia-data_Instructions.txt in August 2026, when
+build-multimedia-data.py itself was moved to the shared
+travel-journals/scripts/python/ location (one copy now serves every
+trip). See scripts/python/build-multimedia-data_Instructions.txt for the
+generic mechanics, current CLI usage, and the general (non-trip-specific)
+explanation of the bugfix referenced below. Everything in this file is
+specific to this trip's own catalog history.
+
+Initial build
+---------------
+Executed: rewrote the script (to add internet reverse geocoding and the
+subject/subject_description split — see the shared Instructions.txt's
+"Original query" / "Updated query" / "Claude's resolved query" sections
+for that design history), ran it across all 16 dated folders (233 entries
+total, same set as before), and confirmed the migration path correctly
+converted every previously-written plain-string subject_description into
+{standard: <that text>, monty_python: null} — none of that earlier
+research work was lost. resolved_location came back "geocode_unavailable"
+for all 186 GPS-tagged files this run, exactly as expected inside
+Claude's sandbox. Filling in subject, the remaining standard
+descriptions, and every monty_python rewrite was ongoing, separately-
+paced work from there — 233 files across 16 days, each needing individual
+attention for up to three separate pieces of content.
+
+Update — fixed: rebuilding used to silently wipe no-gps-location-resolver results
+------------------------------------------------------------------------------------
+Your query (verbatim)
+"update travel-journal-2026-01-14/data/multimedia/multimedia-data.json"
+
+Claude's resolved query
+Ran this script with no arguments (a full rebuild) to fulfil that request.
+It overwrote every record's resolved_location that had source
+"subject_inferred" — the field scripts/python/no-gps-location-resolver/
+writes by matching landmark names in caption text for files with no GPS —
+back to "no_gps", discarding 695 records' worth of location work (486
+from earlier sessions, 209 from the Stockholm gazetteer extension earlier
+this session) in one run. This was a genuine bug in build(), not intended
+behavior: load_existing_datafile()'s merge logic only ever special-cased
+`prior resolved_location.source == "internet_geocode"` when deciding
+whether to keep a prior run's resolved_location over a fresh
+recomputation. A "subject_inferred" record has no GPS at all -- that's
+the entire reason the resolver had to infer it from text in the first
+place -- so a fresh run of THIS script can only ever recompute "no_gps"
+for it, never anything better. Nothing in the merge logic accounted for
+that, so every plain rerun silently regressed every resolver-inferred
+location.
+
+Fixed in build(): prior_source == "subject_inferred" is now always kept,
+unconditionally (unlike the internet_geocode case, there's no scenario
+where the fresh recomputation is preferable). See the shared
+Instructions.txt's "Fixed: rebuilding used to silently wipe
+no-gps-location-resolver results" section, and the inline comment at that
+check in the script itself, for the full reasoning. This fix now applies
+to every trip, not just this one.
+
+Recovery this session: restored data/multimedia/multimedia-data.json from
+its own .bak (785 records, 486 resolved -- the state from just before the
+Stockholm gazetteer extension's --in-place run), then reran
+scripts/python/no-gps-location-resolver/resolve_no_gps_locations.py
+--in-place against it with the current (Stockholm-extended) gazetteer.
+Since that tool's matching is purely text-based against subject/
+subject_description content -- both fully intact throughout, since this
+script's own subject/subject_description preservation was never the bug
+-- this reproduced the exact same 695-record resolved state (all with
+centroid_lat/centroid_lon) without needing to touch photos/ at all.
+data/multimedia-location/multimedia-location-data.json was never touched
+by the original mistaken run and needed no repair.
+
+Also noted, NOT acted on: this run's own catalog scan reported 757
+entries against photos/ on disk, and 2026-01-30/2026-01-31 flickered
+between existing-with-content, existing-empty, and not-existing-at-all
+across consecutive `ls` calls a few seconds apart on the user's own
+machine during this session -- something (the user, a sync process, or
+another script) appears to have been actively reorganizing that part of
+photos/ concurrently. Given that, this session deliberately did not
+rerun a full catalog rebuild against a moving target; data/multimedia/
+multimedia-data.json was restored to the 785-record/16-day state that
+matches data/multimedia-location/multimedia-location-data.json and
+photos/2026-01-14 through photos/2026-01-27 as currently listable on
+disk. A rebuild to pick up 2026-01-30/31 (or whatever that folder settles
+into) should wait until that part of photos/ is confirmed stable.
+
+Update -- describing the 62 files a later rebuild picked up, and removing
+2026-01-31 from the catalog:
+
+A subsequent full rebuild (once photos/2026-01-16 through photos/2026-01-27
+were confirmed stable) picked up 62 new files: 1 in photos/2026-01-16, 9 in
+photos/2026-01-22, 1 in photos/2026-01-24, and 51 in photos/2026-01-31.
+subject/subject_description were written and applied via
+--apply-descriptions for the first 11 (the ones actually viewable on disk),
+bringing the catalog to 796 records / 695 subject_inferred / 101 no_gps.
+
+The 51 photos/2026-01-31 files could not be described: that folder was
+gone from the mount entirely by the time this ran (confirmed with a plain
+`ls` of photos/, not just the earlier flickering `os.path.exists` checks --
+the user had removed those photos). At the user's request, all 51
+photos/2026-01-31 entries were deleted outright from
+data/multimedia/multimedia-data.json (not left pending), via a one-off
+script filtering out relative_folder == "photos/2026-01-31" and
+re-writing the file with the same json.dump(..., indent=2,
+ensure_ascii=False) formatting build() uses. Final state: 745 records /
+695 subject_inferred / 50 no_gps / 0 pending. None of the removed entries
+had ever been resolved or clustered, so
+data/multimedia-location/multimedia-location-data.json needed no changes.
+
+If photos/2026-01-31 (or 2026-01-30, similarly absent) reappears on disk
+later, a plain rerun of this script will re-catalog whatever's there as
+new entries -- there's no special-case exclusion for that folder, it was
+just a data delete, not a code change.
+
+Update — August 2026, script became shared
+-----------------------------------------------
+build-multimedia-data.py itself moved to travel-journals/scripts/python/
+(one copy for every trip); this trip's data/multimedia/multimedia-data.json,
+geocode-cache.json, and this changelog are unaffected and still live
+here. Every command now takes a required first argument naming the trip,
+e.g.:
+
+    python3 scripts/python/build-multimedia-data.py travel-journal-2026-01-14
+
+See the shared Instructions.txt for full current usage.

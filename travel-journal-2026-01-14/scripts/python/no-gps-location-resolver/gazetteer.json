@@ -1,0 +1,620 @@
+[
+  {
+    "id": "hallgrimskirkja_tower",
+    "_comment": "Must be checked before skolavordustigur/hallgrimskirkja_plaza: photos taken FROM the tower often also mention the street or just 'church' generically. Match on the specific phrase '...'s tower' rather than the bare word 'tower', since the church's exterior architecture is itself often described as a 'tower'.",
+    "requires_any": [
+      "hallgrímskirkja's tower",
+      "hallgrimskirkja's tower",
+      "hallgrímskirkja's observation tower",
+      "hallgrimskirkja's observation tower"
+    ],
+    "location_label": "Hallgrímstorg",
+    "place_full": "Hallgrímskirkja observation tower, Hallgrímstorg, 101, Reykjavík, Höfuðborgarsvæði, Iceland",
+    "country": "Iceland",
+    "centroid_lat": 64.1417,
+    "centroid_lon": -21.9266
+  },
+  {
+    "id": "skolavordustigur",
+    "_comment": "Checked before hallgrimskirkja_plaza: photos ON this street often mention Hallgrimskirkja as the view at the end of the street, but the street is the actual subject/location.",
+    "requires_any": [
+      "Skólavörðustígur",
+      "Skolavordustigur"
+    ],
+    "location_label": "Skólavörðustígur",
+    "place_full": "Skólavörðustígur, 101, Reykjavík, Höfuðborgarsvæði, Iceland",
+    "country": "Iceland",
+    "centroid_lat": 64.144,
+    "centroid_lon": -21.932
+  },
+  {
+    "id": "hallgrimskirkja_plaza",
+    "requires_any": [
+      "Hallgrímskirkja",
+      "Hallgrimskirkja"
+    ],
+    "location_label": "Hallgrímstorg",
+    "place_full": "Hallgrímskirkja, Hallgrímstorg, 101, Reykjavík, Höfuðborgarsvæði, Iceland",
+    "country": "Iceland",
+    "centroid_lat": 64.1417,
+    "centroid_lon": -21.9266
+  },
+  {
+    "id": "yule_cat",
+    "requires_any": [
+      "Jólakötturinn",
+      "Jolakotturinn",
+      "Yule Cat"
+    ],
+    "location_label": "Lækjargata",
+    "place_full": "Jólakötturinn (Yule Cat) sculpture, Lækjargata, 101, Reykjavík, Höfuðborgarsvæði, Iceland",
+    "country": "Iceland",
+    "centroid_lat": 64.1466,
+    "centroid_lon": -21.9412
+  },
+  {
+    "id": "sun_voyager",
+    "requires_any": [
+      "Sólfar",
+      "Solfar",
+      "Sun Voyager",
+      "Faxaflói",
+      "Faxafloi"
+    ],
+    "location_label": "Sæbraut",
+    "place_full": "Sólfar (Sun Voyager), Sæbraut, 101, Reykjavík, Höfuðborgarsvæði, Iceland",
+    "country": "Iceland",
+    "centroid_lat": 64.1419,
+    "centroid_lon": -21.92
+  },
+  {
+    "id": "golden_circle_tectonic_exhibit",
+    "requires_any": [
+      "tectonic",
+      "continental plate",
+      "continental plates"
+    ],
+    "location_label": "Suðurlandsvegur",
+    "place_full": "Indoor tectonic-plate boundary exhibit, Golden Circle route, Suðurland, Iceland",
+    "country": "Iceland",
+    "centroid_lat": null,
+    "centroid_lon": null,
+    "_coord_comment": "centroid intentionally null: this is an unnamed indoor exhibit somewhere along the Golden Circle route, not a mappable standalone landmark -- no confirmed coordinates exist for it, so none are fabricated here."
+  },
+  {
+    "id": "laugarvatn",
+    "_comment": "Checked before thingvellir: a caption can say 'near Laugarvatn ... en route to Thingvellir' — the actual pictured place is Laugarvatn.",
+    "requires_any": [
+      "Laugarvatn"
+    ],
+    "location_label": "Laugarvatn",
+    "place_full": "Near Laugarvatn, Bláskógabyggð, Suðurland, Iceland",
+    "country": "Iceland",
+    "centroid_lat": 64.2145,
+    "centroid_lon": -20.7332
+  },
+  {
+    "id": "kerid",
+    "requires_any": [
+      "Kerið",
+      "Kerid"
+    ],
+    "location_label": "Kerið",
+    "place_full": "Kerið crater, Grímsnes- og Grafningshreppur, Suðurland, Iceland",
+    "country": "Iceland",
+    "centroid_lat": 64.0442,
+    "centroid_lon": -20.8811
+  },
+  {
+    "id": "fridheimar",
+    "requires_any": [
+      "Friðheimar",
+      "Fridheimar"
+    ],
+    "location_label": "Friðheimar",
+    "place_full": "Friðheimar, Reykholt, Bláskógabyggð, Suðurland, Iceland",
+    "country": "Iceland",
+    "centroid_lat": 64.1509,
+    "centroid_lon": -20.5703
+  },
+  {
+    "id": "gullfoss",
+    "requires_any": [
+      "Gullfoss"
+    ],
+    "location_label": "Gullfoss",
+    "place_full": "Gullfoss waterfall, Bláskógabyggð, Suðurland, Iceland",
+    "country": "Iceland",
+    "centroid_lat": 64.3272,
+    "centroid_lon": -20.1328
+  },
+  {
+    "id": "geysir",
+    "requires_any": [
+      "Geysir",
+      "Strokkur",
+      "Haukadalur"
+    ],
+    "location_label": "Geysir",
+    "place_full": "Geysir geothermal field, Haukadalur, Bláskógabyggð, Suðurland, Iceland",
+    "country": "Iceland",
+    "centroid_lat": 64.3127,
+    "centroid_lon": -20.3009
+  },
+  {
+    "id": "thingvellir",
+    "requires_any": [
+      "Þingvellir",
+      "Thingvellir",
+      "Almannagja",
+      "Almannagjá",
+      "Öxarárfoss",
+      "Oxararfoss",
+      "Þingvallavatn",
+      "Thingvallavatn",
+      "Þingvallakirkja",
+      "Thingvallakirkja"
+    ],
+    "location_label": "Þingvellir",
+    "place_full": "Þingvellir National Park, Bláskógabyggð, Suðurland, Iceland",
+    "country": "Iceland",
+    "centroid_lat": 64.2553,
+    "centroid_lon": -21.1254
+  },
+  {
+    "id": "reykjavik_generic",
+    "_comment": "Fallback: must stay last. Catches records (e.g. an unnamed restaurant) that only mention the city, once every more specific rule above has had a chance to match.",
+    "requires_any": [
+      "Reykjavík",
+      "Reykjavik"
+    ],
+    "location_label": "Reykjavík",
+    "place_full": "101 Reykjavík, Höfuðborgarsvæði, Iceland",
+    "country": "Iceland",
+    "centroid_lat": 64.1466,
+    "centroid_lon": -21.9426
+  },
+  {
+    "id": "kiruna_airport",
+    "requires_any": [
+      "Kiruna Airport"
+    ],
+    "location_label": "Kiruna Airport",
+    "place_full": "Kiruna Airport (KRN), Kiruna, Norrbotten, Sweden",
+    "country": "Sweden",
+    "centroid_lat": 67.8219,
+    "centroid_lon": 20.3364
+  },
+  {
+    "id": "kiruna_downtown",
+    "requires_any": [
+      "downtown Kiruna"
+    ],
+    "location_label": "Kiruna",
+    "place_full": "Downtown Kiruna, Norrbotten, Sweden",
+    "country": "Sweden",
+    "centroid_lat": 67.8558,
+    "centroid_lon": 20.2253
+  },
+  {
+    "id": "jukkasjarvi_icehotel",
+    "requires_any": [
+      "ICEHOTEL",
+      "Icehotel",
+      "Ice Hotel"
+    ],
+    "location_label": "ICEHOTEL",
+    "place_full": "ICEHOTEL, Marknadsvägen, Jukkasjärvi, Norrbotten, Sweden",
+    "country": "Sweden",
+    "centroid_lat": 67.8498,
+    "centroid_lon": 20.595
+  },
+  {
+    "id": "jukkasjarvi_church",
+    "requires_any": [
+      "Jukkasjarvi Church",
+      "Jukkasjärvi Church"
+    ],
+    "location_label": "Jukkasjärvi kyrka",
+    "place_full": "Jukkasjärvi Church (Jukkasjärvi kyrka), Jukkasjärvi, Norrbotten, Sweden",
+    "country": "Sweden",
+    "centroid_lat": 67.858,
+    "centroid_lon": 20.5947
+  },
+  {
+    "id": "jukkasjarvi_reindeer_farm",
+    "requires_any": [
+      "Sami reindeer farm",
+      "reindeer herd",
+      "reindeer farm",
+      "Nutti Sami Siida",
+      "reindeer-hide sled",
+      "reindeer-hide-lined sledge",
+      "ice fishing",
+      "lavvu"
+    ],
+    "location_label": "Nutti Sami Siida",
+    "place_full": "Nutti Sami Siida reindeer farm, Jukkasjärvi, Norrbotten, Sweden",
+    "country": "Sweden",
+    "centroid_lat": 67.8556,
+    "centroid_lon": 20.5883
+  },
+  {
+    "id": "vana_spa",
+    "requires_any": [
+      "VANA SPA",
+      "Vana Spa"
+    ],
+    "location_label": "Vana Spa",
+    "place_full": "Vana Spa, Elite Hotel Frost, Kiruna, Norrbotten, Sweden",
+    "country": "Sweden",
+    "centroid_lat": 67.8553,
+    "centroid_lon": 20.2255
+  },
+  {
+    "id": "abisko_sky_station",
+    "_comment": "Checked before abisko_generic/kiruna_generic: an Abisko route map screenshot also mentions 'Kiruna' as the starting point.",
+    "requires_any": [
+      "Aurora Sky Station",
+      "Mount Nuolja",
+      "Linbana",
+      "Aurora Skystation"
+    ],
+    "location_label": "Aurora Sky Station",
+    "place_full": "Aurora Sky Station, Mount Nuolja, Abisko, Norrbotten, Sweden",
+    "country": "Sweden",
+    "centroid_lat": 68.3546,
+    "centroid_lon": 18.7894
+  },
+  {
+    "id": "abisko_lake",
+    "requires_any": [
+      "Lake Tornetrask",
+      "Torneträsk"
+    ],
+    "location_label": "Lake Torneträsk",
+    "place_full": "Lake Torneträsk, Abisko National Park, Norrbotten, Sweden",
+    "country": "Sweden",
+    "centroid_lat": 68.36,
+    "centroid_lon": 18.78
+  },
+  {
+    "id": "abisko_generic",
+    "_comment": "Fallback for Abisko: must be checked before kiruna_generic (route screenshots mention both place names).",
+    "requires_any": [
+      "Abisko"
+    ],
+    "location_label": "Abisko",
+    "place_full": "Abisko National Park, Norrbotten, Sweden",
+    "country": "Sweden",
+    "centroid_lat": 68.3554,
+    "centroid_lon": 18.7831
+  },
+  {
+    "id": "jukkasjarvi_generic",
+    "_comment": "Fallback for Jukkasjarvi: catches reindeer-farm/ICEHOTEL-area photos that mention the town but not a rule above's specific keyword.",
+    "requires_any": [
+      "Jukkasjarvi",
+      "Jukkasjärvi"
+    ],
+    "location_label": "Jukkasjärvi",
+    "place_full": "Jukkasjärvi, Norrbotten, Sweden",
+    "country": "Sweden",
+    "centroid_lat": 67.8578,
+    "centroid_lon": 20.5942
+  },
+  {
+    "id": "kiruna_generic",
+    "_comment": "Broadest fallback for this trip leg: must stay after abisko_* and jukkasjarvi_* rules, and after kiruna_airport/kiruna_downtown.",
+    "requires_any": [
+      "Kiruna"
+    ],
+    "location_label": "Kiruna",
+    "place_full": "Near Kiruna, Norrbotten, Sweden",
+    "country": "Sweden",
+    "centroid_lat": 67.8558,
+    "centroid_lon": 20.2253
+  },
+  {
+    "id": "stockholm_city_hall_golden_hall",
+    "requires_any": [
+      "Golden Hall",
+      "Gyllene salen"
+    ],
+    "location_label": "Stadshuset",
+    "place_full": "Golden Hall (Gyllene salen), Stockholm City Hall (Stadshuset), Kungsholmen, Stockholm, Sweden",
+    "country": "Sweden",
+    "centroid_lat": 59.3232,
+    "centroid_lon": 18.053
+  },
+  {
+    "id": "stockholm_city_hall_blue_hall",
+    "requires_any": [
+      "Blue Hall"
+    ],
+    "location_label": "Stadshuset",
+    "place_full": "Blue Hall, Stockholm City Hall (Stadshuset), Kungsholmen, Stockholm, Sweden",
+    "country": "Sweden",
+    "centroid_lat": 59.3232,
+    "centroid_lon": 18.053
+  },
+  {
+    "id": "stockholm_city_hall",
+    "_comment": "Checked before stockholm_riddarholmen_church/stockholm_royal_opera_klara: several photos taken from City Hall's own grounds name what's visible ACROSS the water (Riddarholmen's spire, the Opera) rather than City Hall itself -- the actual standing location should win.",
+    "requires_any": [
+      "City Hall",
+      "Stadshuset"
+    ],
+    "location_label": "Stadshuset",
+    "place_full": "Stockholm City Hall (Stadshuset), Kungsholmen, Stockholm, Sweden",
+    "country": "Sweden",
+    "centroid_lat": 59.3232,
+    "centroid_lon": 18.053
+  },
+  {
+    "id": "stockholm_royal_palace_treasury",
+    "requires_any": [
+      "Royal Treasury",
+      "Skattkammaren"
+    ],
+    "location_label": "Kungliga slottet",
+    "place_full": "Royal Treasury (Skattkammaren), Kungliga slottet (Royal Palace), Gamla Stan, Stockholm, Sweden",
+    "country": "Sweden",
+    "centroid_lat": 59.3227,
+    "centroid_lon": 18.0697
+  },
+  {
+    "id": "stockholm_royal_palace_hall_of_state",
+    "requires_any": [
+      "Hall of State",
+      "Rikssalen",
+      "Silver Throne"
+    ],
+    "location_label": "Kungliga slottet",
+    "place_full": "Hall of State (Rikssalen), Kungliga slottet (Royal Palace), Gamla Stan, Stockholm, Sweden",
+    "country": "Sweden",
+    "centroid_lat": 59.3227,
+    "centroid_lon": 18.0697
+  },
+  {
+    "id": "stockholm_royal_palace_antiquities",
+    "requires_any": [
+      "Museum of Antiquities"
+    ],
+    "location_label": "Kungliga slottet",
+    "place_full": "Gustav III's Museum of Antiquities, Kungliga slottet (Royal Palace), Gamla Stan, Stockholm, Sweden",
+    "country": "Sweden",
+    "centroid_lat": 59.3227,
+    "centroid_lon": 18.0697
+  },
+  {
+    "id": "stockholm_royal_palace",
+    "_comment": "Fallback within the palace group -- must stay after the treasury/hall_of_state/antiquities rules above.",
+    "requires_any": [
+      "Royal Palace"
+    ],
+    "location_label": "Kungliga slottet",
+    "place_full": "Kungliga slottet (The Royal Palace), Gamla Stan, Stockholm, Sweden",
+    "country": "Sweden",
+    "centroid_lat": 59.3227,
+    "centroid_lon": 18.0697
+  },
+  {
+    "id": "stockholm_storkyrkan",
+    "requires_any": [
+      "Storkyrkan",
+      "Stockholm Cathedral"
+    ],
+    "location_label": "Storkyrkan",
+    "place_full": "Storkyrkan (Stockholm Cathedral), Gamla Stan, Stockholm, Sweden",
+    "country": "Sweden",
+    "centroid_lat": 59.3222,
+    "centroid_lon": 18.069
+  },
+  {
+    "id": "stockholm_tyska_kyrkan",
+    "requires_any": [
+      "Tyska kyrkan",
+      "German Church"
+    ],
+    "location_label": "Tyska kyrkan",
+    "place_full": "Tyska kyrkan (German Church), Gamla Stan, Stockholm, Sweden",
+    "country": "Sweden",
+    "centroid_lat": 59.3245,
+    "centroid_lon": 18.0728
+  },
+  {
+    "id": "stockholm_riddarholmen_church",
+    "_comment": "Checked before stockholm_riddarholmen_generic: 'Riddarholm(en) Church' names the actual building, not just the island.",
+    "requires_any": [
+      "Riddarholm Church",
+      "Riddarholmen Church"
+    ],
+    "location_label": "Riddarholmen",
+    "place_full": "Riddarholmen Church (Riddarholmskyrkan), Riddarholmen, Stockholm, Sweden",
+    "country": "Sweden",
+    "centroid_lat": 59.3215,
+    "centroid_lon": 18.0588
+  },
+  {
+    "id": "stockholm_riddarholmen_generic",
+    "_comment": "Fallback for a bare 'Riddarholmen' mention (the island, not the church) -- after stockholm_riddarholmen_church and stockholm_city_hall.",
+    "requires_any": [
+      "Riddarholmen"
+    ],
+    "location_label": "Riddarholmen",
+    "place_full": "Riddarholmen, Stockholm, Sweden",
+    "country": "Sweden",
+    "centroid_lat": 59.3218,
+    "centroid_lon": 18.06
+  },
+  {
+    "id": "stockholm_stortorget",
+    "_comment": "Checked before stockholm_gamla_stan_generic.",
+    "requires_any": [
+      "Stortorget"
+    ],
+    "location_label": "Stortorget",
+    "place_full": "Stortorget, Gamla Stan, Stockholm, Sweden",
+    "country": "Sweden",
+    "centroid_lat": 59.3251,
+    "centroid_lon": 18.0708
+  },
+  {
+    "id": "stockholm_riksdag",
+    "requires_any": [
+      "Riksdag",
+      "Riksbank"
+    ],
+    "location_label": "Riksdagshuset",
+    "place_full": "Riksdagshuset (Parliament House), Helgeandsholmen, Stockholm, Sweden",
+    "country": "Sweden",
+    "centroid_lat": 59.3232,
+    "centroid_lon": 18.0672
+  },
+  {
+    "id": "stockholm_royal_opera_klara",
+    "_comment": "Checked after stockholm_city_hall: one of the two matches is a City-Hall-grounds view naming the Opera/Klara across the water.",
+    "requires_any": [
+      "Royal Opera House",
+      "Klara Church",
+      "Klara kyrka"
+    ],
+    "location_label": "Gustav Adolfs torg",
+    "place_full": "Royal Opera House / Klara kyrka area, Norrmalm, Stockholm, Sweden",
+    "country": "Sweden",
+    "centroid_lat": 59.3298,
+    "centroid_lon": 18.0706
+  },
+  {
+    "id": "stockholm_national_museum",
+    "requires_any": [
+      "National Museum",
+      "Nationalmuseum"
+    ],
+    "location_label": "Nationalmuseum",
+    "place_full": "Nationalmuseum, Blasieholmen, Stockholm, Sweden",
+    "country": "Sweden",
+    "centroid_lat": 59.33,
+    "centroid_lon": 18.0742
+  },
+  {
+    "id": "stockholm_kungstradgarden",
+    "requires_any": [
+      "Kungstradgarden",
+      "Kungsträdgården"
+    ],
+    "location_label": "Kungsträdgården",
+    "place_full": "Kungsträdgården, Norrmalm, Stockholm, Sweden",
+    "country": "Sweden",
+    "centroid_lat": 59.3313,
+    "centroid_lon": 18.0722
+  },
+  {
+    "id": "stockholm_vasa_museum",
+    "requires_any": [
+      "Vasa Museum"
+    ],
+    "location_label": "Vasamuseet",
+    "place_full": "Vasa Museum (Vasamuseet), Djurgården, Stockholm, Sweden",
+    "country": "Sweden",
+    "centroid_lat": 59.328,
+    "centroid_lon": 18.0914
+  },
+  {
+    "id": "stockholm_nordic_museum",
+    "requires_any": [
+      "Nordic Museum",
+      "Nordiska museet"
+    ],
+    "location_label": "Nordiska museet",
+    "place_full": "Nordic Museum (Nordiska museet), Djurgården, Stockholm, Sweden",
+    "country": "Sweden",
+    "centroid_lat": 59.3256,
+    "centroid_lon": 18.0956
+  },
+  {
+    "id": "stockholm_viking_museum",
+    "requires_any": [
+      "Viking Museum"
+    ],
+    "location_label": "Vikingaliv",
+    "place_full": "The Viking Museum (Vikingaliv), Djurgården, Stockholm, Sweden",
+    "country": "Sweden",
+    "centroid_lat": 59.3247,
+    "centroid_lon": 18.0928
+  },
+  {
+    "id": "stockholm_djurgarden_generic",
+    "_comment": "Fallback for Djurgarden -- after the three named-museum rules above.",
+    "requires_any": [
+      "Djurgarden",
+      "Djurgården"
+    ],
+    "location_label": "Djurgården",
+    "place_full": "Djurgården, Stockholm, Sweden",
+    "country": "Sweden",
+    "centroid_lat": 59.327,
+    "centroid_lon": 18.095
+  },
+  {
+    "id": "stockholm_vaxholm_fortress",
+    "_comment": "Checked before stockholm_vaxholm_generic.",
+    "requires_any": [
+      "Vaxholm Fortress"
+    ],
+    "location_label": "Vaxholm",
+    "place_full": "Vaxholm Fortress (Vaxholms fästning), Vaxholm, Stockholm archipelago, Sweden",
+    "country": "Sweden",
+    "centroid_lat": 59.4044,
+    "centroid_lon": 18.3475
+  },
+  {
+    "id": "stockholm_waxholms_hotell",
+    "_comment": "Checked before stockholm_vaxholm_generic.",
+    "requires_any": [
+      "Waxholms Hotell"
+    ],
+    "location_label": "Vaxholm",
+    "place_full": "Waxholms Hotell, Vaxholm, Stockholm archipelago, Sweden",
+    "country": "Sweden",
+    "centroid_lat": 59.4022,
+    "centroid_lon": 18.3529
+  },
+  {
+    "id": "stockholm_vaxholm_generic",
+    "_comment": "Fallback for Vaxholm -- after the fortress/hotel-specific rules above.",
+    "requires_any": [
+      "Vaxholm"
+    ],
+    "location_label": "Vaxholm",
+    "place_full": "Vaxholm, Stockholm archipelago, Sweden",
+    "country": "Sweden",
+    "centroid_lat": 59.4022,
+    "centroid_lon": 18.3529
+  },
+  {
+    "id": "stockholm_gamla_stan_generic",
+    "_comment": "Fallback for Gamla Stan -- after all the specific Gamla-Stan-area rules above (Storkyrkan, Tyska kyrkan, Riddarholmen, Stortorget).",
+    "requires_any": [
+      "Gamla Stan"
+    ],
+    "location_label": "Gamla Stan",
+    "place_full": "Gamla Stan (Stockholm's Old Town), Stockholm, Sweden",
+    "country": "Sweden",
+    "centroid_lat": 59.3251,
+    "centroid_lon": 18.07
+  },
+  {
+    "id": "stockholm_generic",
+    "_comment": "Broadest fallback for this leg of the trip -- must stay last among all stockholm_* rules.",
+    "requires_any": [
+      "Stockholm"
+    ],
+    "location_label": "Stockholm",
+    "place_full": "Stockholm, Sweden",
+    "country": "Sweden",
+    "centroid_lat": 59.3293,
+    "centroid_lon": 18.0686
+  }
+]
