@@ -1,0 +1,165 @@
+BUILD TRAVEL JOURNAL INDEX SCRIPT — INSTRUCTIONS
+=================================================
+
+RETIRED (August 2026) — see "Update — retired: index.html made
+client-side-rendered" at the very end of this file for what happened and
+why. Everything below this point describes the script as it worked
+before retirement; kept for history, not as current instructions.
+
+Your original query (verbatim)
+--------------------------------
+"create a html page that has links to each of the travel journal folders
+index html page ordered by the folder travel-journal-yyyy-mm-dd in the
+same style as the travel journal pages create a build script and
+instructions for page creation"
+
+Claude's resolved query
+--------------------------
+This is a new, top-level page one level ABOVE any single trip: it lives
+at travel-journals/index.html (the collection root — the folder that
+directly contains travel-journal-2026-01-14/, travel-journal-2026-07-01/,
+and so on), not inside any one trip's own folder. Each trip's own journal
+page lives at common/journal.html?trip=<folder> (a single shared page,
+since August 2026 — see that page's own top-of-script comment); this
+page just links out to it with the right ?trip=, it doesn't duplicate or
+regenerate it.
+
+"Ordered by the folder travel-journal-yyyy-mm-dd" didn't say ascending or
+descending, so I resolved it to chronological, oldest trip first — the
+order you'd flip through them in a physical journal. If you'd rather see
+the newest trip at the top instead, it's a one-line change: in
+collectTrips() below, change the sort comparator from
+`a.date.localeCompare(b.date)` to `b.date.localeCompare(a.date)`.
+
+"In the same style as the travel journal pages" — each trip's index.html
+already defines its own look (paper background, Fraunces italic serif for
+titles/dates, IBM Plex Mono for labels and dates, the brass/sea/brick
+accent palette, the same Google Fonts). Rather than inventing a new
+style, this page reuses that exact CSS (same :root variables, same
+header, same footer) and adds one new component — .trip-card — styled to
+match the existing .day card (white background, rounded border, soft
+shadow, brass border on hover) so it reads as part of the same site, not
+a different page bolted on.
+
+Built scripts/javascript/build-travel-journal-index.js, a plain Node
+script (no npm dependencies — fs + path only, matching every other script
+in this project's scripts/javascript/ folder) that:
+
+  1. Scans the collection root (two levels up from this script) for
+     folders matching travel-journal-YYYY-MM-DD that contain their own
+     trip-info.json. A folder without a trip-info.json yet (a trip that
+     hasn't been set up) is silently skipped, not treated as an error.
+  2. For each trip, pulls its title straight out of that trip's own
+     trip-info.json {"title": "..."}. There is no subtitle line anymore
+     for this script to read at all: every trip's journal page is
+     common/journal.html?trip=<folder>, a single shared page that
+     computes its own "N days with photos · N photos, M videos total"
+     summary entirely client-side on every load (see that page's own
+     top-of-script comment) — there's no static HTML file left to pull a
+     build-time subtitle out of, so this page's cards are title-only.
+  3. Sorts the trips chronologically (oldest first — see above) and
+     writes travel-journals/index.html: one .trip-card per trip, each a
+     link to ./common/journal.html?trip=<folder>, showing a date badge
+     and the trip's title.
+  4. Computes its own header subtitle ("N trips · <first trip's start
+     date> – <last trip's start date>") from the same folder dates.
+
+DEPENDENCIES
+--------------
+    Plain Node (no npm packages, no internet access needed to run it —
+    the Google Fonts link in the generated page is only fetched by a
+    browser when the page is opened, same as every trip's own index.html).
+
+HOW TO RUN IT
+---------------
+    node scripts/javascript/build-travel-journal-index.js
+
+  No arguments. Run it from the travel-journals/ collection root (or any
+  directory — the script locates the root relative to its own file path,
+  not the current working directory).
+
+Initial run (2026-08-26):
+    node scripts/javascript/build-travel-journal-index.js
+
+  Found 2 trips and wrote travel-journals/index.html:
+    - travel-journal-2026-01-14  "🧳 Travel Journal"
+    - travel-journal-2026-07-01  "🧳 Travel Journal 2026 Summer"
+
+WHEN TO RE-RUN IT
+--------------------
+  - A new travel-journal-YYYY-MM-DD folder is added and built (has its
+    own trip-info.json).
+  - An existing trip's trip-info.json title changes.
+  - A trip folder is removed or renamed.
+
+  Safe to re-run any time — it always rescans the folder fresh and
+  overwrites index.html to match exactly what's on disk; it does not
+  merge with a prior run's output, so any hand-edits made directly to
+  travel-journals/index.html will be lost on the next run.
+
+Notes and safety
+-------------------
+- Read-only with respect to every trip folder — this script only reads
+  each trip's trip-info.json to pull its title; it never writes inside
+  travel-journal-YYYY-MM-DD/ folders.
+- Writes exactly one file: travel-journals/index.html (overwritten each
+  run).
+- A trip whose trip-info.json is missing (folder exists, not yet set up)
+  is skipped rather than erroring — re-run this script after adding that
+  trip's trip-info.json to pick it up.
+- If zero trip folders are found, the page still generates, showing a
+  "No travel journals found yet" message instead of an empty list.
+
+Update — index.html moved to common/journal.html?trip=<folder> (August 2026)
+------------------------------------------------------------------------------
+Each trip used to have its own index.html, a byte-identical (except for
+title/folder name) client-side-rendered journal page duplicated into
+every travel-journal-YYYY-MM-DD/ folder. Comparing the two trips' copies
+turned up nothing worth keeping separate, so that page moved to
+common/journal.html, one shared copy read via ?trip=<folder> (the same
+pattern common/daily-gallery.html and common/daily-location-gallery.html
+already used), and each trip's own index.html was deleted. This script's
+title source (that per-trip index.html's own <h1>) went away with it, so
+a small new file, <trip>/trip-info.json (just {"title": "..."}), was
+added as the new source, and collectTrips() below was switched from
+reading each trip's index.html to reading its trip-info.json instead;
+renderCard()'s href switched from ./<folder>/index.html to
+./common/journal.html?trip=<folder>. See common/journal.html's own
+top-of-script comment, build-common-trips-manifest_Instructions.txt (the
+sibling script that reads the same trip-info.json files), and
+scripts/_to_delete/build-travel-journal_Instructions.txt (an earlier,
+unrelated retirement of that same index.html's build-time predecessor)
+for the fuller history.
+
+Update — retired: index.html made client-side-rendered (August 2026)
+------------------------------------------------------------------------------
+Your query (verbatim): "make the index.html dynamic"
+
+travel-journals/index.html -- the only page left in this project that
+was still regenerated at build time -- was rewritten to compute
+everything itself, client-side, on every page load: it now loads
+common/data/trips-manifest.js (window.TRIPS_MANIFEST) via a normal
+<script src> tag, the same manifest common/daily-location-gallery.html's
+own trip picker already reads, derives each trip's date from its folder
+name (the same travel-journal-YYYY-MM-DD pattern this script used),
+sorts chronologically, and renders the trip cards and header "N trips ·
+<range>" summary in the browser -- see index.html's own top-of-script
+comment for the full design. This script (which wrote a static
+index.html once per run, requiring a re-run after every trip added,
+removed, renamed, or retitled) is no longer needed and was retired here.
+
+This mirrors two earlier retirements in this same project: each trip's
+own index.html went from build-time-generated to client-side-rendered
+first (see scripts/_to_delete/build-travel-journal_Instructions.txt),
+then moved from a per-trip file to the shared common/journal.html (see
+build-travel-journal-index_Instructions.txt's -- this file's -- own
+now-obsolete "Update — index.html moved to common/journal.html"
+section above, and build-common-trips-manifest_Instructions.txt). This
+retirement finishes that same shift for the one remaining static page.
+
+Nothing else needs to change because of this: common/data/trips-
+manifest.js is still written by scripts/javascript/build-common-trips-
+manifest.js exactly as before -- re-run that script (not this retired
+one) whenever a trip is added, removed, renamed, or its trip-info.json
+title changes, and travel-journals/index.html will pick up the change on
+next reload with no separate rebuild step of its own.

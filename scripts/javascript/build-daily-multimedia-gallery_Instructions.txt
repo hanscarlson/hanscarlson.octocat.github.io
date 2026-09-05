@@ -1,0 +1,1062 @@
+BUILD DAILY MULTIMEDIA GALLERY SCRIPT — INSTRUCTIONS
+=====================================================
+
+SHARED SCRIPT — build-daily-multimedia-gallery.js and this file live once
+at travel-journals/scripts/javascript/ and serve every
+travel-journal-YYYY-MM-DD/ trip (as of August 2026, this was moved here
+from being duplicated, byte-for-byte identically, inside each trip's own
+scripts/javascript/ folder -- see the update section near the end of
+this file, after the "seventh updated query" section, which documents an
+earlier, different move). Because one copy now serves every trip, every
+run takes a required <journal-folder> argument to say which trip to
+build daily-gallery.html for -- see "How to run it" below.
+
+Your ninth updated query (verbatim)
+----------------------------------------
+"add the same slideshow features for no arg daily-gallery as the arg
+daily-gallery that shows all files in photos sub folders update build
+script and instructions"
+
+Claude's resolved query (ninth update — All-Days slideshow)
+-------------------------------------------------------------------------------
+The per-day grid (daily-gallery.html?folder=<date>) has had a slideshow
+since the third update: a "Slideshow: Ns" duration dropdown (default 4s)
+and a "▶ Slideshow" button in the header, which opens the individual
+viewer on that day's first item and auto-advances through the rest,
+stopping (not looping) after the last one. The "All Days" day-picker (no
+?folder=) had no equivalent — its header-right controls, including the
+slideshow ones, are hidden entirely in that view (see renderDayPicker()).
+
+I added a second, parallel set of the same two controls —
+#all-slideshow-interval and #all-slideshow-start — to the day-picker's own
+toolbar (next to the existing "Date: Oldest/Newest first" day-sort
+dropdown, in a new .day-picker-toolbar-right wrapper so the row wraps
+sanely on narrow screens), rather than reusing the header's hidden ones:
+the header-right block is unconditionally hidden while the day-picker is
+showing, so its controls are never clickable there, and duplicate IDs
+aren't valid HTML — a second, distinct set was the only option, matching
+this script's existing pattern of day-picker and per-day-grid controls
+already being separate elements (day-sort vs. sort).
+
+"All files in photos sub folders": clicking "▶ Slideshow" in the
+day-picker builds one combined list (buildAllItems()) by concatenating
+every day's items — each day's own items in the same oldest-first order
+its thumbnail row already shows (sortItems(DATA[folder], "asc")), days
+themselves concatenated in the day-picker's current day-sort order (so a
+"Date: Newest first" day list starts its slideshow on the most recent
+day) — then calls the exact same startSlideshow()/openViewer()/
+advanceSlideshow() machinery the per-day grid's slideshow already uses,
+just fed this larger `items` array instead of one day's. Every existing
+slideshow behavior (stop-not-loop at the last item, the pause/resume
+button, manual nav not interrupting it, closing the viewer) is identical
+and untouched — nothing about the viewer or slideshow internals is
+duplicated, only the two entry-point controls are.
+
+One small refactor this required: startSlideshow() used to always read
+the duration from the header's #slideshow-interval select by name. It now
+takes that select as a parameter (startSlideshow(intervalSel)) and stores
+it in activeSlideshowIntervalSel, which startSlideshowTimer() reads from
+instead — so the per-day grid's button passes its own #slideshow-interval
+and the day-picker's passes #all-slideshow-interval, and each slideshow
+still only reads its own duration once, at the moment it starts, exactly
+as before. (The per-day grid's click handler was changed from
+`slideshowStartBtn.addEventListener("click", startSlideshow)` to an
+explicit wrapper function — passing startSlideshow directly would have
+handed it the click MouseEvent as intervalSel instead of the select
+element, silently breaking the duration dropdown.)
+
+Closing the viewer (whichever slideshow started it) always returns to
+whatever was showing underneath — the day-picker screen, unchanged — the
+same way it already did for a single day's slideshow or an individual
+thumbnail click; no navigation happens.
+
+Ran build-daily-multimedia-gallery.js again afterward to regenerate the
+real daily-gallery.html with these two new controls; see "HOW TO RUN IT"
+below (unchanged by this update).
+
+Your eighth updated query (verbatim)
+----------------------------------------
+"modify the no arg daily-gallery.html view to display the daily link and
+thumbnails of photos for each day for all photo subfolders with a
+separator between days and add this to the build script and instructions"
+
+Claude's resolved query (eighth update — thumbnail previews in "All Days")
+-------------------------------------------------------------------------------
+The "All Days" day-picker (daily-gallery.html with no ?folder= given) used
+to be a plain vertical list of one-line rows — a day's title/date on the
+left, an item count on the right, the whole row a link to
+./daily-gallery.html?folder=<date> — with no preview of what was actually
+in that day. renderDayList() now builds one .day-block per day containing
+that same title/count link (the "daily link" from your query) PLUS a
+.day-thumbs grid underneath it with a small square thumbnail for every
+photo and video catalogued for that day, oldest-first (sortItems(DATA[folder],
+"asc") — the day-picker's own newest/oldest sort dropdown still only
+reorders which day comes first, not the thumbnail order within a day,
+which stays chronological). A video's thumbnail shows a small ▶ badge,
+matching the per-day grid's own .thumb .video-badge convention. "For all
+photo subfolders" is exactly the existing folder set daily-gallery.html
+already builds the day list from (Object.keys(DATA), one entry per
+photos/YYYY-MM-DD folder present in multimedia-data.json) — no new folder
+scanning was needed, only new markup per folder already being iterated.
+
+"A separator between days": rather than add a new visual rule on top of
+the old bordered-card-per-row look, the .day-card link lost its own
+panel/border/background (now just a title+count row) and .day-block —
+the new wrapper around each day's link + thumbs — gained a bottom border
+instead (removed on the last day, so the list doesn't end with a trailing
+line). That border is the separator, and it now separates a taller block
+(link + thumbnail grid) rather than a single thin row.
+
+Each thumbnail is a plain <a> to
+./daily-gallery.html?folder=<date>&photo=<file_name> — the exact same
+?photo= deep-link mechanism already built for
+daily-location-gallery.html's own thumbnails (see the "Update — ?photo=
+deep link" section further below): daily-gallery.html's entry-point script
+already knows how to open the individual viewer directly on a matching
+photo/video when that parameter is present, scoped to that day's item
+list (so the viewer's prev/next/first/last controls step through the rest
+of that day only, same as clicking through from the per-day grid would).
+I reused that existing mechanism rather than wiring a second, separate
+"open the viewer inline from the day-picker" code path — a plain link
+also means normal browser behavior (open in new tab, copy link, etc.)
+keeps working for these thumbnails for free, which a click-handler-only
+approach would have had to special-case.
+
+Ran build-daily-multimedia-gallery.js again afterward to regenerate the
+real daily-gallery.html from this updated template — the change is in
+this script's own HTML_TEMPLATE/client-side script, so (like every other
+update to this file) it takes effect only once the script is re-run; see
+"HOW TO RUN IT" below, which is unchanged by this update.
+
+Your seventh updated query (verbatim)
+----------------------------------------
+"move build-daily-multimedia-gallery script and instructions to
+scripts/javascript"
+
+Claude's resolved query (seventh update — moved to scripts/javascript/)
+-------------------------------------------------------------------------------
+Moved build-daily-multimedia-gallery.js and this matching Instructions.txt
+(kept alongside it per this project's convention of every script having a
+same-named instructions file) from scripts/ into scripts/javascript/ — the
+same subfolder build-multimedia-location-clusters-data.js and its instructions
+already live in. The old scripts/build-daily-multimedia-gallery.js and
+scripts/build-daily-multimedia-gallery_Instructions.txt were removed once
+the new files existed at their new location.
+
+One functional change was required for the move, not just a relocation:
+the script computes its own project root as `path.join(__dirname, "..")`
+(one level up from wherever the script file itself lives) so it can find
+data/multimedia/multimedia-data.json and write data/multimedia/
+multimedia-data.js and daily-gallery.html correctly no matter where in the
+project it's run from. Moving the file one directory deeper (scripts/ ->
+scripts/javascript/) means it now needs to go up TWO levels instead of one
+to reach the project root, so ROOT is now
+`path.join(__dirname, "..", "..")`. Nothing else in the script's logic —
+the multimedia-data.js mirror step, the daily-gallery.html template, or any
+of the client-side viewer behavior it writes — changed.
+
+The internal header comment and the "how to run it" line were updated to
+the new path (node scripts/javascript/build-daily-multimedia-gallery.js
+instead of node scripts/build-daily-multimedia-gallery.js). No other file
+in the project referenced the old script or instructions path by path (only
+by bare filename, in query-history text and an auto-generated-by comment in
+data/multimedia/multimedia-data.js), so no other files needed updating.
+
+Update — moved (again), now SHARED across every trip (August 2026)
+------------------------------------------------------------------------
+The seventh update above moved this script one directory deeper WITHIN a
+single trip (scripts/ -> scripts/javascript/), still inferring its
+project root from its own __dirname, and still duplicated byte-for-byte
+into each new trip's folder as that trip was created. As of August 2026
+it made a second, different kind of move: out of each trip's own
+scripts/javascript/ folder entirely, into the single shared
+travel-journals/scripts/javascript/ (matching build-multimedia-data.py's
+own earlier move, and this project's other shared scripts —
+refresh-events.js, refresh-notes.js, build-multimedia-location-clusters-
+data.js). ROOT is no longer computed from __dirname at all; the script
+now takes a required <journal-folder> first argument instead, resolved
+via the same two-step lookup (a path, or a folder name under the
+collection root) those other shared scripts already use. Nothing about
+the multimedia-data.js mirror step, the daily-gallery.html template, or
+any client-side viewer behavior changed — only how you tell it which
+trip to build for. See "How to run it (current)" above for the
+up-to-date invocation.
+
+Your original query (verbatim)
+--------------------------------
+"create and execute a readable build-daily-multimedia-gallery script that creates a daily-gallery.html
+that is similar to gallery.html
+has a centered title "Gallery for " + (long date if the folder name is a date or folder name if the folder is not a date)
+if the multimedia files exist in data/multimedia/multimedia-data.json
+displays multimedia thumbnails in the order of the metadata datetime_original in ascending order default
+else uses the file creation date
+allows the selection of ascending order or descending order of multimedia thumbnails
+when the multimedia thumbnail is clicked an individual multimedia item is displayed
+individual multimedia display includes
+working zoom in and zoom out
+working navigation to first, previous, next, or last of the multimedia gallery
+if a multimedia file entry exists in data/multimedia/multimedia-data.json
+the standard subject description should be displayed above the multimedia display
+add toggle/button/link that switches between standard subject description with monty python subject description next to the description
+the monty python subject description should be styled in a suitable monty python way when displayed
+all multimedia file data should be displayed in a popup when a button or link is clicked at the bottom of the page
+include my new query and the claude resolved query in the instructions"
+
+Your updated query (verbatim)
+--------------------------------
+"update and execute the readable build-daily-multimedia-gallery script and instructions so that
+for the individual multimedia display
+the page layout includes 10% left, 80 % center, and 10% right panels
+the left panel includes the file number "/" total count as currently positioned
+the left panel includes the first and previous navigation as currently positioned
+the right panel includes the close as currently positioned
+the right panel includes the next and last navigation as currently positioned
+the center panel content
+does not include the "Subject description" label
+does not include the "Show Monty Python description" link
+includes a subject description text block starts with "DESCRIPTION " (styled as the "Subject description" label) + the subject description text + a "Show Monty Python Description" link labeled as "Show Alternate"
+the "Show Alternate" link should display the subject description text block as "YET ANOTHER DESCRIPTION " (styled as the "Subject description" label) + the subject description text + a "Show Monty Python Description" link labeled as "Show Original"
+The subject description text block should be styled in a suitable way when the "Show Alternate" link is clicked
+The subject description text block should should be aligned with the top of the page
+The file name text block should include the "View Full File Data" link labeled "View File Data"
+The multimedia image display should be sized to fit the subject description text block, zoom buttons, and file name text block
+include my new query and the claude resolved query in the instructions"
+
+Your second updated query (verbatim)
+----------------------------------------
+"update and execute the readable build-daily-multimedia-gallery script and instructions so that
+for the individual multimedia display
+the subject description text block spans the center panel
+the zoom in function increases the size of the displayed item requiring scrolling if necessary
+include my new query and the claude resolved query in the instructions"
+
+Your third updated query (verbatim)
+--------------------------------------
+"update and execute the readable build-daily-multimedia-gallery script and instructions so that
+for the multimedia thumbnail gallery display
+add a slideshow feature that views each individual multimedia item using individual multimedia display for a selectable number of seconds defaulting to 4 seconds
+for the individual multimedia display
+remove the top buffer of the subject description text block
+make the background transparent for the subject description text block when displaying original subject description
+include my new query and the claude resolved query in the instructions"
+
+Your fourth updated query (verbatim)
+----------------------------------------
+"update and execute the readable build-daily-multimedia-gallery script and instructions so that
+for the multimedia thumbnail gallery display
+the slideshow feature stops at the last slide of the gallery
+for the individual multimedia display
+make the subject description text block sticky so that when alternate is selected it should stay selected until user returns to the gallery display
+remove borders of the subject description text block
+include my new query and the claude resolved query in the instructions"
+
+Your fifth updated query (verbatim)
+----------------------------------------
+"update and execute the readable build-daily-multimedia-gallery script and instructions so that
+all displayed multimedia files and data are dynamic and resolve at runtime
+include my new query and the claude resolved query in the instructions"
+
+Your sixth updated query (verbatim)
+----------------------------------------
+"update and execute the readable build-daily-multimedia-gallery script and instructions so that
+multimedia gallery "All Days" view is displayed as a list
+is sorted in date order by oldest date first (default)
+can be sorted newest date order
+include my new query and the claude resolved query in the instructions"
+
+Claude's resolved query (original build)
+--------------------------------------------
+Build a new, self-contained sibling to gallery.html — daily-gallery.html —
+that is driven entirely by data/multimedia/multimedia-data.json (the rich
+per-file catalog scripts/python/build-multimedia-data.py already maintains) instead of
+gallery.html's live folder-open/manifest.js approach, since only
+multimedia-data.json carries capture dates and subject_description text.
+Specifically:
+
+  - One static page, opened the same way gallery.html is:
+    daily-gallery.html?folder=<name>. No folder param shows a picker
+    linking to every day recorded in the catalog instead of an empty state.
+  - Centered header title: "Gallery for " + the long-form date if the
+    folder name matches YYYY-MM-DD (e.g. "Gallery for Friday, July 10,
+    2026"), else the raw folder name verbatim.
+  - Thumbnails sort by multimedia_metadata.datetime_original ascending by
+    default; a file missing/unparseable datetime_original falls back to
+    file_properties.modified_time (the only per-file timestamp this
+    catalog actually tracks — there's no separate "true creation date"
+    field to fall back to). A sort dropdown switches between oldest-first
+    and newest-first.
+  - Clicking a thumbnail opens a full individual viewer with: working
+    zoom in/out (buttons, +/-/0 keys) on photos; first/previous/next/last
+    navigation (buttons, arrow/Home/End keys); the file's
+    subject_description.standard shown above the media whenever that file
+    has one; a toggle button next to the description that swaps in
+    subject_description.monty_python, rendered in a deliberately silly
+    Monty-Python-flyer style (dashed gold border, red/gold stripe
+    background, "And now for something completely different" banner,
+    handwriting-style font) distinct from the standard description's
+    plain styling; and a "View full file data" button at the bottom of
+    the viewer that pops up every field recorded for that file (relative
+    folder, file name, file properties, multimedia metadata, resolved
+    location, subject, subject_description — the complete catalog entry)
+    as formatted JSON.
+
+Like manifest.js, the catalog is baked into a plain <script> global
+(window.DAILY_MULTIMEDIA) at build time rather than fetched at runtime —
+opening an HTML file directly from disk (file://) blocks fetch() of local
+JSON in most browsers, but a classic <script src>/inline <script> tag
+still works fine offline.
+
+Claude's resolved query (first update — 10/80/10 layout)
+--------------------------------------------------------------
+Rebuilt the individual multimedia display (the full-screen viewer a
+thumbnail opens into) as a three-panel layout instead of the previous
+single centered column:
+
+  - #viewer becomes a CSS grid, 10% / 80% / 10% columns, full viewport
+    height.
+  - Left panel (10%): the "N / total" count at top, then the first and
+    previous nav buttons, vertically centered in the space below — same
+    top-then-middle arrangement the old single-row layout used, just
+    turned 90 degrees into its own column.
+  - Right panel (10%): the close button at top, then the next and last
+    nav buttons vertically centered below — mirroring the left panel.
+  - Center panel (80%): the "Subject description" label and "Show Monty
+    Python description" button are gone as separate elements. In their
+    place, a single subject description text block:
+      - Standard state: "DESCRIPTION " (styled the same way the old
+        label was — small, uppercase, muted, bold) immediately followed
+        by subject_description.standard, followed by a "Show Alternate"
+        link.
+      - Alternate state (after clicking "Show Alternate"): "YET ANOTHER
+        DESCRIPTION " followed by subject_description.monty_python,
+        followed by a "Show Original" link that flips back. The whole
+        block (not just the text) picks up the Monty Python styling
+        (dashed gold border, red/gold striped background, handwriting
+        font, text shadow) only while in this alternate state — the
+        standard state stays in the plain panel styling.
+      - The block only appears at all when the current file has a
+        subject_description.standard; the "Show Alternate"/"Show
+        Original" link only appears when that file also has a
+        monty_python rewrite to switch to.
+      - This block is the first row in the center panel's layout, so it
+        naturally sits at the top rather than being vertically centered
+        with the image.
+    Below the description block: the image/video stage, the zoom
+    controls, then a filename block that now also carries the file-data
+    link, relabeled "View File Data" (previously a separate "View full
+    file data" button in its own footer row below everything).
+  - Sizing: the center panel is a CSS grid with rows
+    [description: auto] [image stage: 1fr] [zoom bar: auto] [filename
+    block: auto]. Only the image stage's row is flexible — it always
+    fills whatever vertical space is left over after the description
+    block, zoom bar, and filename block take what they need, and the
+    image/video inside it scales down (object-fit: contain) to fit
+    that space. This replaces the previous approach of hardcoded
+    vh-based max-height values on the image, which didn't actually
+    account for how much room the description text took up.
+
+Nothing about the day picker, the thumbnail grid, sorting, keyboard
+shortcuts, or the full file data popup's content changed in this pass —
+only the individual-item viewer's layout and the description block's
+markup/behavior.
+
+Claude's resolved query (second update — full-width description, scrollable zoom)
+---------------------------------------------------------------------------------------
+Two independent fixes to the viewer built in the first update:
+
+  1. Subject description text block now spans the full center panel. It
+     previously had its own max-width (720px) and was centered with
+     margin auto, leaving visible empty space on either side of it inside
+     the 80% center column on anything wider than a phone. That max-width
+     and auto-margin are gone -- the block is now width: 100% of the
+     center panel, same as the image stage below it.
+
+  2. Zoom-in now actually lets you scroll to every part of the enlarged
+     image, not just resize it in place. Two things were needed together:
+       a. #stage img/video now has transform-origin: 0 0 (top-left)
+          instead of the browser default (center). Scaling from the
+          top-left corner only ever grows the image toward the bottom
+          and right, which is the direction browsers always let you
+          scroll into.
+       b. #stage switches from centered (align-items/justify-content:
+          center -- how it looks at the normal 100% zoom) to top/left
+          anchored (a ".zoomed" class, added once zoomScale climbs past
+          1 and removed at 100%) -- because centered flex content can
+          never be scrolled into on its top/left side in any browser,
+          regardless of transform-origin. This is a genuine, well-known
+          CSS limitation (not specific to this page), and switching
+          alignment only while actually zoomed is the standard fix:
+          the image still looks centered at rest, and only shifts to
+          top-left anchoring once there is real overflow to scroll
+          through.
+     Zooming back out to 100% (via the − button, the 0 key, Reset, or
+     navigating to a different file) removes the ".zoomed" class and
+     resets #stage's scroll position back to 0,0, so the next zoom-in
+     always starts from a clean, fully-visible top-left corner.
+
+Claude's resolved query (third update — slideshow, description spacing/background)
+------------------------------------------------------------------------------------------
+Three changes: one new feature on the thumbnail grid, two small styling
+fixes on the individual multimedia display.
+
+  1. Slideshow (thumbnail grid). A "Slideshow: 4s" dropdown (2/3/4/5/7/10
+     seconds, 4 selected by default) and a "Slideshow" button sit in the
+     header next to the existing sort dropdown, visible whenever a day's
+     grid is showing (same as the count/sort/All Days controls, hidden
+     together on the day-picker screen). Clicking Slideshow opens the
+     individual multimedia display at the first thumbnail in the current
+     sort order and auto-advances to the next item every N seconds,
+     looping back to the first item after the last -- a continuous show,
+     not a one-pass slideshow. A pause/resume button appears under the
+     "N / total" count in the viewer's left panel while a slideshow is
+     running (the only new element added to that panel -- the count and
+     first/previous buttons keep the exact positions set in the first
+     update). Manual navigation (first/previous/next/last, or the
+     matching keyboard shortcuts) during a slideshow does NOT stop it --
+     it simply continues from wherever you manually navigated at the next
+     scheduled tick, so you can look ahead or back without losing the
+     show. Only the pause/resume button, or closing the viewer (X, Escape,
+     or clicking outside the image), stops it -- closing always fully
+     stops it (clears the timer) rather than just hiding the control, so
+     there is never a stray timer still advancing in the background after
+     you leave the individual display.
+
+  2. Top buffer removed. The center panel's top padding (previously 18px,
+     matching its side/bottom padding) is gone -- the subject description
+     text block, being the first row in that column, now sits flush
+     against the top of the viewer instead of floating a visible gap
+     below it. The left/right panels' own top padding (around the count
+     and close button) is unchanged, so it was specifically the space
+     above the description block that was removed, not a global layout
+     shift.
+
+  3. Transparent background in the standard state. The description
+     block's plain (non-Monty-Python) background -- previously the same
+     solid panel color used throughout the page (var(--panel)) -- is now
+     transparent, so the "DESCRIPTION " text and the standard description
+     itself sit directly against the dark viewer background rather than
+     inside a visibly boxed panel (its border was still present as of this
+     update -- see the fourth update below, which removes it too). This
+     background change only affects the standard state; the Monty Python
+     alternate state keeps its own distinct red/gold striped background
+     exactly as before (that rule already overrides background
+     independently, since it is more specific -- .desc-block.monty).
+
+Claude's resolved query (fourth update — slideshow end, sticky alternate, no borders)
+---------------------------------------------------------------------------------------------
+Three more changes: one to the slideshow, two to the description block.
+
+  1. Slideshow stops at the last slide. advanceSlideshow() previously
+     wrapped back to index 0 with `(currentIndex + 1) % items.length`,
+     making the slideshow loop forever. It now checks whether the current
+     item is already the last one before advancing; once the last item
+     has had its own full interval on screen, the following tick stops
+     the slideshow outright (clears the timer, hides the pause button)
+     instead of wrapping around -- the viewer stays open on that last
+     item rather than closing.
+
+  2. Alternate description is now sticky across items. Previously,
+     showingMonty (which description -- standard or Monty Python -- is
+     currently displayed) was reset to false every time you moved to a
+     different item, including by the slideshow's own auto-advance, so
+     the alternate view never survived a navigation. That reset is gone
+     from stepTo() and advanceSlideshow(); showingMonty now only resets
+     in closeViewer(), i.e. when you actually leave the individual
+     display and return to the gallery grid. Practically: pick "Show
+     Alternate" once, and every item you navigate to afterward (by
+     button, keyboard, or slideshow) shows its Monty Python description
+     if it has one, gracefully falling back to the standard description
+     for any item that does not -- without losing the preference for the
+     next item that does.
+
+  3. Borders removed from the description block entirely, in both
+     states -- the base .desc-block rule's 1px solid border and
+     .desc-block.monty's 3px dashed gold border are both gone. The Monty
+     Python state still reads as clearly distinct without a border, from
+     its striped background, gold/cream text color, text-shadow, and
+     handwriting-style font alone.
+
+Claude's resolved query (fifth update — dynamic, runtime-resolved data)
+------------------------------------------------------------------------------
+Previously, every time this script ran it did all the real work itself, in
+Node, at generation time: it grouped the catalog by folder, resolved each
+file's sort date, built each file's URL, and picked out its description
+text — then froze that entire precomputed result as a JSON snapshot baked
+straight into daily-gallery.html (window.DAILY_MULTIMEDIA = {...}). The
+page itself did no real data work; it just read that frozen snapshot.
+Regenerating daily-gallery.html was therefore required every single time
+multimedia-data.json changed, or the gallery would silently show stale
+data.
+
+That precomputation has moved out of Node entirely and into
+daily-gallery.html's own client-side script, so it happens live in the
+browser, every time the page loads:
+
+  - This script's job shrank to two things:
+      1. Mirror data/multimedia/multimedia-data.json — as-is, unsorted,
+         ungrouped, with no per-item fields added or removed — into a new
+         file, data/multimedia/multimedia-data.js, as
+         window.MULTIMEDIA_CATALOG = [...]. This mirror step exists only
+         because opening an HTML file straight from disk (file://) blocks
+         fetch() of local JSON in most browsers, while a classic
+         <script src> tag loading a .js file still works fine — the same
+         technique gallery.html already uses for manifest.js. No
+         computation happens in this step; it is a pure copy.
+      2. Write the static daily-gallery.html shell, which now loads that
+         mirror via <script src="./data/multimedia/multimedia-data.js">
+         and carries no file data of its own.
+  - daily-gallery.html's inline script now contains its own copies of the
+    date-parsing (parseExifDateTime/resolveDate), URL-building (buildUrl),
+    and folder-grouping (buildGroups) logic that used to live in this
+    Node script — functionally identical, just running client-side. On
+    every page load, it calls buildGroups(window.MULTIMEDIA_CATALOG) to
+    produce the same DATA structure the page always used internally; from
+    that point on, sorting, thumbnail rendering, the individual viewer,
+    slideshow, zoom, and the description toggle all work exactly as
+    before, since they only ever consumed that DATA structure, not
+    knowing or caring whether it was pre-baked or just computed.
+  - Net effect: daily-gallery.html itself is now identical, byte-for-byte,
+    from one run of this script to the next, unless the script's own
+    template/behavior changes. It never needs to be regenerated just
+    because photos were added, folders changed, or new subject_description
+    text was filled in — only data/multimedia/multimedia-data.js (the
+    trivial raw-data mirror) needs refreshing for that, and reloading the
+    already-open page in the browser is enough to pick it up.
+
+Claude's resolved query (sixth update — "All Days" as a sorted list)
+------------------------------------------------------------------------------
+Two changes, both scoped to the day picker (the "All Days" screen shown
+when daily-gallery.html is opened with no ?folder= param):
+
+  1. Displayed as a list, not a card grid. .day-list was a CSS grid of
+     auto-filling 220px-wide columns (however many day-cards fit per row,
+     card order running left-to-right then wrapping); it is now
+     display: flex, flex-direction: column — one full-width row per day,
+     stacked top to bottom, title on the left and item count on the
+     right of the same row (.day-card itself switched from a block card
+     to a flex row with justify-content: space-between to match). The
+     page reads top-to-bottom like a table of contents instead of a tiled
+     gallery of tiles.
+
+  2. Sortable, oldest-first by default. Previously the day list had a
+     single, fixed sort order (folders sorted newest-first,
+     b.localeCompare(a, ...), with no way to change it) baked directly
+     into renderDayPicker(). That's replaced with:
+       - A new "Date: Oldest first" / "Date: Newest first" <select>
+         (#day-sort) next to the "Choose a day" heading, defaulting to
+         Oldest first (value "asc") — a separate control from the
+         existing per-day thumbnail grid's own #sort dropdown, since the
+         two operate on different data (the list of days vs. one day's
+         list of files) and are visible on different screens (the
+         day-sort dropdown only shows on the day-picker screen; the
+         existing #sort dropdown only shows once a day's grid is open —
+         .header-right, which holds #sort, is still hidden entirely on
+         the day-picker screen exactly as before).
+       - renderDayPicker() split into two functions: renderDayPicker()
+         (one-time chrome setup — title, visibility of the day-picker vs.
+         grid/empty-state sections) and renderDayList() (just the actual
+         sorted list of day-cards, callable repeatedly without redoing
+         the chrome setup).
+       - A new sortFolders(folders, dir) helper (mirroring the existing
+         per-day sortItems(list, dir) helper) that sorts folder names
+         ascending (oldest first) or descending (newest first) via
+         localeCompare with numeric comparison — folder names are
+         YYYY-MM-DD, so ascending string order is already correct
+         chronological order; a non-dated folder name still sorts
+         reasonably by plain string comparison, same graceful fallback
+         folderTitle() already relied on elsewhere.
+       - Changing the #day-sort dropdown calls renderDayList() again with
+         the newly selected direction — the day-picker's title/visibility
+         setup from renderDayPicker() is untouched, only the list itself
+         re-renders.
+
+What it does
+------------
+For data/multimedia/multimedia-data.json, build-daily-multimedia-gallery.js:
+  1. Mirrors it unchanged into data/multimedia/multimedia-data.js as
+     window.MULTIMEDIA_CATALOG — a plain runtime-loadable copy, no
+     grouping/sorting/date-parsing/URL-building applied.
+  2. Writes the static daily-gallery.html viewer shell, which loads that
+     mirror and does all grouping (by folder basename, e.g. "2026-07-10"),
+     date resolution (EXIF datetime_original, else
+     file_properties.modified_time, else none), URL-building, and
+     description lookup itself, at runtime, every time it is opened.
+
+Where it lives (current, as of the August 2026 shared-script move)
+------------------------------------------------------------------------
+    travel-journals/                     <- the collection root (this
+      scripts/                              script's own grandparent
+        javascript/                          directory)
+          build-daily-multimedia-gallery.js               <- SHARED, one copy for every trip
+          build-daily-multimedia-gallery_Instructions.txt  <- SHARED (this file)
+      travel-journal-2026-07-01/          <- one trip
+        data/
+          multimedia/
+            multimedia-data.json                       <- this trip's source data (read only)
+            multimedia-data.js                          <- this trip's output (runtime mirror)
+        daily-gallery.html                              <- this trip's output (static shell)
+      travel-journal-2026-01-14/          <- another trip, same shape
+
+How to run it (current)
+--------------------------
+No dependencies — plain Node.
+
+    node scripts/javascript/build-daily-multimedia-gallery.js <journal-folder>
+
+  <journal-folder>  Which trip to build daily-gallery.html for, resolved
+                    two ways, tried in order: as a path relative to the
+                    current directory (or absolute), or as a folder name
+                    directly under the travel-journals collection root
+                    (e.g. "travel-journal-2026-07-01"). Required.
+
+Example:
+    node scripts/javascript/build-daily-multimedia-gallery.js travel-journal-2026-07-01
+
+Safe to rerun any time a trip's data/multimedia/multimedia-data.json
+changes (new photos cataloged, more subject/subject_description content
+filled in via build-multimedia-data.py's --apply-descriptions) — it
+refreshes that trip's data/multimedia/multimedia-data.js from whatever is
+currently in the JSON catalog and rewrites that trip's daily-gallery.html
+(which, in practice, comes out identical unless this script's own
+template changed). Requires that trip's data/multimedia/
+multimedia-data.json to already exist; if it's missing, run
+scripts/python/build-multimedia-data.py <journal-folder> first (see
+scripts/python/build-multimedia-data_Instructions.txt).
+
+Usage once generated
+----------------------
+- Open daily-gallery.html directly (double-click, or via a link) to see
+  every day that has a photo/video in the catalog, listed one per row,
+  oldest day first by default -- pick "Date: Newest first" from the
+  dropdown next to "Choose a day" to flip the list around.
+- Open daily-gallery.html?folder=2026-07-10 (or click a day's row from
+  the list) to jump straight to that day's gallery.
+- A file with no subject_description.standard yet (still pending Claude's
+  description-writing pass, per
+  scripts/python/build-multimedia-data_Instructions.txt)
+  simply shows no description panel above it — everything else (zoom,
+  navigation, full file data popup) still works for it.
+- A file with a standard description but no monty_python rewrite yet
+  shows the standard description with no toggle button, rather than an
+  empty/broken toggle.
+- Pick a duration from the "Slideshow: Ns" dropdown (default 4s) before
+  clicking Slideshow -- it is only read at the moment the slideshow
+  starts, so changing it mid-show has no effect until you stop and start
+  it again.
+- The slideshow plays through the gallery once, in whatever sort order
+  (oldest/newest first) was selected, and stops on its own after the last
+  item -- it does not loop back to the first item automatically.
+- "Show Alternate" stays selected as you move between items (by button,
+  keyboard, or slideshow) until you close the viewer back to the gallery
+  grid -- it is a per-viewing-session preference, not a per-item toggle
+  you have to reselect each time.
+
+Notes and safety
+-----------------
+- Read-only with respect to photos/ and data/multimedia/multimedia-data.json
+  — this script only ever writes daily-gallery.html and
+  data/multimedia/multimedia-data.js (never multimedia-data.json itself).
+- daily-gallery.html is a completely separate, additional viewer;
+  gallery.html, manifest.js, and index.html's existing "N photos →" links
+  are untouched. index.html isn't currently linked to daily-gallery.html —
+  ask Claude to add a link/nav entry if you'd like one.
+- Videos (multimedia_metadata.type: "video") render with native <video>
+  controls instead of the zoom-in/out controls, since there are no video
+  files in the catalog yet to test against and native video controls
+  already handle their own zoom/fullscreen.
+- Dynamic/runtime data: the day picker, every day's thumbnail grid, sort
+  order, image/video URLs, and subject_description text are all computed
+  live by daily-gallery.html's own script from
+  data/multimedia/multimedia-data.js (window.MULTIMEDIA_CATALOG) each time
+  the page loads — none of it is written into daily-gallery.html itself.
+  Re-run this script after cataloging new photos or filling in more
+  descriptions to refresh that mirror file, then reload the page (no need
+  to reopen/re-navigate to it — a normal browser refresh is enough).
+- If data/multimedia/multimedia-data.js fails to load for any reason (e.g.
+  opened before this script has ever been run), daily-gallery.html's
+  <script src="./data/multimedia/multimedia-data.js"> tag has an onerror
+  fallback that sets window.MULTIMEDIA_CATALOG to an empty array, so the
+  page still loads cleanly and shows "No multimedia files found" instead
+  of a broken/blank page.
+
+Update — ?photo= deep link (from daily-location-gallery.html)
+------------------------------------------------------------------
+Your query (verbatim, on the daily-location-gallery.html side): "when a
+thumbnail is clicked on the daily-location-gallery.html page the
+daily-gallery.html should be opened for that date displaying that image"
+
+daily-gallery.html's entry-point script now reads a second URL parameter,
+`photo` (a bare file_name, e.g. "20260715_184807.jpg"), alongside the
+existing `folder`. If present, after loadFolder(folderParam) populates
+and sorts that day's `items` array, it looks up the item whose file_name
+matches exactly and calls openViewer() on it -- opening the full-screen
+viewer directly on that photo instead of leaving the visitor on the plain
+thumbnail grid. No match (stale link, renamed file) just falls back to
+the grid silently.
+
+This is what daily-location-gallery.html's own photo thumbnails now link
+to (./daily-gallery.html?folder=<date>&photo=<file_name>), replacing a
+same-page lightbox that page used to have. See
+build-multimedia-location-clusters-data_Instructions.txt's own "Update —
+thumbnail cross-link to daily-gallery.html" section for the other side of
+this change.
+
+Since daily-gallery.html is generated by this script (not hand-edited),
+the `?photo=` support was added to HTML_TEMPLATE here first, then the
+script was re-run to regenerate daily-gallery.html from it -- editing the
+static output file directly would have been silently overwritten the
+next time someone re-ran this script.
+
+Update — true browser fullscreen, both entry points (2026-08-29)
+--------------------------------------------------------------------------------
+Your query (verbatim): "can the daily gallery be maximized to full
+screen?" -- followed by "Both" when asked whether to add a fullscreen
+toggle to the individual photo/video viewer, the grid/day-picker page,
+or both.
+
+NOTE ON WHERE THIS WAS APPLIED: this script's own "How to run it"
+section (above) still describes writing <journal-folder>/daily-
+gallery.html, a per-trip static shell. That output is no longer what the
+project actually serves -- commit 1fb90d0 ("centralized daily-gallery
+and daily-location-gallery ... modified it use for both journals")
+moved the live, linked-to page to common/daily-gallery.html, a single
+?trip=-aware shared copy (same pattern as common/daily-location-
+gallery.html and common/journal.html), which is what journal.html and
+daily-location-gallery.html's own "Daily Gallery" links actually point
+at. Neither this script nor this Instructions.txt file was updated to
+reflect that move, so running build-daily-multimedia-gallery.js today
+still only refreshes the orphaned per-trip file nothing links to
+anymore, not the page visitors actually see -- this fix (and any future
+one) was therefore made directly in common/daily-gallery.html itself,
+the same way common/daily-location-gallery.html is hand-maintained
+rather than regenerated. Flagged here for whoever next touches this
+script; not otherwise addressed by this update.
+
+What changed: the existing #viewer overlay already fills the browser's
+own viewport when a photo/video is open, but the browser's own chrome
+(address bar, tabs) stays visible -- that's not true fullscreen. Added
+real Fullscreen API support, one shared toggle (isFullscreen()/
+enterFullscreen()/leaveFullscreen()/toggleFullscreen(), fullscreening
+document.documentElement, not just #viewer, so the day picker/grid can
+go fullscreen on their own too) reachable three ways, all kept in sync
+by the same fullscreenchange/webkitfullscreenchange listener updating
+every button/label together:
+  - A new header button (id="fullscreen-toggle"), showing "Fullscreen"/
+    "Exit Fullscreen". Deliberately placed in .header-left, not
+    .header-right -- .header-right is the per-day-grid-only controls
+    (count/sort/slideshow/All Days) that renderDayPicker() hides
+    entirely, so a button placed there would vanish on the day-picker
+    view; .header-left (Journal back-link + day-nav) stays visible in
+    both views, which is what "the whole daily gallery page" requires.
+  - A new icon-only viewer button (id="viewer-fullscreen-toggle") in
+    .viewer-side-top, next to the existing slideshow-toggle, matching
+    its .icon-btn treatment. Its title (not its glyph, which stays "⛶"
+    in both states -- deliberately, since a reliable, widely-supported
+    "compress" counterpart glyph doesn't really exist) toggles between
+    "Enter fullscreen (F)" / "Exit fullscreen (F)".
+  - An "F" keyboard shortcut, added as an early branch in the existing
+    global keydown handler (ahead of its data-modal/viewer-only checks,
+    since fullscreen isn't scoped to either), guarded to skip while a
+    <select>/<input>/<textarea> has focus so it can't fight a native
+    dropdown's own type-ahead-by-letter behavior.
+Both request/exitFullscreen calls check for a vendor-prefixed
+(webkit) fallback and no-op safely if the API is entirely absent (older
+browser) -- both buttons are hidden outright in that case, same
+treatment Read Aloud gets elsewhere in this project when
+speechSynthesis is unavailable. requestFullscreen()'s Promise result is
+.catch()-guarded (with a defensive check for browsers, like older
+Safari, whose webkit-prefixed version returns no Promise at all) so a
+denied/failed request logs a warning instead of an uncaught rejection.
+
+Verified: main inline <script> extracted and run through `new
+Function(...)` (syntax OK). Playwright against a local static server
+serving common/ and travel-journal-2026-02-07/'s multimedia mirror:
+header button visible and toggles document.fullscreenElement correctly
+on BOTH the day-picker view and the per-day grid view (confirming the
+.header-left placement fix -- it was initially added to .header-right
+by mistake and came up invisible on the day picker, caught by this same
+Playwright pass); "F" toggles fullscreen off again; "F" while #day-sort
+has focus correctly does nothing, and works again once focus leaves it;
+opening the viewer and clicking its own fullscreen button also enters
+fullscreen and updates the header button's label too (confirming the
+shared state/listener); no console/page errors anywhere in the pass.
+Re-ran the standard 1500/1100/420px overflow check on both views as a
+regression guard: no overflow introduced by this change at any width in
+either view -- the day-picker is clean at all three, and the per-day
+grid's existing 420px overflow (scrollWidth 839 vs clientWidth 420) was
+confirmed via `git show HEAD:common/daily-gallery.html` to be
+byte-for-byte pre-existing (identical scrollWidth with and without this
+change), not something this update introduced or worsened. Not fixed
+here -- out of scope for this request.
+
+Update — centered description/alternate-description text (2026-08-29)
+--------------------------------------------------------------------------------
+Your query (verbatim): "center description and alternate description on
+the daily-gallery view"
+
+As with the fullscreen update above, this only affects the live page,
+common/daily-gallery.html, which this script no longer generates (see
+the fullscreen update's "NOTE ON WHERE THIS WAS APPLIED" above) -- so
+the fix was made by hand directly in common/daily-gallery.html, not in
+this script's HTML_TEMPLATE.
+
+What changed: .desc-block (the block that holds both the standard
+"DESCRIPTION " text and, after clicking "Show Alternate", the Monty
+Python "YET ANOTHER DESCRIPTION " text -- .desc-block.monty reuses the
+same block, just with an added class) had no text-align set, so it
+inherited the viewer-center column's default left alignment. Added
+`text-align: center;` to the base .desc-block rule so both the label,
+its description text, and the trailing "Show Alternate"/"Hide
+Alternate" link are centered under the image in both the standard and
+Monty Python styles alike (.desc-block.monty does not override
+text-align, so it inherits the same centering).
+
+Not verified with Playwright this round (single-property CSS change,
+scoped to one existing selector, no markup or script changes).
+
+Update — stopped writing the orphaned per-trip daily-gallery.html (2026-08-29, same day)
+--------------------------------------------------------------------------------------------------------
+Your query (verbatim): "clean up second, older copy that lives inside
+each trip folder (e.g. `travel-journal-2026-02-07/daily-gallery.html`)
+that `build-daily-multimedia-gallery.js` [writes]"
+
+Background (flagged in the previous update, above, when adding
+fullscreen support): this script's own top-of-file comment and this
+Instructions.txt file were never updated after daily-gallery.html was
+centralized into common/daily-gallery.html (commit 1fb90d0), so the
+script kept silently regenerating <journal-folder>/daily-gallery.html --
+a static per-trip shell nothing in the project links to or serves
+anymore -- every time it ran. travel-journal-2026-02-07/daily-
+gallery.html (regenerated twice this session, before this cleanup, while
+populating that trip's multimedia data) was a live example.
+
+What changed: deleted every orphaned <journal-folder>/daily-gallery.html
+(only travel-journal-2026-02-07 had one at the time of this cleanup --
+travel-journal-2026-01-14 and travel-journal-2026-07-01 had none left).
+Then removed this script's OWN ability to write one, rather than just
+leaving it unused: OUTPUT_FILE and the entire HTML_TEMPLATE constant (a
+large embedded HTML/CSS/JS string -- previously most of this file's
+length, ~1100 of ~1285 lines) are gone outright, along with the "Write
+the static page shell" step and its console.log line. This script's
+ONLY remaining job is refreshing data/multimedia/multimedia-data.js (the
+window.MULTIMEDIA_CATALOG runtime mirror) from multimedia-data.json --
+exactly as necessary as before, since common/daily-gallery.html (and
+common/daily-location-gallery.html's own no-clustered-location fallback,
+added earlier this session) both still load that file at runtime. The
+top-of-file comment, this script's usage/error text, and the generated
+mirror file's own header comment were all reworded to match (referring
+to common/daily-gallery.html by its real, current path instead of an
+implied same-folder daily-gallery.html). The script's own filename was
+deliberately left unchanged -- renaming it would touch its own
+invocation across this Instructions.txt, the how-to-populate checklist,
+and prose references in two sibling scripts' comments (build-
+multimedia-location-clusters-data.js, build-daily-location-gallery-for-
+range.js/_Instructions.txt) for a purely cosmetic gain; flagged here in
+case a future pass wants to take that on deliberately.
+
+Verified: node --check passes. Re-ran the trimmed script for travel-
+journal-2026-02-07 -- it wrote only data/multimedia/multimedia-data.js
+("Wrote ... (runtime data mirror)."), no daily-gallery.html line in its
+own output and no file reappeared in the trip folder afterward. Loaded
+the regenerated mirror in a throwaway `node -e` snippet (global.window =
+{}; require(...)) and confirmed window.MULTIMEDIA_CATALOG still has all
+152 entries, first file 20260208_094218.jpg -- the mirror's shape is
+unchanged by this cleanup, only the second, dead output was removed.
+Confirmed via `find . -iname daily-gallery.html` that common/daily-
+gallery.html is now the only copy anywhere in the project.
+
+Update — fixed the pre-existing narrow-phone header overflow (2026-08-29, same day)
+--------------------------------------------------------------------------------------------------------
+Your query (verbatim): "look at per-day grid header overflows slightly
+at very narrow phone widths (~420px) — unrelated to fullscreen,
+pre-existing." (flagged as a finding, not yet fixed, at the end of the
+fullscreen update just above -- confirmed there via `git show
+HEAD:common/daily-gallery.html`, byte-identical scrollWidth with and
+without that update, to rule out the new fullscreen button as the
+cause).
+
+Root cause, found by walking element bounding rects in Playwright at
+420px: the real culprit was .header-right (count, both selects,
+Slideshow, All Days) having no flex-wrap at all -- a plain `display:
+flex; gap: 10px;` row whose five children's combined natural width
+(~537px) could never fit on one line on a phone, and the header's own
+620px-breakpoint `grid-template-columns: auto 1fr auto;` doesn't let an
+"auto" grid track shrink below its content's own natural width just
+because the viewport is narrow. Added flex-wrap: wrap + justify-content:
+flex-end to .header-right (matching .header-left, its already-wrapping
+opposite-aligned sibling) -- this alone took the 420px overflow from
+419px down to 27px (scrollWidth 839 -> 447), but not to zero: even after
+wrapping, .header-right's own grid column still needed to fit its
+SINGLEST widest child (~145px, the #sort select) simultaneously with
+.header-left's own widest wrapped line (day-nav's four pills on one
+line, ~250px) in the same shared row, and two competing "auto" grid
+tracks don't shrink below that combined need either.
+
+Full fix: restructured the 620px breakpoint so `header` switches from a
+3-column CSS grid to a `flex-direction: column` stack instead -- each of
+header-left/h1/header-right now gets its own full-width row rather than
+splitting one row three ways, so each row only has to fit its own
+widest single child (comfortably true for all of them, even at 280px)
+instead of negotiating shared horizontal space with siblings that don't
+shrink. header h1 gained text-align: center (previously centered via
+its CSS Grid column placement, which no longer applies once header
+isn't a grid at this breakpoint).
+
+Verified: node --check passes; main inline <script> extracted and run
+through `new Function(...)` (this was a CSS-only change, no JS touched,
+included anyway as a blanket regression guard). Playwright across
+280/320/420/620/1100/1500px, BOTH the day-picker and per-day grid views:
+zero horizontal overflow (scrollWidth === clientWidth) at every single
+width tested, including the previously-broken 420px and an even more
+extreme 280px case not tested before. Fullscreen (from the update just
+above) re-verified working correctly at 420px on top of this restructure
+-- button visible, click enters fullscreen, "F" exits it, no console/
+page errors. Screenshots taken of both views at 420px: header now reads
+as clean stacked rows (Journal/First/Previous/Next/Last, then
+Fullscreen, then the centered title, then count/sort/slideshow controls
+wrapping onto their own lines) with no clipped or overlapping content.
+
+Update — Full Screen + Slideshow controls added to the zoom bar (2026-08-29)
+--------------------------------------------------------------------------------
+Your query (verbatim): "add 'Full Screen' and slideshow controls to the
+individual multimedia file view to the right of the zoom reset and add a
+separator in between feature groups"
+
+Same situation as the two updates above -- common/daily-gallery.html is
+the live, hand-maintained page (this script's own HTML_TEMPLATE is not
+what's served), so the change was made there directly, not in this
+script.
+
+What changed: the viewer's zoom bar (-, 100%, +, Reset, under the photo/
+video) gained a second feature group to its right, divided from the zoom
+group by a plain 1px vertical rule (.zoom-bar-sep) rather than another
+control:
+  - A "Full Screen" text button (#viewer-fullscreen-btn), a third entry
+    point onto the exact same toggleFullscreen()/updateFullscreenButtons()
+    machinery the header button and the viewer's icon-only fullscreen
+    button already share -- all three stay in sync (and all three hide
+    together if the Fullscreen API is ever unsupported).
+  - A "Slideshow: Ns" interval dropdown (#viewer-slideshow-interval) and a
+    "▶ Slideshow" button (#viewer-slideshow-start), a third pair of the
+    same controls the per-day grid header and the day-picker toolbar
+    already have, wired to the same startSlideshow() function -- lets a
+    visitor start a slideshow from inside an already-open photo/video
+    instead of backing out to the grid first. Like the other two
+    entry points, it always (re)starts at item 0 of the current `items`
+    list -- startSlideshow() has never taken "start from here" as an
+    option, and this didn't add one.
+  Both new button styles needed `.zoom-bar button.zoom-bar-btn` (repeating
+  the "button" type), not a bare `.zoom-bar-btn` class selector -- the
+  existing `.zoom-bar button` rule (width/height:32px, border-radius:50%,
+  sized for the -/+ glyphs) otherwise outranks it on specificity and
+  silently clips the new buttons' text into 32px circles. Caught by the
+  Playwright pass below, not by eye.
+
+  Since the whole #zoom-bar is hidden outright for video items ("native
+  video controls handle their own zoom/fullscreen"), the new Full Screen/
+  Slideshow controls are hidden then too, same as Reset et al. -- not
+  addressed here, out of scope for this request.
+
+Verified: main inline <script> extracted and run through `new
+Function(...)` (syntax OK). Playwright against a local static server
+(daily-gallery.html + one trip's multimedia-data.js, photos themselves
+not staged so thumbnails 404 harmlessly): opened the viewer, confirmed
+the separator, "Full Screen", interval dropdown, and "Slideshow" button
+are all present and visible; clicking "Slideshow" showed the existing
+pause/resume icon in the left rail (confirming it drives the same
+startSlideshow() state); clicking "Full Screen" threw no page errors
+(a rejected fullscreen request in headless Chromium is already
+.catch()-guarded, per the original Fullscreen update above). Ran the
+standard 1500/1100/420px overflow check: at 1500/1100px the row stays on
+one line with no overflow; at 420px it wraps to three lines (zoom group /
+Full Screen / interval+Slideshow) with zero overflow on #zoom-bar or the
+page -- this is what caught the specificity bug above, since the first
+attempt clipped-but-fit at 32px per button and only looked wrong once the
+fix widened them back out.
+
+
+Update — Edit Mode: edit/remove controls across all three views (2026-09-02)
+--------------------------------------------------------------------------------
+Your query (verbatim): "add a toggle button or link to daily-gallery.html
+display for individual file, daily files, and all journal files where
+that toggle will display edit based controls of edit and remove photos"
+
+Same situation as every update above -- common/daily-gallery.html is the
+live, hand-maintained page, so this was built directly there, not in this
+script (which still only ever refreshes data/multimedia/multimedia-data.js).
+
+The page is fully static/client-side with no backend, so "Edit" and
+"Remove" cannot write to disk themselves. Two options were put to the
+user before building anything: what "Remove" should actually do given
+that constraint (queue-and-export-JSON vs. the File System Access API vs.
+a cosmetic-only, no-persistence toggle), and what "Edit" should cover
+(description text only, or text plus reassigning a file's day). The user
+picked queue-and-export (extending build-multimedia-data.py with a new
+--remove-files flag) and text-plus-day-reassignment.
+
+What changed:
+  - An "Edit Mode" toggle button (#edit-mode-toggle, header-left) turns
+    edit/remove controls on and off across the day-picker, the per-day
+    grid, AND the individual viewer. Since the full-screen #viewer
+    overlay hides the header behind it, the viewer gets its own matching
+    icon toggle (#viewer-edit-mode-toggle, next to its fullscreen icon)
+    driving the exact same shared `editMode` state -- there is only one
+    edit-mode bit, synced everywhere via updateEditModeUI().
+  - editMode itself, and every queued change, live in localStorage keyed
+    per trip (dailyGalleryEditMode:<trip>, dailyGalleryPendingChanges:
+    <trip>) -- they survive a reload and moving between the three views
+    (real page navigations, not SPA state).
+  - Day-picker thumbnails and grid thumbnails each grow a small overlay
+    pair of round Edit (pencil)/Remove (trash) buttons in edit mode
+    (.thumb-edit-controls / .day-thumb-edit-controls); the individual
+    viewer grows "Edit"/"Remove" text links in its filename-block
+    (#viewer-edit-controls) so they work for video items too, where the
+    zoom bar is hidden entirely.
+  - "Remove" (removeItem()) queues the file (keyed by its real, never-
+    renamed relative_folder + file_name -- see pendingKey()) into
+    pending.removals, drops any pending edit for the same file, and
+    splices it out of the in-memory DATA model immediately so every view
+    reflects the removal without a reload.
+  - "Edit" (the new #edit-modal, opened via openEditModal()) is a small
+    form for subject.description, subject_description.standard,
+    subject_description.monty_python, and a "day folder (YYYY-MM-DD)"
+    field for reassigning which day a file is grouped under. Saving
+    (saveEditModal()) applies the text fields to the in-memory item right
+    away (safe -- no file needs to move for text to change) but does NOT
+    touch the item's grouping/URL for a day reassignment, since the file
+    has not actually moved on disk yet -- it only shows a small
+    "→ YYYY-MM-DD" badge (.pending-move-badge) until the real move has
+    happened and the page is reloaded from a freshly rebuilt catalog.
+  - A "Pending: N edits, M removals" cluster (#pending-changes, next to
+    the header's Edit Mode button) appears whenever there's something
+    queued, with "Download Changes" (downloadPendingChanges()) exporting
+    everything queued as one JSON file --
+    {generatedAt, trip, edits: [...], removals: [...]} -- and "Clear"
+    (clearPendingChanges(), after a confirm()) wiping the local queue and
+    reloading. That downloaded file is exactly the shape
+    build-multimedia-data.py's --apply-descriptions and new --remove-files
+    both accept (see that script's own Instructions.txt update below) --
+    run both against the same downloaded file, in either order, to apply
+    everything queued here.
+
+Verified: both inline <script> blocks extracted and run through `node
+--check` (syntax OK); no duplicate element ids; <div> open/close tags
+balanced. Playwright against a local static server with a synthetic
+3-photo/2-day fixture: confirmed the toggle is visible and off by default
+on the day-picker with no overlay controls rendered; turning it on shows
+one overlay pair per thumbnail; clicking Remove on one thumbnail removes
+it from the DOM immediately and the pending count shows "1 removal";
+opening Edit on another item, changing its standard description and its
+day-folder field, and saving shows "1 edit, 1 removal" and a pending-move
+badge; downloading produces a JSON file whose edits[0] carries the edited
+subject_description.standard and move_to_folder, and whose removals[0]
+names the removed file; editMode persists via localStorage across a
+navigation into the per-day grid (overlay controls still shown there
+without re-toggling); opening the individual viewer shows the Edit/Remove
+links, and turning edit mode off from the viewer's own toggle hides them.
+Separately verified the Python side of the round trip: fed a fixture
+trip's own downloaded-shaped JSON to --apply-descriptions (applied the
+text edit and physically moved the file into the new day folder, updating
+relative_folder) and then to --remove-files on the same file (deleted the
+other file and dropped its catalog entry) -- see this script's own
+Instructions.txt update for that half.

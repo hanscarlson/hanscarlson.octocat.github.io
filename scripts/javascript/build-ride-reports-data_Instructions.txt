@@ -1,0 +1,163 @@
+BUILD RIDE-REPORTS DATA SCRIPT — INSTRUCTIONS
+==============================================
+
+SHARED SCRIPT — build-ride-reports-data.js and this file live once at
+travel-journals/scripts/javascript/ and serve every
+travel-journal-YYYY-MM-DD/ trip (as of August 2026, this was moved here
+from living inside travel-journal-2026-07-01's own scripts/javascript/
+folder -- the only trip so far with rideWithGPS PDFs to scan). Because
+one copy now serves every trip, every run takes a required
+<journal-folder> first argument to say which trip to act on -- see
+"Usage" below. A trip with no rideWithGPS/ folder at all (like
+travel-journal-2026-01-14) just produces empty output files when run
+against it -- not an error.
+
+What it does
+------------
+scripts/javascript/build-ride-reports-data.js scans this trip's
+rideWithGPS/ folder for ride-report PDFs (RideWithGPS route-map exports)
+and writes data/ride-reports/ride-reports-data.json — a plain mapping of
+journal date -> array of { file, label, image } — plus a runtime mirror
+data/ride-reports/ride-reports-data.js right after it.
+
+This exists so each trip's index.html (a client-side-rendered page — see
+its own top-of-script comment) can render each day's "Cycle Routes" block
+the same live-from-data-folder way it already renders Events, Notes, and
+Travel Details — browser JS can't list a folder's files itself, so this
+script's job is to do that scan once, on request, and hand the result to
+the page as a data file it CAN load (a classic <script src>, same reason
+every other data/*/*-data.js mirror in this project exists — opening
+index.html from disk via file:// blocks fetch() of local JSON in most
+browsers, but a <script src> tag still works).
+
+(As of August 2026, this is the only kind of index.html every trip has —
+see "Update — index.html is now the client-side-rendered page" near the
+end of this file for the earlier, build-time-generated index.html this
+data file's own mirror originally had no effect on.)
+
+Usage
+-----
+    node scripts/javascript/build-ride-reports-data.js <journal-folder>
+
+  <journal-folder>  Which trip to scan rideWithGPS/ for, resolved two
+                    ways, tried in order: as a path relative to the
+                    current directory (or absolute), or as a folder name
+                    directly under the travel-journals collection root
+                    (e.g. "travel-journal-2026-07-01"). Required.
+
+Example:
+    node scripts/javascript/build-ride-reports-data.js travel-journal-2026-07-01
+
+Safe to re-run any time — it always rescans that trip's rideWithGPS/
+fresh and overwrites both output files to match exactly what's on disk; it
+does not merge with a prior run's output. Re-run it whenever a ride-report
+PDF is added, removed, or renamed, so that trip's index.html picks up the
+change on next page load.
+
+Filename convention
+--------------------
+Same as build-travel-journal.js's own ride-report scan: each PDF's name
+must start with the journal date it belongs to, e.g.
+
+    2026-07-08-2_-_Sisterbike_25_Day_4-_Barge_arrived.pdf
+
+An optional "-N" suffix on the date (as above) distinguishes multiple PDFs
+for the same day. Everything after the date (and that optional "-N")
+becomes the ride's display label, with underscores turned into spaces —
+"Sisterbike 25 Day 4- Barge arrived" for the example above. A file whose
+name doesn't start with a YYYY-MM-DD is silently skipped.
+
+Rasterized images
+-------------------
+Like build-travel-journal.js, this shells out to poppler's `pdftoppm`
+(must be on PATH) to rasterize each PDF to rideWithGPS/images/<name>.png,
+since the journal displays ride reports as images, not embedded PDFs. An
+image is only (re)generated when it's missing or older than its source
+PDF — images already produced by an earlier build-travel-journal.js run
+are detected as up to date and reused as-is, not rebuilt.
+
+Output shape
+-------------
+    data/ride-reports/ride-reports-data.json:
+    {
+      "2026-07-08": [
+        {
+          "file": "2026-07-08-1_-_Sisterbike_25_Day_4-_Antwerp_-_Temse_-_Dendermonde.pdf",
+          "label": "Sisterbike 25 Day 4- Antwerp - Temse - Dendermonde",
+          "image": "2026-07-08-1_-_Sisterbike_25_Day_4-_Antwerp_-_Temse_-_Dendermonde.png"
+        },
+        {
+          "file": "2026-07-08-2_-_Sisterbike_25_Day_4-_Barge_arrived.pdf",
+          "label": "Sisterbike 25 Day 4- Barge arrived",
+          "image": "2026-07-08-2_-_Sisterbike_25_Day_4-_Barge_arrived.png"
+        }
+      ],
+      ...
+    }
+
+    data/ride-reports/ride-reports-data.js:
+      window.RIDE_REPORTS_DATA = <the same object>;
+
+A day with no ride-report PDFs simply has no key in either file —
+index.html treats a missing key as "no Cycle Routes block for this day",
+the same way it treats a missing key in TRAVEL_DETAILS_DATA or
+DAILY_NOTES_DATA.
+
+Where it lives
+---------------
+    travel-journals/                     <- the collection root (this
+      scripts/                              script's own grandparent
+        javascript/                          directory)
+          build-ride-reports-data.js     <- SHARED, one copy for every trip
+          build-ride-reports-data_Instructions.txt  <- SHARED
+      travel-journal-2026-07-01/        <- one trip
+        data/
+          ride-reports/
+            ride-reports-data.json    <- this trip's output, {"YYYY-MM-DD": [{file, label, image}, ...]}
+                                          (folder created automatically if missing)
+            ride-reports-data.js      <- this trip's output (runtime mirror),
+                                          window.RIDE_REPORTS_DATA = {...};
+                                          written right after ride-reports-data.json, every run
+        rideWithGPS/
+          *.pdf                       <- source files this script scans
+          images/*.png                <- rasterized per-PDF images (created/reused as needed)
+      travel-journal-2026-01-14/        <- another trip; no rideWithGPS/ folder
+                                            yet, so a run against it just
+                                            produces empty output files
+      common/
+        journal.html                    <- the one shared journal page every trip
+                                            uses; ?trip=<folder> selects which
+                                            trip's data/ride-reports/ mirror it
+                                            reads client-side (see "Update" below)
+
+Update — index.html is now the client-side-rendered page (August 2026)
+------------------------------------------------------------------------------
+When this script was first written, "index.html itself (the
+build-travel-journal.js-generated page) does NOT use this data" was true
+— that build-time-generated page found ride reports by scanning
+rideWithGPS/ directly at its own build time, and the client-side-rendered
+page described in "What it does" above lived alongside it under a
+different name, index-dynamic.html. As of August 2026 every trip's
+index-dynamic.html was renamed to index.html (replacing the old
+build-time-generated one, which was removed, along with the
+build-travel-journal.js script that generated it — see
+scripts/_to_delete/build-travel-journal_Instructions.txt for that
+script's retirement notes). There is now only one index.html per trip,
+and it's the client-side-rendered kind described throughout this file —
+every mention of "index.html" above refers to it.
+
+Update — index.html moved to common/journal.html?trip=<folder> (August 2026)
+------------------------------------------------------------------------------
+The previous update above already retired the build-time-generated
+index.html in favor of the client-side-rendered kind (the one this file
+otherwise describes throughout). That client-side-rendered page has now
+moved again: each trip's own index.html -- byte-identical to every other
+trip's copy except for its title and folder name -- was deleted, and the
+same page now lives once at common/journal.html, read via
+?trip=<folder> (the same pattern common/daily-gallery.html and
+common/daily-location-gallery.html already used). Every mention of
+"index.html" throughout this file still describes the same live,
+client-side behavior (ride-reports-data.js is read the same way, on
+every page load) -- just at that new shared location. See
+common/journal.html's own top-of-script comment and
+build-travel-journal-index_Instructions.txt for the fuller history.

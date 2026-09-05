@@ -1,0 +1,218 @@
+REFRESH TRAVEL DETAILS SCRIPT — INSTRUCTIONS
+=============================================
+
+SHARED SCRIPT — refresh-travel-details.py and this file live once at
+travel-journals/scripts/python/ and serve every travel-journal-YYYY-MM-DD/
+trip (as of August 2026, this was moved here from being duplicated inside
+each trip's own scripts/python/ folder — the two copies were byte-for-byte
+identical, so unlike build-multimedia-data.py's own move there was no
+logic to reconcile between them). Because one copy now serves every trip,
+every run takes a required <journal-folder> first argument to say which
+trip to write into — see "How to run it" below. SOURCE_FILE (the external
+TravelDetails.ods spreadsheet) is not per-trip: it's Hans's one personal
+travel-planning spreadsheet covering every trip, so every trip's run
+reads that same file and just filters it down to that trip's own date
+range.
+
+Your original query (verbatim)
+--------------------------------
+"create and execute a readable refresh-travel-details- script that
+extracts rows from  '/Users/hanscarlson/Library/CloudStorage/GoogleDrive-
+hans.carlson@gmail.com/My Drive/travel/TravelDetails.ods' spreadsheet
+"Details" sheet where the date column value is within the date range
+parameter yyyy-mm-dd to yyyy-mm-dd given to the script and save the rows
+to the data/travel-details/travel-details.json include the claude
+resolved query in the instructions use 2026-01-14 to 2026-01-26 for the
+initial date range"
+
+Claude's resolved query
+--------------------------
+Built scripts/python/refresh-travel-details.py, a plain Python script
+(not a two-step, Claude-mediated one — see "WHY THIS IS NOT A TWO-STEP,
+CLAUDE-MEDIATED SCRIPT" in the script's own module docstring) that:
+
+  1. Reads the "Details" sheet of the external TravelDetails.ods
+     spreadsheet — NOT part of this project's own directory tree, but a
+     separate file synced via Google Drive for desktop at
+       /Users/hanscarlson/Library/CloudStorage/GoogleDrive-hans.carlson@gmail.com/My Drive/travel/TravelDetails.ods
+     (hardcoded in the script as SOURCE_FILE, since it's specific to this
+     one machine/Google account). Read via pandas' read_excel with the
+     odf engine (pandas + odfpy — see DEPENDENCIES below), which reads
+     .ods natively.
+  2. Filters that sheet's rows (one row per calendar day) to just the
+     ones whose Date column falls within an inclusive [start, end] range
+     supplied as command-line arguments (YYYY-MM-DD each).
+  3. Writes the matching rows, one JSON object per day, sorted
+     chronologically, to that trip's data/travel-details/travel-details.json —
+     creating the data/travel-details/ folder if it doesn't exist yet.
+     Every row always has all 8 keys (date, trip_name, locale, lodging,
+     transportation, meals, activities, notes); a blank cell for that day
+     is JSON null, never an empty string or a missing key. A day with a
+     Date but nothing else filled in still produces a row (all-null
+     except date) — the date range decides what's extracted, not whether
+     a day has content.
+  4. Also writes data/travel-details/travel-details-data.js alongside it —
+     the same rows keyed by date (the redundant "date" key dropped from
+     each value) and assigned to window.TRAVEL_DETAILS_DATA, for index.html
+     to load via <script src> (see "index.html integration" below).
+
+Moved: now a shared script (August 2026)
+---------------------------------------------
+This script used to live inside a single trip's own scripts/python/
+folder, with PROJECT_ROOT computed from its own __file__ location (two
+levels up) — so it was copied, unchanged, into each new trip's folder as
+that trip was created. As of August 2026 it was moved to travel-journals/
+scripts/python/ (one copy, same convention as build-multimedia-data.py
+and resolve_no_gps_locations.py) and given a required <journal-folder>
+first argument instead, so PROJECT_ROOT now comes from that argument
+rather than from where the script itself happens to sit. Nothing about
+what the script does per trip changed — same SOURCE_FILE, same column
+mapping, same output shape — only how you tell it which trip to write
+into.
+
+Python, not JavaScript, and not a two-step process
+-----------------------------------------------------
+This project's scripts/javascript/refresh-notes.js and refresh-events.js
+are two-step and Claude-mediated because their source data (daily
+journal entries, calendar events) has to be fetched or written by Claude
+itself — a plain script has no way to reach it on its own. This script's
+situation is different: every field it needs already exists as plain
+text inside TravelDetails.ods, a file already sitting on disk. There's no
+research, no synthesis, nothing only Claude can supply — just reading
+rows out of a spreadsheet and filtering by date — so one ordinary script
+run does the whole job, the same shape as scripts/python/build-multimedia-
+data.py's own non-Claude-mediated steps (file properties, EXIF/GPS,
+reverse geocoding).
+
+Column mapping (Details sheet header -> output JSON key)
+-------------------------------------------------------------
+    Date            -> date            ("YYYY-MM-DD" string)
+    Trip Name        -> trip_name
+    Locale            -> locale
+    Lodging            -> lodging
+    Transportation      -> transportation
+    Meals                -> meals
+    Activities             -> activities
+    Notes                    -> notes
+
+index.html integration (added 2026-08-22; see "Update" below)
+-------------------------------------------
+Each trip's journal page (common/journal.html?trip=<folder>, a single
+client-side-rendered page shared by every trip since August 2026 — it
+used to be that trip's own index.html; see that page's own top-of-script
+comment) renders a "Travel Details" section in every day's card, right
+before that day's "Notes" section. It's populated client-side, the same
+way Events and Notes already are: that page loads
+data/travel-details/travel-details-data.js via <script src> (with an
+onerror fallback to an empty object, in case this script hasn't been run
+yet for that trip) and, for each day, looks up
+window.TRAVEL_DETAILS_DATA[date]. If a row exists for that date and has
+at least one non-null field, it's rendered as labeled lines (Trip,
+Locale, Lodging, Transportation, Meals, Activities, Trip Notes — "Trip
+Notes" rather than "Notes" so it isn't confused with the day's own Notes
+section right below it); otherwise the day shows "No travel details for
+this day." and the section stays out of the way. This is why step 4 above
+(the .js mirror) exists — rerun this script any time TravelDetails.ods
+changes and that trip's journal page will pick up the new content on
+next load, no separate build step needed.
+
+DEPENDENCIES
+--------------
+    pip install pandas odfpy
+
+(odfpy is pandas' engine for reading .ods files; both were already
+installed on this machine's Python at the time this script was written.)
+
+WHERE IT LIVES
+---------------
+    travel-journals/                     <- the collection root (this
+      scripts/                              script's own grandparent
+        python/                             directory)
+          refresh-travel-details.py     <- SHARED, one copy for every trip
+          refresh-travel-details_Instructions.txt  <- SHARED (this file)
+      travel-journal-2026-07-01/        <- one trip
+        data/
+          travel-details/
+            travel-details.json         <- this trip's output
+            travel-details-data.js      <- this trip's output (mirror)
+      travel-journal-2026-01-14/        <- another trip, same shape
+
+HOW TO RUN IT
+---------------
+    python3 scripts/python/refresh-travel-details.py <journal-folder> <start> <end> [output-path]
+
+  <journal-folder>  Which trip to write into, resolved two ways, tried in
+                    order: as a path relative to the current directory
+                    (or absolute), or as a folder name directly under the
+                    travel-journals collection root (this script's own
+                    grandparent directory), e.g. "travel-journal-
+                    2026-07-01". If neither resolves to a real directory,
+                    the script exits with an error listing every
+                    travel-journal-YYYY-MM-DD folder it can see. Required.
+  <start>/<end>     Inclusive date range, YYYY-MM-DD. Both required.
+  [output-path]     Defaults to <journal-folder>/data/travel-details/
+                    travel-details.json. Pass a different path for a
+                    dry-run comparison before overwriting the real file.
+                    The travel-details-data.js mirror is always written
+                    next to whichever path this resolves to, as
+                    travel-details-data.js in that same directory.
+
+Example (the initial run, per your query):
+    python3 scripts/python/refresh-travel-details.py travel-journal-2026-01-14 2026-01-14 2026-01-26
+
+That run wrote 13 rows (2026-01-14 through 2026-01-26 inclusive — the
+Arctic Trip's Iceland/Sweden days through the flight home) to that trip's
+data/travel-details/travel-details.json.
+
+Second run (2026-08-22), matching the July trip's index.html current date
+range at the time:
+    python3 scripts/python/refresh-travel-details.py travel-journal-2026-07-01 2026-07-01 2026-08-18
+
+That run wrote 49 rows (2026-07-01 through 2026-08-18 inclusive; 11 of
+those have a Date but no other content) to that trip's
+data/travel-details/travel-details.json and the accompanying
+travel-details-data.js mirror — this is also when the "index.html
+integration" section above was added.
+
+Swap the <journal-folder> argument for any other trip's own folder name
+to run this against it instead — e.g.:
+    python3 scripts/python/refresh-travel-details.py travel-journal-2026-07-01 2026-07-10 2026-07-12
+
+Safe to rerun any time the spreadsheet changes, or with a different date
+range — it always reads the current state of the Details sheet and
+overwrites both of that trip's output files with exactly the rows in the
+requested range (it does not merge with a prior run's output, so a later
+run with a narrower range will produce files with fewer rows than a
+previous wider run).
+
+Notes and safety
+-------------------
+- Read-only with respect to TravelDetails.ods — never writes to it, so
+  it's safe to run even while the spreadsheet is open for editing in
+  LibreOffice/Excel (a ".~lock.TravelDetails.ods#" file next to it is
+  just that editor's advisory lock marker for other editors, and does not
+  block a separate process from reading the underlying file).
+- The source path is specific to this machine and this Google account —
+  if this project is ever used from a different machine, or the Drive
+  folder moves, update SOURCE_FILE at the top of the script.
+- Every row's "date" key is a plain "YYYY-MM-DD" string, matching the
+  date-string convention used elsewhere in this project (e.g. photos/
+  YYYY-MM-DD folder names) — not an ISO timestamp.
+- Running this script against the wrong <journal-folder> only touches
+  that one trip's own data/travel-details/ files — trips are fully
+  independent, and every trip's run reads the same shared SOURCE_FILE, so
+  there's nothing trip-specific to get out of sync in the source data
+  itself.
+
+Update — index.html moved to common/journal.html?trip=<folder> (August 2026)
+------------------------------------------------------------------------------
+Every "index.html" mention above still describes the same live,
+client-side behavior (travel-details-data.js is read the same way, on
+every page load) -- only the file itself moved. Each trip used to have
+its own index.html, byte-identical to every other trip's copy except for
+its title and folder name; that page is now one shared file,
+common/journal.html, read via ?trip=<folder> (the same ?trip=-aware
+pattern common/daily-gallery.html and common/daily-location-gallery.html
+already used), and each trip's own index.html was deleted. See
+common/journal.html's own top-of-script comment and
+build-travel-journal-index_Instructions.txt for the fuller history.

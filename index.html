@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Travel Journals</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,900;1,500;1,600&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1c2b3a;
+    --ink-soft: #5c5445;
+    --paper: #f7f2e6;
+    --paper-alt: #efe4cd;
+    --brass: #b8863b;
+    --brass-dark: #8f6526;
+    --brick: #a1432f;
+    --sea: #3f6e64;
+    --rule: #ddccaa;
+    --white: #fffdf8;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Public Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  }
+  header {
+    position: sticky; top: 0; z-index: 10;
+    padding: 16px 20px;
+    background: linear-gradient(180deg, var(--paper-alt) 0%, var(--paper) 100%);
+    border-bottom: 1px solid var(--rule);
+    text-align: center;
+  }
+  header h1 {
+    margin: 0 0 4px;
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-style: italic;
+    font-size: 30px;
+    color: var(--ink);
+  }
+  header .sub {
+    color: var(--ink-soft);
+    font-size: 16px;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.01em;
+  }
+  header .live-badge {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 1px 7px;
+    border-radius: 999px;
+    background: var(--sea);
+    color: var(--white);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    vertical-align: middle;
+  }
+
+  main { width: 90%; margin: 0 auto; padding: 24px 32px 80px; max-width: 760px; }
+
+  .loading, .load-error {
+    text-align: center;
+    color: var(--ink-soft);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    padding: 60px 20px;
+  }
+  .load-error { color: var(--brick); }
+
+  .trip-card {
+    display: block;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    background: var(--white);
+    margin-bottom: 16px;
+    padding: 16px 20px;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 2px 10px rgba(28,43,58,0.06);
+    transition: border-color .15s ease, box-shadow .15s ease, transform .15s ease;
+  }
+  .trip-card:hover {
+    border-color: var(--brass);
+    box-shadow: 0 4px 16px rgba(28,43,58,0.12);
+    transform: translateY(-1px);
+  }
+  .trip-card-head {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .trip-date-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--sea);
+    font-weight: 600;
+    background: var(--paper-alt);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 3px 8px;
+    white-space: nowrap;
+  }
+  .trip-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-style: italic;
+    font-size: 21px;
+    color: var(--ink);
+  }
+  .trip-sub {
+    margin-top: 8px;
+    color: var(--ink-soft);
+    font-size: 15px;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  .no-events { color: var(--ink-soft); font-size: 16.5px; font-style: italic; margin: 8px 0 0; }
+
+  footer {
+    text-align: center;
+    color: var(--ink-soft);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    padding: 24px 20px;
+  }
+</style>
+</head>
+<body id="top">
+
+<header>
+  <div class="header-main">
+    <h1>🧳 Travel Journals</h1>
+    <div class="sub" id="journals-summary">Loading journals…<span class="live-badge">Live</span></div>
+  </div>
+</header>
+
+<main id="main">
+  <p class="loading" id="loading-msg">Loading journal list…</p>
+</main>
+
+<footer id="bottom">Rendered live, client-side — every trip card, the date range above, and their order are computed on page load from common/data/trips-manifest.js (no rebuild step needed after adding, removing, or renaming a travel-journal-YYYY-MM-DD folder, or changing a trip's trip-info.json title). Run <code>node scripts/javascript/build-common-trips-manifest.js</code> after any of those so this list picks it up.</footer>
+
+<script src="./common/data/trips-manifest.js" onerror="window.TRIPS_MANIFEST = window.TRIPS_MANIFEST || []"></script>
+<script>
+(function () {
+  // ---------------------------------------------------------------------
+  // index.html (the collection root's own landing page)
+  // ----------------------------------------------------------------------
+  // Fully client-side-rendered: nothing about which trips show up, their
+  // order, or the header's "N trips · <range>" summary is baked in at
+  // build time. This page computes ALL of that itself, on load, straight
+  // from common/data/trips-manifest.js (window.TRIPS_MANIFEST) -- the
+  // same manifest common/daily-location-gallery.html's own trip picker
+  // already reads. Add a new travel-journal-YYYY-MM-DD folder (with its
+  // own trip-info.json) or rename an existing trip's title, re-run
+  // build-common-trips-manifest.js, and reload this page: no rebuild of
+  // this page itself is ever needed.
+  //
+  // (This page used to be regenerated at build time by
+  // scripts/javascript/build-travel-journal-index.js, one static
+  // <a class="trip-card"> per trip baked directly into this file. That
+  // script has been retired -- see scripts/_to_delete/build-travel-
+  // journal-index_Instructions.txt -- now that this page reads the same
+  // live manifest every other shared page in common/ already reads.
+  // Every trip's own journal page went through the same shift earlier:
+  // see common/journal.html's own top-of-script comment.)
+  function esc(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+
+  var FOLDER_RE = /^travel-journal-(\d{4}-\d{2}-\d{2})$/;
+
+  var mainEl = document.getElementById("main");
+  var summaryEl = document.getElementById("journals-summary");
+
+  var trips = (window.TRIPS_MANIFEST || [])
+    .map(function (t) {
+      var m = FOLDER_RE.exec(t.folder || "");
+      if (!m) return null;
+      return { folder: t.folder, date: m[1], title: t.title || t.folder, sub: t.sub || "" };
+    })
+    .filter(Boolean);
+
+  // Chronological, oldest trip first -- reads like a timeline of the
+  // trips themselves, the same order you'd flip through them in a
+  // physical journal. Swap to (b, a) below for newest-first instead.
+  trips.sort(function (a, b) { return a.date < b.date ? -1 : a.date > b.date ? 1 : 0; });
+
+  if (!trips.length) {
+    mainEl.innerHTML = '<p class="no-events">No travel journals found yet. Add a travel-journal-YYYY-MM-DD/ folder with its own trip-info.json, run node scripts/javascript/build-common-trips-manifest.js, then reload this page.</p>';
+    summaryEl.innerHTML = 'No journals yet <span class="live-badge">Live</span>';
+    return;
+  }
+
+  function formatDateLong(iso) {
+    var parts = iso.split("-").map(Number);
+    var dt = new Date(Date.UTC(parts[0], parts[1] - 1, parts[2]));
+    return dt.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" });
+  }
+
+  var tripWord = trips.length === 1 ? "trip" : "trips";
+  var summary = trips.length === 1
+    ? trips.length + " " + tripWord + " · " + esc(formatDateLong(trips[0].date))
+    : trips.length + " " + tripWord + " · " + esc(formatDateLong(trips[0].date)) + " – " + esc(formatDateLong(trips[trips.length - 1].date));
+  summaryEl.innerHTML = summary + '<span class="live-badge">Live</span>';
+
+  mainEl.innerHTML = trips.map(function (t) {
+    var subLine = t.sub ? '\n    <div class="trip-sub">' + t.sub + '</div>' : "";
+    return '  <a class="trip-card" href="./common/journal.html?trip=' + encodeURIComponent(t.folder) + '">\n'
+      + '    <div class="trip-card-head">\n'
+      + '      <span class="trip-date-badge">' + esc(t.date) + '</span>\n'
+      + '      <span class="trip-title">' + t.title + '</span>\n'
+      + '    </div>' + subLine + '\n'
+      + '  </a>';
+  }).join("\n\n");
+})();
+</script>
+</body>
+</html>

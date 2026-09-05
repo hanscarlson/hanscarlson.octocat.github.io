@@ -1,0 +1,368 @@
+BUILD MULTIMEDIA DATA SCRIPT — INSTRUCTIONS
+=============================================
+
+SHARED SCRIPT — build-multimedia-data.py and this file live once at
+travel-journals/scripts/python/ and serve every travel-journal-YYYY-MM-DD/
+trip (as of August 2026, the script was moved here from being duplicated
+inside each trip's own scripts/python/ folder; the January 2026 Arctic
+trip's copy was ahead by one important bugfix — see "Fixed: rebuilding
+used to silently wipe no-gps-location-resolver results" below — so that's
+the version now shared). This script used to import build-photo-maps.py (a
+per-trip sibling script) at runtime for a handful of small EXIF/GPS-
+reading helpers; as of August 2026 that code was extracted and inlined
+directly into build-multimedia-data.py instead (see "EXIF/GPS reading
+helpers, extracted from build-photo-maps.py" below), so this script no
+longer imports build-photo-maps.py at all. build-photo-maps.py itself is
+unaffected — it's still a per-trip script, one copy per trip, in that
+trip's own scripts/ folder. Because one copy of build-multimedia-data.py
+now serves every trip, every command below takes a required
+<journal-folder> argument to say which trip to act on — see "How to run
+it".
+
+For a trip-specific history of how that trip's own catalog was built up
+(execution notes, incidents, one-off data fixes), see that trip's own
+build-multimedia-data_Changelog.txt next to its data/multimedia/ folder,
+if one exists — not every trip needs one, and this shared file doesn't
+carry any one trip's history.
+
+Original query (verbatim)
+----------------------------------
+"create and execute a readable buildMultimediaData script that
+creates a datafile in the data/multimedia folder
+the data file shall contain the file relative folder, file name, file properties, any multimedia metadata,
+and a subject description combining an image search and the metadata location as possible
+of each multimedia file in the photos subfolders
+write the script and execution instructions in the scripts folder
+include my query and the claude resolved query at the top of the instructions"
+
+Updated query (verbatim)
+---------------------------------
+"update and execute the readable buildMultimediaData script and instructions so that
+each file entry has a
+relative location is determined from internet as opposed to a static file
+includes a relative subject object derived from a image, video, or audio search independent of location
+recreates the subject description as a subject description object that includes the existing subject description and an alternate description that is a rewrite of the subject description as monty python styled description
+include my new query and the claude resolved query in the instructions"
+
+Claude's resolved query
+--------------------------
+Three changes to the original build-multimedia-data.py / multimedia-data.json,
+on top of everything the original version already did (file properties,
+EXIF/video metadata):
+
+  1. resolved_location: stop resolving each file's location by looking it
+     up in this project's own photoMapsData/writeups/*.json (a static,
+     hand/Claude-curated file). Instead, reverse-geocode each file's own
+     GPS coordinates directly against the internet (OpenStreetMap's
+     Nominatim API), independently per file, with a small on-disk cache so
+     repeat coordinates and repeat runs don't re-query needlessly. Because
+     Claude's own tool sandbox can't reach the internet for this (same
+     restriction build-photo-maps.py has for its own real map tiles),
+     running this script as Claude will produce
+     resolved_location.source: "geocode_unavailable" for every file with
+     GPS — expected, not a bug — and running it yourself, on your own
+     machine, will produce real geocoded results.
+
+  2. subject: a new object -- {description, media_analyzed} -- describing
+     what a file actually shows (or, for a future audio file, sounds
+     like), written by Claude looking at/listening to it directly and
+     deliberately WITHOUT naming the place. Kept separate from
+     subject_description so it stays meaningful even when
+     resolved_location can't be determined, and so it isn't just a
+     paraphrase of the location-aware field.
+
+  3. subject_description: changed from a plain string to an object --
+     {standard, monty_python} -- where standard is what this field used to
+     be (combining what's depicted with resolved_location, exactly the
+     original request's "subject description combining an image search
+     and the metadata location"), and monty_python is the same content
+     rewritten as a deliberately silly Monty-Python-sketch-style bit.
+
+What it does
+------------
+For every file directly inside a trip's photos/YYYY-MM-DD/ folder that
+isn't one of build-photo-maps.py's own generated files
+(photoLocationDocument.html, mapPreview.png) or a dotfile,
+build-multimedia-data.py records:
+
+  relative_folder      "photos/2026-07-10"
+  file_name             "20260710_143210.jpg"
+  file_properties
+    extension            ".jpg"
+    size_bytes           4213556
+    width / height        4032 / 3024   (images only; null for video)
+    modified_time         filesystem last-modified time, ISO 8601 UTC
+  multimedia_metadata
+    type                  "photo" or "video"
+    datetime_original      EXIF capture timestamp (or video creation_time), if present
+    has_gps / latitude / longitude
+    camera_make / camera_model / orientation      (photos)
+    duration_seconds / codec / video_width / video_height   (videos, needs ffprobe)
+  resolved_location
+    source                "internet_geocode" | "geocode_unavailable" | "no_gps" | "subject_inferred"
+    location_label         short place name (null unless resolved)
+    place_full             full display address (null unless resolved)
+    country                (null unless resolved)
+  subject                 {description, media_analyzed} | null — what the file
+                          shows, independent of where it was taken
+  subject_description
+    standard               what the file shows, combined with resolved_location | null
+    monty_python            the standard description, rewritten as a Monty Python bit | null
+
+("subject_inferred" is written by a different tool,
+scripts/python/no-gps-location-resolver/resolve_no_gps_locations.py, for
+files with no GPS at all — see its own Instructions.txt. This script never
+writes that source itself, but it must never overwrite it either — see
+"Fixed: rebuilding used to silently wipe no-gps-location-resolver
+results" below.)
+
+Where it lives
+---------------
+    travel-journals/                     <- the collection root (this
+      scripts/                              script's own grandparent
+        python/                             directory)
+          build-multimedia-data.py      <- SHARED, one copy for every trip
+          build-multimedia-data_Instructions.txt  <- SHARED (this file)
+      travel-journal-2026-07-01/        <- one trip
+        photos/                         <- source photos/videos, one YYYY-MM-DD folder per day
+        data/
+          multimedia/
+            multimedia-data.json        <- this trip's output
+            geocode-cache.json          <- this trip's coordinate -> resolved_location cache
+            build-multimedia-data_Changelog.txt  <- this trip's own execution history, if any
+      travel-journal-2026-01-14/        <- another trip, same shape
+
+organize_photos.py still uses the older __file__-based convention this
+script itself used to use, since organize_photos.py remains a per-trip
+script, unaffected by this move; see scripts/python/organize_photos_
+Instructions.txt.
+
+EXIF/GPS reading helpers, extracted from build-photo-maps.py
+------------------------------------------------------------------
+IMAGE_EXT, VIDEO_EXT, GENERATED_FILENAMES, DATE_RE, dms_to_dd(),
+read_image_gps(), read_video_gps(), and discover_folders() all used to be
+imported at runtime from build-photo-maps.py (a per-trip sibling script),
+resolved from the target trip's own root the same way <journal-folder>
+itself is. As of August 2026 that code was copied and inlined directly
+into build-multimedia-data.py instead — build-photo-maps.py's own copy of
+this code is untouched, nothing was removed from it, this was a copy, not
+a move. build-multimedia-data.py now has no runtime dependency on
+build-photo-maps.py at all: it can build a trip's catalog even in a trip
+folder that has no build-photo-maps.py, or scripts/ folder, of its own.
+
+How to run it
+--------------
+Requires Python 3.8+ with Pillow installed (for EXIF/GPS reading and
+image dimensions):
+
+    pip3 install Pillow
+
+ffprobe (part of ffmpeg) is optional — only used for video duration/codec.
+Internet access to nominatim.openstreetmap.org is needed for real
+resolved_location results (see "Real geocoding vs. geocode_unavailable"
+below) — everything else works offline.
+
+Every command takes a required <journal-folder> first argument, resolved
+two ways, tried in order: as a path relative to the current directory (or
+absolute), or as a folder name directly under the travel-journals
+collection root (e.g. "travel-journal-2026-07-01"). If neither resolves
+to a real directory, the script exits with an error listing every
+travel-journal-YYYY-MM-DD folder it can see.
+
+1. Build/refresh the structural catalog for every folder (file properties,
+   metadata, and an attempted reverse geocode for resolved_location):
+
+       python3 scripts/python/build-multimedia-data.py travel-journal-2026-07-01
+
+   Safe to rerun any time photos are added or changed — it never touches
+   subject or subject_description for a file that already has them, a
+   file that already geocoded successfully keeps that result rather than
+   being re-queried, and a file already resolved by the no-gps-location-
+   resolver (source "subject_inferred") is left completely alone.
+
+2. Or just one folder:
+
+       python3 scripts/python/build-multimedia-data.py travel-journal-2026-07-01 2026-07-10
+
+3. See which files still need subject and/or subject_description content:
+
+       python3 scripts/python/build-multimedia-data.py travel-journal-2026-07-01 --list-pending
+
+   This reports, per file, exactly which of the three pieces (subject /
+   standard description / monty python rewrite) is still missing — a file
+   can be missing just one of the three if you're filling these in
+   incrementally. Add --json for structured output instead:
+
+       python3 scripts/python/build-multimedia-data.py travel-journal-2026-07-01 --list-pending --json
+
+4. Apply Claude-written subject/subject_description content:
+
+       python3 scripts/python/build-multimedia-data.py travel-journal-2026-07-01 --apply-descriptions <file>
+
+   <file> is a JSON array of update objects:
+       {"relative_folder": "photos/2026-07-10",
+        "file_name": "20260710_143210.jpg",
+        "subject": {"description": "...", "media_analyzed": "photo"},
+        "subject_description": {"standard": "...", "monty_python": "..."}}
+   Both "subject" and "subject_description" are optional per entry, and
+   within subject_description, "standard" and "monty_python" can each be
+   supplied independently — so a later pass can add just a monty_python
+   rewrite to a file that already has a subject and a standard
+   description, without re-supplying the parts that are already done.
+   Entries that don't match an existing catalog entry, or that supply
+   nothing to update, are skipped with a warning rather than silently
+   dropped or corrupting the datafile.
+
+Swap "travel-journal-2026-07-01" for the target trip's own folder name to
+run any of the above against a different trip.
+
+Real geocoding vs. geocode_unavailable
+------------------------------------------
+On your own machine, with ordinary internet access, resolved_location just
+gets the real Nominatim-geocoded result automatically — nothing to do.
+
+If you're asking Claude to run this script, though, resolved_location will
+come back "geocode_unavailable" for every GPS-tagged file. That's not a
+bug and not something Claude can currently fix on its own: same
+restriction build-photo-maps.py has for its own real map tiles -- Claude's
+tool sandbox can't reach nominatim.openstreetmap.org (or, per earlier
+testing in this project, most hosts outside its network allowlist). Run
+the script yourself for the real results:
+
+    python3 scripts/python/build-multimedia-data.py travel-journal-2026-07-01               # every day
+    python3 scripts/python/build-multimedia-data.py travel-journal-2026-07-01 2026-07-09     # just one day
+
+Re-running is always safe and incremental: files that already geocoded
+successfully are cached (that trip's data/multimedia/geocode-cache.json,
+keyed by coordinates rounded to ~11m) and won't be re-queried; only files
+still showing "geocode_unavailable" are retried.
+
+Filling in subject and subject_description
+-----------------------------------------------
+Ask Claude to "describe the multimedia files" for a given trip (or
+similar) to trigger the full workflow: run --list-pending --json for that
+trip, open each listed file, and for each one write:
+  - subject: what's actually depicted/heard, written without naming the
+    place (e.g. "A stone clock tower with a Latin inscription above the
+    entrance, tourists gathered below" rather than "Monschau's church
+    tower..." — the place name belongs in subject_description, not here)
+  - subject_description.standard: the same content, this time combined
+    with resolved_location (e.g. "Monschau's Evangelical church clock
+    tower, showing the Latin inscription DEUS REFUGIUM NOSTRUM above the
+    entrance, with tourists gathered at the arched doorway below")
+  - subject_description.monty_python: standard, rewritten as a deliberately
+    silly Monty-Python-sketch-style bit — anachronistic asides, mock
+    solemnity, a stage direction, a sudden non sequitur, whatever fits —
+    while staying recognizably about the same file
+then apply the results with --apply-descriptions. The same honesty bar as
+the rest of this project's research still applies to subject and
+subject_description.standard: describe what's actually there, and say so
+plainly if a file's content is genuinely ambiguous. monty_python is the
+one field in this whole project that's allowed, in fact expected, to not
+be factually serious.
+
+This is typically a large pass — every file in a trip's catalog, each
+needing individual attention for up to three separate pieces of content —
+so it's expected to happen incrementally across several conversations.
+--list-pending always picks up exactly where the last pass left off for
+that trip; there's no separate state to track.
+
+Fixed: rebuilding used to silently wipe no-gps-location-resolver results
+----------------------------------------------------------------------------
+A past version of this script's merge logic (in build()) only special-
+cased `prior resolved_location.source == "internet_geocode"` when
+deciding whether to keep a prior run's resolved_location over a fresh
+recomputation. A "subject_inferred" record — written by
+scripts/python/no-gps-location-resolver/resolve_no_gps_locations.py for a
+file with no GPS at all, by matching landmark names in its caption text —
+has no GPS at all, so a fresh run of THIS script could only ever
+recompute "no_gps" for it, never anything better. Nothing in the old
+merge logic accounted for that, so every plain rerun silently regressed
+every resolver-inferred location back to "no_gps".
+
+Fixed in build(): prior_source == "subject_inferred" is now always kept,
+unconditionally (unlike the internet_geocode case, there's no scenario
+where the fresh recomputation is preferable). See the inline comment at
+that check in the script for the full reasoning. This fix applies to
+every trip now that the script is shared — if you ever see a trip's
+resolver-inferred locations reverting to "no_gps" after a rebuild, that
+would mean this check regressed; it should not happen with the current
+script.
+
+Notes and safety
+-----------------
+- Nothing under a trip's photos/ is ever read destructively, moved, or
+  renamed — this script only ever writes files under that trip's own
+  data/multimedia/.
+- This script has no runtime dependency on build-photo-maps.py — see "EXIF/
+  GPS reading helpers, extracted from build-photo-maps.py" above.
+- A corrupt or unreadable image file has its width/height left null rather
+  than aborting the whole run.
+- Only successful geocode lookups are cached; a failed one is retried on
+  the next run instead of being permanently remembered as unavailable.
+- Nominatim's usage policy (max 1 request/second, a descriptive
+  User-Agent, no bulk/heavy use) is respected automatically — this script
+  never needs to query the same coordinates twice.
+- Re-running the full build after adding new photos to an existing folder
+  is safe and additive: new files get fresh entries, existing files keep
+  their subject/subject_description and any already-successful geocode or
+  resolver-inferred location, and nothing is deleted.
+- Running this script against the wrong <journal-folder> only touches that
+  one trip's own data/multimedia/ files and reads that trip's own
+  photos/ — trips are fully independent.
+
+
+Update — --remove-files, and move_to_folder in --apply-descriptions (2026-09-02)
+--------------------------------------------------------------------------------
+Your query (verbatim, via common/daily-gallery.html's new Edit Mode):
+"add a toggle button or link to daily-gallery.html display for individual
+file, daily files, and all journal files where that toggle will display
+edit based controls of edit and remove photos"
+
+daily-gallery.html's new Edit Mode (see that page's own
+build-daily-multimedia-gallery_Instructions.txt update) queues edits and
+removals in the browser and exports them as one JSON file. This script
+needed two things to be able to apply that export: a way to physically
+relocate a file when its day-folder is reassigned, and a way to actually
+delete files it has decided to remove. Neither existed before.
+
+What changed:
+  - --apply-descriptions' update objects now accept an optional
+    "move_to_folder": "YYYY-MM-DD" field. When present and different from
+    the entry's current day, the file is physically moved (os.rename) from
+    its current photos/<day>/ into photos/<move_to_folder>/, and the
+    entry's relative_folder is updated to match -- skipped with a message
+    (not a hard failure) if move_to_folder isn't YYYY-MM-DD, the source
+    file is already gone, or something already exists at the destination.
+  - A new --remove-files FILE flag (remove_files()) permanently deletes
+    every {relative_folder, file_name} it's given from photos/ and drops
+    their catalog entries. A file already missing on disk still has its
+    catalog entry dropped rather than being treated as an error (the
+    Edit Mode "Remove" button doesn't know or care whether a file was
+    already deleted by hand).
+  - Added _load_updates_array(path, key_name): both --apply-descriptions
+    and --remove-files now accept EITHER a bare JSON array in their own
+    original shape, OR the combined {"edits": [...], "removals": [...]}
+    object daily-gallery.html's Edit Mode exports -- each flag just reads
+    the one array it cares about. This means both flags can point at the
+    exact same downloaded file:
+      python3 scripts/python/build-multimedia-data.py <trip> --apply-descriptions <file>
+      python3 scripts/python/build-multimedia-data.py <trip> --remove-files <file>
+  - Module docstring gained an "EDIT MODE" section documenting the
+    combined shape and this two-flags-one-file workflow; USAGE gained the
+    --remove-files entry.
+
+--remove-files is destructive and irreversible beyond a backup -- it does
+not ask for confirmation itself (daily-gallery.html's own Remove button
+already confirms before queuing), so review what a pending-changes file
+contains before running it.
+
+Verified: `python3 -m py_compile` on the patched script; `--help` renders
+the new flag correctly. End-to-end on a throwaway fixture trip (two
+photos, two day folders): ran --apply-descriptions with a combined
+{"edits": [...], "removals": [...]} file whose one edit carried both new
+subject_description text and a move_to_folder to the other day -- the
+file was physically moved and its catalog entry's relative_folder and
+descriptions both updated correctly; then ran --remove-files against the
+same file -- the other listed file was deleted from disk and its catalog
+entry dropped, leaving only the moved/edited entry in the datafile.

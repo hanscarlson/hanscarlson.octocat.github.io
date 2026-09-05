@@ -1,0 +1,210 @@
+DAILY NOTES REFRESH SCRIPT — INSTRUCTIONS
+==============================================
+
+SHARED SCRIPT — this file and refresh-notes.js live once at
+travel-journals/scripts/javascript/ and serve every travel-journal-
+YYYY-MM-DD/ trip (as of August 2026, refresh-notes.js was moved here from
+being duplicated inside each trip's own scripts/javascript/ folder), so
+it takes a required <journal-folder> argument to say which trip to act
+on (see "How to run it" below).
+
+What it does
+------------
+scripts/javascript/refresh-notes.js keeps a trip's
+<trip>/data/daily-notes/daily-notes-data.json (the sole source of each
+day's "Notes" block in that trip's index.html) in sync with the Google
+Docs in "My Drive/dailyNotes", and writes a runtime-mirror sibling
+<trip>/data/daily-notes/daily-notes-data.js right after it. No separate
+rebuild step is needed afterward: every trip's index.html is a
+client-side-rendered page (see its own top-of-script comment) that reads
+this .js mirror directly, live, on every page load — reloading the page
+is the whole update. (This used to also rebuild that trip's journal via
+build-travel-journal.js; that script, and the build-time index.html it
+generated, were retired in August 2026 — see
+scripts/_to_delete/build-travel-journal_Instructions.txt.) The local
+data/daily-notes/ folder is just the output location — it no longer
+mirrors the "dailyNotes" Google Drive folder name that's the actual sync
+source; the script creates data/daily-notes/ automatically the first time
+it runs for a trip if it doesn't exist yet.
+
+Each trip's index.html does NOT read daily-notes-data.json at all — it
+loads data/daily-notes/daily-notes-data.js via `<script src>` and reads
+`window.DAILY_NOTES_DATA[<date>]` client-side, the same live-mirror
+pattern data/events/events-data.js uses for Events (see
+refresh-events_Instructions.txt, now also a shared script/instructions
+pair). This is why step 2 below always writes both files together: a
+stale or missing .js mirror means that trip's index.html shows no notes
+even though daily-notes-data.json is current.
+
+Why it's a two-step, Claude-mediated process
+----------------------------------------------
+Same reason as refresh-events.js: this is a plain Node script with no
+Google credentials, so it can't call the Drive API itself. Refreshing
+notes is therefore two steps:
+
+  1. Claude searches "My Drive/dailyNotes" for Google Docs titled
+     "Daily Note YYYY-MM-DD":
+       a. Find the dailyNotes folder's id:
+            search_files with query
+              title = 'dailyNotes' and mimeType = 'application/vnd.google-apps.folder'
+       b. Find every doc inside it whose title contains "Daily Note":
+            search_files with query
+              parentId = '<folder id>' and title contains 'Daily Note'
+       c. For each match, extract the YYYY-MM-DD from its title and fetch
+          its FULL content via read_file_content (fileId) — never the
+          search result's truncated contentSnippet.
+     Claude then writes one JSON file shaped
+       { "YYYY-MM-DD": "raw doc text", ... }
+     to any path (a temp file is fine) — the exact text read_file_content
+     returned, with no pre-cleaning (cleaning happens in step 2). Note
+     that a single dailyNotes Drive folder feeds every trip — the dates in
+     that JSON file determine which trip(s) they're relevant to, since
+     each trip only covers its own date range.
+
+  2. Claude (or you) runs, once per trip that has new/changed notes:
+       node scripts/javascript/refresh-notes.js <journal-folder> <raw-notes-file> [daily-notes-data-path]
+     which resolves <journal-folder> to that one trip (see "How to run
+     it" below), reads the raw-notes file, cleans each entry (see
+     "Cleaning" below), MERGES the cleaned entries into that trip's
+     data/daily-notes/daily-notes-data.json — creating its data/daily-notes/
+     folder first if it doesn't already exist (existing dates not present
+     in this round are left untouched), re-serializes the whole file
+     sorted by date, and writes the daily-notes-data.js mirror
+     (`window.DAILY_NOTES_DATA = <same object>;`) right after it. That
+     trip's index.html reads this mirror live on next page load — no
+     further build step. The same raw-notes file can be re-run against a
+     different <journal-folder> if it happens to contain dates spanning
+     more than one trip; entries for dates outside a run's target trip
+     are simply irrelevant noise in that JSON and don't cause an error.
+
+Ask Claude to "refresh notes" (for a given trip, if more than one is
+active) to trigger the full two-step process end to end.
+
+Cleaning
+---------
+Google Docs' plain-text export has two known quirks this script corrects:
+  - Backslash-escaped punctuation, e.g. "Ugh, Ugh\!" -> "Ugh, Ugh!". Google
+    backslash-escapes a handful of ASCII punctuation characters in its
+    plain-text export (they could otherwise be mistaken for Markdown) —
+    this undoes that escaping for any backslash immediately followed by a
+    punctuation character.
+  - Paragraph breaks render as a blank line with a couple of stray spaces
+    on it, e.g. "...train.\n\n  \n\n Our travel day..." instead of a clean
+    "\n\n" between paragraphs — this splits on any run of 2+ newlines,
+    trims stray whitespace from every line and from each paragraph as a
+    whole, drops any paragraph that's empty after trimming, and rejoins
+    with a single clean blank line.
+Both quirks show up throughout the real "Daily Note 2026-07-22" doc this
+script was built and tested against.
+
+Multiple docs for the same date
+---------------------------------
+Shouldn't normally happen (title collisions in the same folder), but if
+step 1 finds more than one doc for a date, Claude should pick the most
+recently modified one and mention the conflict when reporting back —
+refresh-notes.js itself doesn't try to resolve that; it just takes
+whatever single string is in the input JSON for each date.
+
+Where it lives
+---------------
+    travel-journals/                          <- the collection root (this
+      scripts/                                   script's own grandparent
+        javascript/                              directory, via __dirname)
+          refresh-notes.js                    <- SHARED, one copy for every trip
+          refresh-notes_Instructions.txt      <- SHARED (this file)
+      travel-journal-2026-07-01/              <- one trip
+        data/
+          daily-notes/
+            daily-notes-data.json     <- this trip's output/merge target,
+                                          {"YYYY-MM-DD": "note text", ...}
+                                          (folder created automatically if missing)
+            daily-notes-data.js       <- runtime mirror, window.DAILY_NOTES_DATA = {...};
+                                          written right after daily-notes-data.json, every run
+        index.html                    <- reads daily-notes-data.js live, client-side
+      travel-journal-2026-01-14/              <- another trip, same shape:
+        data/daily-notes/daily-notes-data.json + .js
+
+How to run it
+--------------
+No npm dependencies — plain Node.
+
+    node scripts/javascript/refresh-notes.js <journal-folder> <raw-notes-file> [daily-notes-data-path]
+
+  <journal-folder>          Which trip to update. REQUIRED. Resolved two
+                             ways, tried in order:
+                               1. As a path relative to the current
+                                  directory, or absolute — run this from
+                                  anywhere and point straight at a trip.
+                               2. As a folder name directly under the
+                                  travel-journals collection root (e.g.
+                                  "travel-journal-2026-07-01") — run this
+                                  from the collection root without typing
+                                  a full path.
+                             If neither resolves to a real directory, the
+                             script exits with an error listing every
+                             travel-journal-YYYY-MM-DD folder it can see.
+  <raw-notes-file>          JSON file shaped {"YYYY-MM-DD": "raw doc text", ...}
+                             from step 1 above. REQUIRED.
+  [daily-notes-data-path]   Defaults to <journal-folder>/data/daily-notes/
+                             daily-notes-data.json (the data/daily-notes/
+                             folder is created automatically if it doesn't
+                             exist yet). Pass a different path for a
+                             dry-run comparison before overwriting the real
+                             file. The daily-notes-data.js mirror is always
+                             written next to whichever path this resolves
+                             to, as daily-notes-data.js in that same
+                             directory.
+
+Examples (run from the travel-journals collection root):
+
+    node scripts/javascript/refresh-notes.js travel-journal-2026-07-01 /tmp/raw-notes.json
+    node scripts/javascript/refresh-notes.js travel-journal-2026-01-14 /tmp/raw-notes.json
+
+Or from anywhere, with an explicit path:
+
+    node /path/to/travel-journals/scripts/javascript/refresh-notes.js /path/to/travel-journals/travel-journal-2026-07-01 /tmp/raw-notes.json
+
+Prints a summary when run: which trip it resolved <journal-folder> to,
+whether that trip's data/daily-notes/ folder had to be created, how many
+raw notes were read, how many days were updated (and how many were
+skipped for a malformed date key or an empty-after-cleaning note), and how
+many total days are now in that trip's data/daily-notes/daily-notes-data.json.
+
+Notes and safety
+-----------------
+- This is a MERGE, not a replace: dates already in a trip's
+  data/daily-notes/daily-notes-data.json but not present in the current
+  <raw-notes-file> are left exactly as they are. Safe to re-run
+  repeatedly, and safe to run with just a subset of days (e.g. only the
+  ones that changed since the last refresh). The daily-notes-data.js
+  mirror is fully regenerated from the merged result every run, so it
+  never lags behind daily-notes-data.json.
+- Each trip's data/daily-notes/ folder is created automatically
+  (mkdir -p semantics) the first time the script writes to it — no manual
+  setup needed even on a brand-new trip folder.
+- No build step after refreshing notes: that trip's index.html reads
+  daily-notes-data.js live, client-side, on every page load, so reloading
+  the page is enough to see the change (see "What it does" above for why
+  this is no longer a two-part "sync, then rebuild" step).
+- Running this script against the wrong <journal-folder> only affects
+  that one trip's data/daily-notes/ files — trips are fully independent,
+  so there's no cross-trip data to worry about beyond picking the right
+  folder for the notes you actually fetched.
+- To change a note: edit (or add) the Google Doc in "My Drive/dailyNotes"
+  (title exactly "Daily Note YYYY-MM-DD"), then ask Claude to refresh
+  notes again for the relevant trip. There's no way to edit a note from
+  inside a generated journal itself — Notes are read-only there by design
+  (see that trip's README.txt, where one exists).
+
+Update — index.html moved to common/journal.html?trip=<folder> (August 2026)
+------------------------------------------------------------------------------
+Every mention of "that trip's index.html" above still describes the same
+live, client-side behavior (daily-notes-data.js is read the same way, on
+every page load, no rebuild needed) -- only the file itself moved. Each
+trip used to have its own index.html, byte-identical to every other
+trip's copy except for its title and folder name; that page is now one
+shared file, common/journal.html, read via ?trip=<folder> (the same
+?trip=-aware pattern common/daily-gallery.html and common/daily-
+location-gallery.html already used), and each trip's own index.html was
+deleted. See common/journal.html's own top-of-script comment and
+build-travel-journal-index_Instructions.txt for the fuller history.

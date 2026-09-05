@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Barcelona Itinerary — October 8–11, 2026</title>
+
+<style>
+:root {
+    --bg: #f4f6f8;
+    --card: #ffffff;
+    --text: #18212b;
+    --muted: #667085;
+    --line: #e5e7eb;
+    --blue: #2563eb;
+    --green: #15803d;
+    --green-bg: #dcfce7;
+    --amber: #b45309;
+    --amber-bg: #fef3c7;
+    --red: #b91c1c;
+    --red-bg: #fee2e2;
+    --purple: #6d28d9;
+    --purple-bg: #ede9fe;
+    --shadow: 0 2px 10px rgba(0,0,0,.06);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family:
+        system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", Roboto, Arial, sans-serif;
+    line-height: 1.4;
+}
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 18px;
+}
+
+/* HEADER */
+
+header {
+    background: linear-gradient(135deg, #17202a, #334155);
+    color: white;
+    border-radius: 16px;
+    padding: 22px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow);
+}
+
+header h1 {
+    margin: 0 0 5px;
+    font-size: 26px;
+}
+
+header p {
+    margin: 0;
+    opacity: .85;
+}
+
+/* SUMMARY */
+
+.summary {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.summary-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: var(--shadow);
+}
+
+.summary-card .label {
+    color: var(--muted);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    font-weight: 800;
+}
+
+.summary-card .value {
+    font-size: 15px;
+    font-weight: 750;
+    margin-top: 3px;
+}
+
+/* SECTION */
+
+.section-title {
+    font-size: 18px;
+    margin: 20px 0 8px;
+}
+
+/* DAYS */
+
+.day {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.day-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 13px 16px;
+    background: #f8fafc;
+    border-bottom: 1px solid var(--line);
+}
+
+.day-date {
+    min-width: 92px;
+    color: var(--blue);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.day-title {
+    font-size: 17px;
+    font-weight: 750;
+}
+
+.day-body {
+    padding: 4px 16px;
+}
+
+.item {
+    display: grid;
+    grid-template-columns: 105px 1fr auto;
+    gap: 12px;
+    align-items: center;
+    padding: 9px 0;
+    border-bottom: 1px solid #f0f1f3;
+}
+
+.item:last-child {
+    border-bottom: none;
+}
+
+.time {
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.activity {
+    font-size: 13px;
+}
+
+.activity strong {
+    font-weight: 700;
+}
+
+.note {
+    display: block;
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 2px;
+}
+
+.status {
+    white-space: nowrap;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 3px 7px;
+    border-radius: 999px;
+}
+
+.booked {
+    color: var(--green);
+    background: var(--green-bg);
+}
+
+.book {
+    color: var(--amber);
+    background: var(--amber-bg);
+}
+
+.flexible {
+    color: var(--muted);
+    background: #f1f5f9;
+}
+
+.special {
+    color: var(--purple);
+    background: var(--purple-bg);
+}
+
+/* BOOKING TABLE */
+
+.table-wrap {
+    overflow-x: auto;
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 750px;
+}
+
+th {
+    background: #f8fafc;
+    color: var(--muted);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    text-align: left;
+}
+
+th, td {
+    padding: 10px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+    font-size: 12px;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+td strong {
+    font-size: 13px;
+}
+
+/* CHECKLIST */
+
+.checklist {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.check {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: var(--shadow);
+}
+
+.check h3 {
+    margin: 0 0 5px;
+    font-size: 13px;
+}
+
+.check p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+/* INFO */
+
+.info {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 15px;
+    margin-top: 12px;
+    box-shadow: var(--shadow);
+}
+
+.info h3 {
+    margin: 0 0 8px;
+    font-size: 15px;
+}
+
+.info ul {
+    margin: 5px 0;
+    padding-left: 20px;
+}
+
+.info li {
+    font-size: 12px;
+    margin: 4px 0;
+}
+
+/* PRINT */
+
+@media print {
+    body {
+        background: white;
+    }
+
+    .container {
+        max-width: none;
+        padding: 0;
+    }
+
+    header,
+    .summary-card,
+    .day,
+    .table-wrap,
+    .check,
+    .info {
+        box-shadow: none;
+    }
+
+    .day {
+        break-inside: avoid;
+    }
+
+    .section-title {
+        margin-top: 12px;
+    }
+}
+
+/* MOBILE */
+
+@media (max-width: 750px) {
+
+    .container {
+        padding: 10px;
+    }
+
+    header h1 {
+        font-size: 21px;
+    }
+
+    .summary {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .summary-card:last-child {
+        grid-column: span 2;
+    }
+
+    .day-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .day-date {
+        min-width: 0;
+    }
+
+    .item {
+        grid-template-columns: 75px 1fr;
+    }
+
+    .item .status {
+        grid-column: 2;
+        width: fit-content;
+    }
+
+    .checklist {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+    <h1>🇪🇸 Barcelona — October 8–11, 2026</h1>
+    <p>Compact itinerary & booking dashboard · 2 travelers · Catalonia Born</p>
+</header>
+
+
+<!-- SUMMARY -->
+
+<div class="summary">
+
+    <div class="summary-card">
+        <div class="label">Hotel</div>
+        <div class="value">Catalonia Born</div>
+    </div>
+
+    <div class="summary-card">
+        <div class="label">Travelers</div>
+        <div class="value">2</div>
+    </div>
+
+    <div class="summary-card">
+        <div class="label">Booked</div>
+        <div class="value">2 major experiences</div>
+    </div>
+
+    <div class="summary-card">
+        <div class="label">Still to book</div>
+        <div class="value">5 priority items</div>
+    </div>
+
+    <div class="summary-card">
+        <div class="label">Departure</div>
+        <div class="value">Oct 11 · 1:00 PM</div>
+    </div>
+
+</div>
+
+
+<!-- OCTOBER 8 -->
+
+<section class="day">
+
+<div class="day-header">
+    <div class="day-date">THU<br>OCT 8</div>
+    <div class="day-title">Architecture & Old City</div>
+</div>
+
+<div class="day-body">
+
+    <div class="item">
+        <div class="time">08:00–09:00</div>
+        <div class="activity">
+            <strong>Breakfast</strong>
+            <span class="note">Catalonia Born</span>
+        </div>
+        <span class="status flexible">FLEXIBLE</span>
+    </div>
+
+    <div class="item">
+        <div class="time">09:00–10:15</div>
+        <div class="activity">
+            <strong>Arc de Triomf → Ciutadella → El Born</strong>
+            <span class="note">Easy walking from hotel</span>
+        </div>
+        <span class="status flexible">WALK</span>
+    </div>
+
+    <div class="item">
+        <div class="time">10:30–12:00</div>
+        <div class="activity">
+            <strong>Sant Pau Modernist Site</strong>
+            <span class="note">Self-guided preferred</span>
+        </div>
+        <span class="status book">BOOK</span>
+    </div>
+
+    <div class="item">
+        <div class="time">12:00–14:15</div>
+        <div class="activity">
+            <strong>Leisurely lunch</strong>
+            <span class="note">Avinguda de Gaudí / Sagrada Família area</span>
+        </div>
+        <span class="status flexible">FLEXIBLE</span>
+    </div>
+
+    <div class="item">
+        <div class="time">14:15–15:00</div>
+        <div class="activity">
+            <strong>Transfer + coffee</strong>
+            <span class="note">Taxi recommended</span>
+        </div>
+        <span class="status flexible">TAXI</span>
+    </div>
+
+    <div class="item">
+        <div class="time">15:15–17:15</div>
+        <div class="activity">
+            <strong>⭐ Sagrada Família — Guided Tour + Towers</strong>
+            <span class="note">
+                The Touring Pandas · English · 2 hours · Nativity Tower preferred
+            </span>
+        </div>
+        <span class="status booked">BOOKED</span>
+    </div>
+
+    <div class="item">
+        <div class="time">17:15–18:00</div>
+        <div class="activity">
+            <strong>Avinguda de Gaudí</strong>
+            <span class="note">Coffee / gelato / relaxed walk</span>
+        </div>
+        <span class="status flexible">FLEXIBLE</span>
+    </div>
+
+    <div class="item">
+        <div class="time">18:00–19:00</div>
+        <div class="activity">
+            <strong>Hotel / rest</strong>
+        </div>
+        <span class="status flexible">REST</span>
+    </div>
+
+    <div class="item">
+        <div class="time">19:00–21:00</div>
+        <div class="activity">
+            <strong>Gothic Quarter evening walk</strong>
+            <span class="note">
+                Santa Maria del Mar → Cathedral → Plaça Sant Jaume → Plaça Reial
+            </span>
+        </div>
+        <span class="status flexible">WALK</span>
+    </div>
+
+    <div class="item">
+        <div class="time">21:00</div>
+        <div class="activity">
+            <strong>🍽️ Dinner — Arcano</strong>
+            <span class="note">El Born · 2 people</span>
+        </div>
+        <span class="status book">BOOK</span>
+    </div>
+
+</div>
+</section>
+
+
+<!-- OCTOBER 9 -->
+
+<section class="day">
+
+<div class="day-header">
+    <div class="day-date">FRI<br>OCT 9</div>
+    <div class="day-title">⭐ Private Montserrat + Boutique Winery</div>
+</div>
+
+<div class="day-body">
+
+    <div class="item">
+        <div class="time">Morning–PM</div>
+        <div class="activity">
+            <strong>Private Montserrat & Boutique Winery Experience</strong>
+            <span class="note">
+                Barcelona Slow Travel · Private · 2 people
+            </span>
+        </div>
+        <span class="status booked">BOOKED</span>
+    </div>
+
+    <div class="item">
+        <div class="time">Evening</div>
+        <div class="activity">
+            <strong>Easy dinner near Catalonia Born</strong>
+            <span class="note">Keep flexible after full-day excursion</span>
+        </div>
+        <span class="status flexible">FLEXIBLE</span>
+    </div>
+
+</div>
+</section>
+
+
+<!-- OCTOBER 10 -->
+
+<section class="day">
+
+<div class="day-header">
+    <div class="day-date">SAT<br>OCT 10</div>
+    <div class="day-title">Gaudí + Park Güell + Montjuïc</div>
+</div>
+
+<div class="day-body">
+
+    <div class="item">
+        <div class="time">08:00–09:00</div>
+        <div class="activity">
+            <strong>Breakfast</strong>
+        </div>
+        <span class="status flexible">FLEXIBLE</span>
+    </div>
+
+    <div class="item">
+        <div class="time">09:45–11:00</div>
+        <div class="activity">
+            <strong>⭐ Casa Batlló — Gold</strong>
+            <span class="note">
+                Official ticket · English audioguide · 2 people
+            </span>
+        </div>
+        <span class="status book">BOOK</span>
+    </div>
+
+    <div class="item">
+        <div class="time">11:00–12:00</div>
+        <div class="activity">
+            <strong>Passeig de Gràcia</strong>
+            <span class="note">La Pedrera exterior</span>
+        </div>
+        <span class="status flexible">WALK</span>
+    </div>
+
+    <div class="item">
+        <div class="time">12:00–13:30</div>
+        <div class="activity">
+            <strong>Lunch</strong>
+        </div>
+        <span class="status flexible">FLEXIBLE</span>
+    </div>
+
+    <div class="item">
+        <div class="time">13:30–14:00</div>
+        <div class="activity">
+            <strong>Transfer to Park Güell</strong>
+            <span class="note">Taxi recommended</span>
+        </div>
+        <span class="status flexible">TAXI</span>
+    </div>
+
+    <div class="item">
+        <div class="time">14:15–16:15</div>
+        <div class="activity">
+            <strong>⭐ Park Güell</strong>
+            <span class="note">
+                Official timed Monumental Core admission · self-guided · 2 people
+            </span>
+        </div>
+        <span class="status book">BOOK</span>
+    </div>
+
+    <div class="item">
+        <div class="time">16:15–17:15</div>
+        <div class="activity">
+            <strong>Gràcia</strong>
+            <span class="note">Coffee / gelato / neighborhood walk</span>
+        </div>
+        <span class="status flexible">FLEXIBLE</span>
+    </div>
+
+    <div class="item">
+        <div class="time">17:15–17:45</div>
+        <div class="activity">
+            <strong>Transfer to Montjuïc</strong>
+            <span class="note">Taxi recommended</span>
+        </div>
+        <span class="status flexible">TAXI</span>
+    </div>
+
+    <div class="item">
+        <div class="time">17:45–19:30</div>
+        <div class="activity">
+            <strong>🌅 Montjuïc / MNAC viewpoints</strong>
+            <span class="note">Barcelona panorama · Olympic area · sunset</span>
+        </div>
+        <span class="status flexible">NO BOOKING</span>
+    </div>
+
+    <div class="item">
+        <div class="time">20:30</div>
+        <div class="activity">
+            <strong>⭐ Special Dinner — Estimar</strong>
+            <span class="note">
+                Backup: Público - Cuina de Mercat
+            </span>
+        </div>
+        <span class="status book">BOOK</span>
+    </div>
+
+</div>
+</section>
+
+
+<!-- OCTOBER 11 -->
+
+<section class="day">
+
+<div class="day-header">
+    <div class="day-date">SUN<br>OCT 11</div>
+    <div class="day-title">Relaxed El Born + Waterfront</div>
+</div>
+
+<div class="day-body">
+
+    <div class="item">
+        <div class="time">08:00–09:00</div>
+        <div class="activity">
+            <strong>Breakfast</strong>
+        </div>
+        <span class="status flexible">FLEXIBLE</span>
+    </div>
+
+    <div class="item">
+        <div class="time">09:00–10:00</div>
+        <div class="activity">
+            <strong>Mercat de Santa Caterina</strong>
+        </div>
+        <span class="status flexible">WALK</span>
+    </div>
+
+    <div class="item">
+        <div class="time">10:00–11:00</div>
+        <div class="activity">
+            <strong>El Born / Santa Maria del Mar / Ciutadella</strong>
+        </div>
+        <span class="status flexible">WALK</span>
+    </div>
+
+    <div class="item">
+        <div class="time">11:00–12:00</div>
+        <div class="activity">
+            <strong>Port Vell → Barceloneta</strong>
+        </div>
+        <span class="status flexible">WALK</span>
+    </div>
+
+    <div class="item">
+        <div class="time">12:00–13:00</div>
+        <div class="activity">
+            <strong>Return to hotel / collect luggage</strong>
+        </div>
+        <span class="status flexible">FLEXIBLE</span>
+    </div>
+
+    <div class="item">
+        <div class="time">13:00</div>
+        <div class="activity">
+            <strong>✈️ Depart Barcelona</strong>
+        </div>
+        <span class="status special">DEPART</span>
+    </div>
+
+</div>
+</section>
+
+
+<!-- BOOKING DASHBOARD -->
+
+<h2 class="section-title">🎟️ Booking Dashboard</h2>
+
+<div class="table-wrap">
+
+<table>
+
+<thead>
+<tr>
+    <th>Date</th>
+    <th>Time</th>
+    <th>Experience</th>
+    <th>Operator</th>
+    <th>Status</th>
+    <th>Details</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+    <td>Oct 8</td>
+    <td>15:15–17:15</td>
+    <td><strong>Sagrada Família Guided Tour + Towers</strong></td>
+    <td>The Touring Pandas</td>
+    <td><span class="status booked">BOOKED</span></td>
+    <td>English · 2 hours · 2 people · Nativity Tower preferred</td>
+</tr>
+
+<tr>
+    <td>Oct 9</td>
+    <td>Morning–PM</td>
+    <td><strong>Private Montserrat & Boutique Winery</strong></td>
+    <td>Barcelona Slow Travel</td>
+    <td><span class="status booked">BOOKED</span></td>
+    <td>Private · 2 people · verify pickup/winery/lunch/tastings/return</td>
+</tr>
+
+<tr>
+    <td>Oct 8</td>
+    <td>10:30</td>
+    <td><strong>Sant Pau Modernist Site</strong></td>
+    <td>Official</td>
+    <td><span class="status book">TO BOOK</span></td>
+    <td>Self-guided · 2 people</td>
+</tr>
+
+<tr>
+    <td>Oct 8</td>
+    <td>21:00</td>
+    <td><strong>Arcano</strong></td>
+    <td>Restaurant</td>
+    <td><span class="status book">TO BOOK</span></td>
+    <td>El Born · dinner · 2 people</td>
+</tr>
+
+<tr>
+    <td>Oct 10</td>
+    <td>09:45</td>
+    <td><strong>Casa Batlló</strong></td>
+    <td>Official</td>
+    <td><span class="status book">TO BOOK</span></td>
+    <td>Gold preferred · 2 people · English audioguide</td>
+</tr>
+
+<tr>
+    <td>Oct 10</td>
+    <td>14:15</td>
+    <td><strong>Park Güell</strong></td>
+    <td>Official</td>
+    <td><span class="status book">TO BOOK</span></td>
+    <td>Timed Monumental Core · self-guided · 2 people</td>
+</tr>
+
+<tr>
+    <td>Oct 10</td>
+    <td>20:30</td>
+    <td><strong>Estimar</strong></td>
+    <td>Restaurant</td>
+    <td><span class="status book">TO BOOK</span></td>
+    <td>Special dinner · Público is backup · 2 people</td>
+</tr>
+
+</tbody>
+</table>
+
+</div>
+
+
+<!-- CHECKLIST -->
+
+<h2 class="section-title">⚠️ Important Booking Checks</h2>
+
+<div class="checklist">
+
+<div class="check">
+    <h3>⭐ Sagrada Família</h3>
+    <p>
+        Verify that the Touring Pandas voucher explicitly identifies
+        <strong>Nativity Tower</strong>. Generic "tower access" does not
+        necessarily specify the tower.
+    </p>
+</div>
+
+<div class="check">
+    <h3>⛰️ Montserrat</h3>
+    <p>
+        Confirm pickup time, pickup location, exact winery/wineries,
+        lunch, wine tastings and expected return time.
+    </p>
+</div>
+
+<div class="check">
+    <h3>🏛️ Casa Batlló</h3>
+    <p>
+        Gold ticket preferred. FlexiPass is not necessary for this
+        fixed itinerary.
+    </p>
+</div>
+
+<div class="check">
+    <h3>🌳 Park Güell</h3>
+    <p>
+        Book official timed entry for approximately 2:15 PM.
+        Self-guided visit is preferred.
+    </p>
+</div>
+
+<div class="check">
+    <h3>🍽️ October 8 Dinner</h3>
+    <p>
+        Reserve Arcano around 9:00 PM after the Gothic Quarter walk.
+    </p>
+</div>
+
+<div class="check">
+    <h3>🍷 October 10 Dinner</h3>
+    <p>
+        Try Estimar first at approximately 8:30 PM. Use Público -
+        Cuina de Mercat as the backup.
+    </p>
+</div>
+
+</div>
+
+
+<!-- TRANSPORTATION -->
+
+<h2 class="section-title">🚕 Transportation Strategy</h2>
+
+<div class="info">
+
+<h3>Use taxis for timed cross-city transfers</h3>
+
+<ul>
+    <li><strong>Oct 8:</strong> Catalonia Born → Sant Pau → Sagrada Família</li>
+    <li><strong>Oct 10:</strong> Catalonia Born → Casa Batlló → Park Güell → Montjuïc</li>
+    <li>Walk within El Born, Gothic Quarter and Gràcia.</li>
+    <li>Allow generous buffers before timed attraction entries.</li>
+</ul>
+
+</div>
+
+
+<!-- TRIP LOGIC -->
+
+<h2 class="section-title">⭐ Trip Design</h2>
+
+<div class="info">
+
+<ul>
+    <li><strong>Oct 8:</strong> Architecture + historic Barcelona.</li>
+    <li><strong>Oct 9:</strong> Premium private Montserrat + wine experience.</li>
+    <li><strong>Oct 10:</strong> Gaudí + Barcelona panoramas + special dinner.</li>
+    <li><strong>Oct 11:</strong> Relaxed El Born and Mediterranean waterfront.</li>
+    <li>Avoid over-scheduling October 9 after the private excursion.</li>
+    <li>Keep October 11 flexible before the 1:00 PM departure.</li>
+</ul>
+
+</div>
+
+
+<!-- FINAL BOOKING PRIORITY -->
+
+<h2 class="section-title">🔴 Booking Priority</h2>
+
+<div class="info">
+
+<ol>
+    <li><strong>Casa Batlló</strong> — Oct 10 · 9:45 AM · Gold</li>
+    <li><strong>Park Güell</strong> — Oct 10 · 2:15 PM · Official timed entry</li>
+    <li><strong>Estimar</strong> — Oct 10 · 8:30 PM</li>
+    <li><strong>Sant Pau</strong> — Oct 8 · 10:30 AM</li>
+    <li><strong>Arcano</strong> — Oct 8 · 9:00 PM</li>
+</ol>
+
+</div>
+
+</div>
+
+</body>
+</html>

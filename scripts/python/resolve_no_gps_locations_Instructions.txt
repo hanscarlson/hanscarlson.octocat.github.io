@@ -1,0 +1,264 @@
+NO-GPS LOCATION RESOLVER — INSTRUCTIONS
+==============================================
+
+SHARED SCRIPT — resolve_no_gps_locations.py and this file live once at
+travel-journals/scripts/python/ and serve every travel-journal-YYYY-MM-DD/
+trip (as of August 2026, the script was moved here from being duplicated
+inside each trip's own scripts/python/no-gps-location-resolver/ folder;
+the July 2026 Summer trip's copy was an older, frozen snapshot, so the
+newer version — the one with centroid_lat/centroid_lon support — is the
+one now shared). Everything else that per-trip folder held STAYS per
+trip, since it's trip-specific data and documentation, not code:
+
+    travel-journals/
+      scripts/
+        python/
+          resolve_no_gps_locations.py               <- SHARED, one copy for every trip
+          resolve_no_gps_locations_Instructions.txt <- SHARED (this file)
+      travel-journal-2026-01-14/
+        scripts/python/no-gps-location-resolver/
+          gazetteer.json   <- this trip's own ruleset
+          README.md        <- this trip's own gazetteer changelog/notes
+          audit.csv        <- this trip's own --report output, if generated
+      travel-journal-2026-07-01/
+        scripts/python/no-gps-location-resolver/
+          gazetteer.json   <- this trip's own ruleset (or none yet)
+          README.md        <- this trip's own gazetteer changelog/notes
+
+Because of this split, --gazetteer no longer defaults to "gazetteer.json
+next to the script" the way it used to when the script lived inside a
+single trip's own folder — there's no one trip's gazetteer that could
+correctly sit next to a shared script anymore. --gazetteer is now a
+REQUIRED argument; always pass the specific trip's gazetteer.json path
+explicitly. See each trip's own README.md (next to its gazetteer.json)
+for that trip's specific ruleset and its changelog of how that ruleset
+was built up.
+
+What it does
+------------
+Fills in `resolved_location` for multimedia-journal records where:
+
+- `resolved_location.source == "no_gps"` (the photo/video had no GPS EXIF data), AND
+- `subject.description` and `subject_description.standard` are both populated (an AI captioning pass has already described the scene).
+
+It does this by matching landmark names and keywords in that description
+text against a gazetteer — a small JSON file of known places for a given
+trip — and writing back a `resolved_location` object in the same shape
+used elsewhere in the file:
+
+    {
+      "source": "subject_inferred",
+      "location_label": "Gullfoss",
+      "place_full": "Gullfoss waterfall, Bláskógabyggð, Suðurland, Iceland",
+      "country": "Iceland",
+      "centroid_lat": 64.3272,
+      "centroid_lon": -20.1328
+    }
+
+`source` is set to "subject_inferred" — a value distinct from "no_gps"
+and "internet_geocode" — so downstream code/reports can tell these apart
+from GPS-derived or reverse-geocoded locations at a glance.
+
+`centroid_lat`/`centroid_lon` are the matched landmark's own real-world
+coordinates (looked up once per gazetteer entry, e.g. from OpenStreetMap/
+Wikipedia), copied onto every record that rule resolves — they are never
+derived from the file's own EXIF, since a "no_gps" record has none. A
+gazetteer rule with no confirmed coordinates for its place (e.g. an
+unnamed indoor stop that isn't its own mappable landmark) carries
+"centroid_lat": null, "centroid_lon": null, and that null is copied
+through rather than guessed at — same "never fabricate" principle the
+rest of this tool already follows for location matching itself. See
+"Downstream: multimedia-location-data.json" below for what these two
+fields are actually for.
+
+Backfilling older records
+---------------------------
+A record already resolved by an earlier run of this tool, from before
+centroid_lat/centroid_lon existed, is still a candidate — but only to
+have those two fields added (checked via key presence, not just a None
+value, so a record correctly given centroid_lat/centroid_lon: null isn't
+re-processed forever). This backfill never touches location_label/
+place_full/country on a record that already has them. The run summary
+reports "Newly resolved via gazetteer" and "Backfilled with centroid
+only" as separate counts so you can tell the two apart.
+
+How matching works
+--------------------
+Each gazetteer entry is a rule:
+
+    {
+      "id": "gullfoss",
+      "requires_any": ["Gullfoss"],
+      "location_label": "Gullfoss",
+      "place_full": "Gullfoss waterfall, Bláskógabyggð, Suðurland, Iceland",
+      "country": "Iceland",
+      "centroid_lat": 64.3272,
+      "centroid_lon": -20.1328
+    }
+
+- requires_any: matches if ANY of these substrings appear (case-insensitive)
+  in subject.description + subject_description.standard.
+- requires_all: matches only if ALL listed substrings appear. Useful for
+  disambiguating two places that share a keyword (e.g. a landmark's tower
+  vs. the plaza it stands on).
+- Rules are tried in file order, top to bottom. The FIRST rule that
+  matches wins. This means:
+    - Put more specific rules before more general ones that would also
+      match the same text.
+    - A broad fallback rule (e.g. a city-generic rule that just checks
+      for the city name) belongs at the very bottom.
+- centroid_lat/centroid_lon: the landmark's own coordinates, looked up
+  once when the rule is written (a map/gazetteer lookup, not anything
+  read from a file). A rule can legitimately set both to null, but every
+  rule should carry the KEY, even when the value is null, so the
+  backfill logic can tell "no coordinates on purpose" apart from "not
+  looked up yet".
+
+Order matters: a caption mentioning both a tower and the plaza it stands
+on should have the gazetteer list the tower-specific rule first, then
+the plaza/street rule, then any generic fallback — so the most accurate
+one wins.
+
+Quick start
+------------
+Run from the travel-journals collection root, naming the specific trip
+in every path:
+
+    # See what would happen, without writing anything:
+    python3 scripts/python/resolve_no_gps_locations.py \
+      travel-journal-2026-01-14/data/multimedia/multimedia-data.json \
+      --gazetteer travel-journal-2026-01-14/scripts/python/no-gps-location-resolver/gazetteer.json \
+      --dry-run
+
+    # Write the result to a new file:
+    python3 scripts/python/resolve_no_gps_locations.py \
+      travel-journal-2026-01-14/data/multimedia/multimedia-data.json \
+      --gazetteer travel-journal-2026-01-14/scripts/python/no-gps-location-resolver/gazetteer.json \
+      --output /tmp/multimedia-data.resolved.json
+
+    # Update the file in place (writes a multimedia-data.json.bak backup first):
+    python3 scripts/python/resolve_no_gps_locations.py \
+      travel-journal-2026-01-14/data/multimedia/multimedia-data.json \
+      --gazetteer travel-journal-2026-01-14/scripts/python/no-gps-location-resolver/gazetteer.json \
+      --in-place
+
+    # Also get a CSV you can skim/sort in a spreadsheet:
+    python3 scripts/python/resolve_no_gps_locations.py \
+      travel-journal-2026-01-14/data/multimedia/multimedia-data.json \
+      --gazetteer travel-journal-2026-01-14/scripts/python/no-gps-location-resolver/gazetteer.json \
+      --in-place \
+      --report travel-journal-2026-01-14/scripts/python/no-gps-location-resolver/audit.csv
+
+Swap every "travel-journal-2026-01-14" for the target trip's own folder
+name to run this against a different trip. --gazetteer is REQUIRED — the
+script no longer has a next-to-itself default (see the top of this file).
+
+The script prints a summary every run, e.g.:
+
+    Input:                         travel-journal-2026-01-14/data/multimedia/multimedia-data.json
+    Gazetteer:                     travel-journal-2026-01-14/scripts/python/no-gps-location-resolver/gazetteer.json
+    Total records:                 785
+    Candidates (no_gps/backfill):   69
+    Newly resolved via gazetteer:   68
+    Backfilled with centroid only:  0
+    Skipped (no rule matched):      1
+
+    Skipped records (review manually and consider adding a gazetteer rule):
+      - IMG-20260114-WA0002.jpg: no gazetteer rule matched
+
+Records it SKIPS are left completely untouched — still "source": "no_gps".
+The script never guesses; if nothing in the gazetteer matches, it says so
+and moves on.
+
+Extending the gazetteer for a new trip
+-----------------------------------------
+1. Create scripts/python/no-gps-location-resolver/ inside the new trip's
+   own folder if it doesn't exist yet, and start its gazetteer.json —
+   copying an existing trip's gazetteer.json as a starting point is fine,
+   but delete every entry that doesn't apply to the new trip first.
+2. Add one rule per landmark/place you expect to see mentioned. Keep the
+   most specific/overlap-prone rules near the top. Look up each new
+   rule's centroid_lat/centroid_lon while you're at it (its real-world
+   coordinates — a quick map/Wikipedia lookup) rather than adding them
+   later; leave both null for a place with no confirmed coordinates of
+   its own rather than guessing.
+3. Run with --dry-run --report audit.csv first (writing that CSV into
+   the new trip's own no-gps-location-resolver/ folder) and check it for
+   anything that matched the wrong rule or didn't match at all — the
+   centroid_lat/centroid_lon columns let you spot-check those too.
+4. Iterate on the gazetteer (add keywords, reorder rules, add
+   requires_all where two rules could both fire) until the report looks
+   right, then run for real with --in-place or --output.
+5. Start (or update) that trip's own README.md next to its gazetteer.json
+   with a changelog of what you added and why — see an existing trip's
+   README.md for the style (a short "Files" note plus a versioned
+   changelog of what each pass added and what was deliberately left
+   unmatched).
+
+Downstream: multimedia-location-data.json
+--------------------------------------------
+centroid_lat/centroid_lon exist so a trip's
+data/multimedia-location/multimedia-location-data.json can report real
+coordinates for its resolved_location-sourced clusters (previously
+always null there, since a GPS-less file has no coordinates of its own
+to average). That file is built by a DIFFERENT script —
+scripts/javascript/build-multimedia-location-clusters-data.js — which
+reads that same trip's data/multimedia/multimedia-data.json (this tool's
+output) and, for each day, groups GPS-less files by an exact match on
+resolved_location.location_label; it also carries along that label's
+centroid_lat/centroid_lon when present. Running this tool alone updates
+multimedia-data.json only — to see the coordinates show up in
+multimedia-location-data.json, also (re)run that script's usual two-step
+process for the same trip:
+
+    node scripts/javascript/build-multimedia-location-clusters-data.js --list-clusters /tmp/clusters.json
+    (write/reuse a synthesis file keyed by each cluster's "key")
+    node scripts/javascript/build-multimedia-location-clusters-data.js <synthesis-file>
+
+See scripts/javascript/build-multimedia-location-clusters-data_Instructions.txt
+for the full mechanics of that script.
+
+Limitations (by design)
+--------------------------
+- Keyword matching only — it does not call an LLM or do any reasoning
+  about the text. If a description never names a recognizable place
+  (e.g. "a restaurant dinner" with no restaurant name, or a photo
+  mid-flight), it will correctly go unmatched rather than fabricate a
+  guess. Add a fallback rule (a city-generic one) if a generic
+  city-level answer is good enough for your use case.
+- centroid_lat/centroid_lon are landmark-level, not per-photo GPS —
+  every record a rule resolves gets that rule's single coordinate pair,
+  not wherever within the landmark that particular photo was actually
+  taken. For a broad rule that can be a whole city; for a specific one
+  it's accurate to the landmark itself. This is the same approximation
+  location_label/place_full already make — coordinates just make it
+  mappable, not more precise than the label already was.
+- Only reads subject.description and subject_description.standard — the
+  subject_description.monty_python field is deliberately excluded from
+  matching since it's an embellished/joke rewrite and more likely to
+  introduce false keyword matches than genuine ones.
+- First-match-wins — if you add a new rule, double check where it lands
+  in the list relative to existing rules that might also match the same
+  captions.
+- For records that still don't match anything after you've built out
+  the gazetteer, the recommended fallback is the same manual/LLM-assisted
+  read-through this script was built to automate — feed the skipped
+  records' descriptions to Claude and ask it to identify the place, then
+  add a gazetteer rule so the next run (and future trips to the same
+  places) resolve automatically.
+
+Notes and safety
+-------------------
+- This script only ever reads a trip's data/multimedia/multimedia-data.json
+  and that trip's own gazetteer.json — it never touches any other trip's
+  files, and it never touches any other script's output directly.
+- --in-place always writes a INPUT.json.bak backup first.
+- Safe to re-run repeatedly: already-resolved records with both
+  centroid fields present are left completely alone; only "no_gps"
+  records and pre-centroid "subject_inferred" records are touched.
+- Running this script against the wrong trip's gazetteer.json will
+  mostly just produce a lot of "no rule matched" skips (or occasional
+  wrong matches, if two trips happen to share generic place names) — it
+  won't corrupt data, but double-check you paired the right
+  multimedia-data.json with the right gazetteer.json before using
+  --in-place.

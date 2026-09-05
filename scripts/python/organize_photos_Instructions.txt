@@ -1,0 +1,167 @@
+PHOTO SORT SCRIPT — INSTRUCTIONS
+=================================
+
+SHARED SCRIPT — organize_photos.py and this file live once at
+travel-journals/scripts/python/ and serve every travel-journal-YYYY-MM-DD/
+trip (as of August 2026, this was moved here from being duplicated inside
+each trip's own scripts/python/ folder; the two copies were byte-for-byte
+identical, so nothing needed to be reconciled). Because one copy now
+serves every trip, every command below takes a required <journal-folder>
+argument to say which trip to act on — see "How to run it". This trip's
+own organize_photos_log.txt stays exactly where it always was, in that
+trip's own scripts/python/ folder — see "Where it lives" and "Logging"
+below.
+
+What it does
+------------
+organize_photos.py sorts every photo and video out of a trip's
+"photos-unsorted" into its "photos", organized into date subfolders named
+YYYY-MM-DD.
+
+For each file, it works out the date using this priority order:
+  1. EXIF "date taken" (photos)
+  2. Video metadata creation date (videos, via ffprobe)
+  3. A YYYYMMDD date pattern in the filename itself (e.g.
+     "20260705_153942.mp4", "IMG_20260705_153942.jpg", or WhatsApp's
+     export naming "IMG-20260702-WA0002.jpg") -- this is what catches
+     files with no embedded metadata at all. WhatsApp strips EXIF from
+     every photo/video it exports, so without this step those files fell
+     back straight to step 4 and got sorted under whatever date they
+     happened to land on disk (typically "today", whenever they were
+     downloaded) instead of the date WhatsApp actually encoded in the
+     filename. Only the date is trusted from the filename, never a
+     time-of-day, since the trailing digits aren't reliably a timestamp
+     (WhatsApp's are a sequence number, not a time). This is the same
+     pattern sync-photos-album.js already used (see its
+     dateFromFilename) -- the two scripts are kept in sync intentionally
+     so a file gets the same date whichever one handles it.
+  4. The file's own creation date, as a last-resort fallback
+
+Then, for each file:
+  - If photos/YYYY-MM-DD doesn't exist yet, it creates it and moves the
+    file in.
+  - If the folder exists but doesn't have a file with that name yet, it
+    moves the file in.
+  - If the folder already has a file with that same name:
+      - If the two files are identical, the copy in photos-unsorted is
+        deleted (it's a duplicate — nothing is lost).
+      - If the two files differ, the file in photos-unsorted replaces
+        the one in photos/YYYY-MM-DD. By default, the file being
+        replaced is saved to photos/_replaced_backups/YYYY-MM-DD/
+        rather than deleted outright, so nothing is silently lost.
+
+Supported file types: jpg, jpeg, png, heic, heif, gif, bmp, tif, tiff,
+webp, mp4, mov, m4v, avi, mkv, wmv, 3gp, mts, m2ts.
+
+Where it lives
+---------------
+    travel-journals/                     <- the collection root (this
+      scripts/                              script's own grandparent
+        python/                             directory)
+          organize_photos.py            <- SHARED, one copy for every trip
+          organize_photos_Instructions.txt  <- SHARED (this file)
+      travel-journal-2026-07-01/        <- one trip
+        photos-unsorted/                <- files to sort
+        photos/                         <- sorted output, YYYY-MM-DD subfolders
+        scripts/
+          python/
+            organize_photos_log.txt     <- this trip's own run history
+      travel-journal-2026-01-14/        <- another trip, same shape
+
+<journal-folder> resolves two ways, tried in order: as a path relative to
+the current directory (or absolute), or as a folder name directly under
+the travel-journals collection root (this script's own grandparent
+directory), e.g. "travel-journal-2026-07-01". If neither resolves to a
+real directory, the script exits with an error listing every
+travel-journal-YYYY-MM-DD folder it can see. By default, photos-unsorted
+and photos are looked for directly under <journal-folder> itself; use
+--source / --dest (see below) to point at different locations.
+
+How to run it
+--------------
+Requires Python 3 with Pillow installed (for photo EXIF data), and
+ffprobe (part of ffmpeg) installed for reading video dates. Pillow can
+be installed with:
+
+    pip3 install Pillow
+
+Run from anywhere — <journal-folder> says which trip to act on, not your
+current directory:
+
+1. Preview first (recommended) — shows exactly what would happen
+   without moving, replacing, or deleting anything:
+
+       python3 scripts/python/organize_photos.py travel-journal-2026-07-01 --dry-run
+
+2. Run it for real:
+
+       python3 scripts/python/organize_photos.py travel-journal-2026-07-01
+
+   Run it again any time you add new files to that trip's photos-unsorted
+   — it's safe to re-run repeatedly. Already-sorted files are left alone.
+
+Useful options
+--------------
+  --dry-run       Preview only; no files are moved, replaced, or deleted.
+  --no-backup     When replacing a differing file, delete the old copy
+                  instead of saving it to photos/_replaced_backups/.
+  --quiet         Only print the final summary, not every file action.
+  --source PATH   Use a different unsorted folder (default: photos-unsorted
+                  directly under <journal-folder>).
+  --dest PATH     Use a different destination photos folder (default:
+                  photos directly under <journal-folder>).
+
+Example — preview quietly, then run for real:
+
+    python3 scripts/python/organize_photos.py travel-journal-2026-07-01 --dry-run --quiet
+    python3 scripts/python/organize_photos.py travel-journal-2026-07-01
+
+Swap "travel-journal-2026-07-01" for the target trip's own folder name to
+run any of the above against a different trip.
+
+Logging
+-------
+Every run appends a timestamped record of what it did to that trip's own
+scripts/python/organize_photos_log.txt (e.g.
+travel-journal-2026-07-01/scripts/python/organize_photos_log.txt),
+including dry runs — the log stays with the trip even though the script
+itself now runs from the shared travel-journals/scripts/python/ location.
+Check this file if you want to see exactly what happened on a previous
+run for that trip.
+
+Checking which date source was used
+--------------------------------------
+Every MOVE line in the output (and in that trip's own
+scripts/python/organize_photos_log.txt) ends with "(date via <source>)",
+e.g. "(date via EXIF date taken)" or "(date via date in filename)" — so
+you can tell at a glance whether a file's date came from real metadata or
+one of the fallbacks. If a batch produced an unexpected NEW FOLDER, check
+this note on the files inside it first: "date in filename" or "file
+creation date"/"file metadata-change date" mean the file had no
+EXIF/video metadata at all, and are worth a quick sanity check against
+the actual photo/video before trusting the folder it landed in.
+
+Notes and safety
+-----------------
+- Nothing is ever deleted unless it's a byte-for-byte duplicate of a
+  file already safely sorted into photos/.
+- Replaced files are backed up (not deleted) by default — see
+  photos/_replaced_backups/.
+- If a file has no EXIF/video metadata AND no YYYYMMDD pattern in its
+  filename (corrupted metadata, unusual format, a filename that doesn't
+  encode a date), the script falls back to the file's own creation date
+  on disk, so every file still gets sorted somewhere — check the
+  "(date via ...)" note (see above) if a result looks off.
+- Errors on individual files (e.g. an unreadable file) are logged and
+  skipped — they won't stop the rest of the run.
+- If a file already sorted into photos/ turns out to be in the wrong
+  date folder (most often because it used the file creation date
+  fallback and had no more reliable option), just move it to the
+  correct photos/YYYY-MM-DD/ folder by hand and rerun
+  python3 scripts/python/build-multimedia-data.py <journal-folder> so the
+  catalog picks up its new folder — organize_photos.py never touches
+  files that are already inside photos/, so this is safe to do any time
+  and won't be undone by a later run.
+- Running this script against the wrong <journal-folder> only touches
+  that one trip's own photos-unsorted/, photos/, and
+  scripts/python/organize_photos_log.txt — trips are fully independent.

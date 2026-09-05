@@ -1,0 +1,490 @@
+BUILD MULTIMEDIA LOCATION CLUSTERS DATA SCRIPT — INSTRUCTIONS
+=========================================================
+
+SHARED SCRIPT — build-multimedia-location-clusters-data.js and this file
+live once at travel-journals/scripts/javascript/ and serve every
+travel-journal-YYYY-MM-DD/ trip (as of August 2026, the script was moved
+here from being duplicated inside each trip's own scripts/javascript/
+folder; the January 2026 Arctic trip's copy was ahead by one feature —
+GPS-less clusters carrying real centroid_lat/centroid_lon instead of
+always null — so that's the version now shared). Because one copy now
+serves every trip, every command below takes a required <journal-folder>
+first argument to say which trip to act on — see "How to run it".
+
+For a trip-specific execution history (cluster counts from real runs,
+one-off incidents, catalog-specific numbers), see that trip's own
+build-multimedia-location-clusters-data_Changelog.txt next to its
+data/multimedia-location/ folder, if one exists — not every trip needs
+one, and this shared file doesn't carry any one trip's history. As of
+this move, travel-journal-2026-01-14 has one (the GPS-less-fallback
+rollout and the centroid_lat/centroid_lon + Stockholm-leg updates all
+happened against that trip's own catalog); travel-journal-2026-07-01
+does not yet.
+
+Original query (verbatim)
+--------------------------------
+"create a readable script with instructions that can recreate the
+multimedia-location-data.json data file with clusters 100 meters apart
+from the original multimedia not using an static data files"
+
+Updated query (verbatim, first rename)
+----------------------------------------------
+"rename recreate-multimedia-location-data.js to
+create-multimedia-location-data.js and move to folder scripts/javascript"
+
+Updated query (verbatim, second rename)
+----------------------------------------------
+"rename create-multimedia-location-data.js and instructions in
+scripts/javascript to build-multimedia-location-clusters-data.js"
+
+Updated query (verbatim, overview-description)
+--------------------------------------------------------
+"update build-multimedia-location-clusters-data_Instructions.js so that
+the script creates a "overview-description" property for each item that
+is an summary of the subject_description of each file in the items
+multimedia_files"
+
+Updated query (verbatim, Claude synthesis)
+--------------------------------------------------------
+"update script to use claude synthesis instead of mechanical for
+"overview-description""
+
+Claude's resolved query (original build)
+--------------------------------------------
+Built a new, self-contained script — at the time named
+recreate-multimedia-location-data.js — that recreates
+data/multimedia-location/multimedia-location-data.json computing
+everything directly from the "original multimedia":
+data/multimedia/multimedia-data.json (the photo/video catalog
+scripts/python/build-multimedia-data.py maintains — file properties, GPS/EXIF metadata,
+and a per-file reverse-geocoded resolved_location). It deliberately reads
+NO static/hand-authored data file:
+
+  - Does NOT read photoMapsData/writeups/*.json — the Claude-researched
+    historical/cultural write-up text the existing
+    build-multimedia-location-data.js script combines. There is no
+    research step here at all.
+  - Does NOT shell out to build-photo-maps.py (or any other script) —
+    unlike build-multimedia-location-data.js, which runs
+    `python3 scripts/build-photo-maps.py --list-clusters` to get cluster
+    file lists. This script re-implements the same style of GPS-proximity
+    clustering itself, in plain Node, so it has no Python dependency
+    either.
+
+"Clusters 100 meters apart" is implemented as a distance threshold: a
+photo/video joins an existing cluster if it's within 100 meters of that
+cluster's current centroid (running average of its members' coordinates),
+otherwise it starts a new cluster — the same greedy centroid-distance
+algorithm build-photo-maps.py's own cluster_media() uses (haversine
+distance, nearest-existing-cluster-first), just re-implemented here with
+its own independent CLUSTER_DIST_M = 100 constant (build-photo-maps.py
+uses 150m by default — a separate, unrelated value; changing one does not
+affect the other).
+
+Since there's no researched write-up to draw a location_label/place_full/
+country from, each cluster's label is instead a majority vote over the
+resolved_location.location_label already recorded on each of its member
+files (computed when build-multimedia-data.py reverse-geocoded the
+catalog) — ties broken by whichever label belongs to the
+earliest-timestamped file in the cluster. This still satisfies "not using
+a static data file": it's read straight out of the same multimedia
+catalog the whole script is driven by, not a separate hand-authored
+source.
+
+Claude's resolved query (update — first rename and move)
+----------------------------------------------------------
+Renamed recreate-multimedia-location-data.js to
+create-multimedia-location-data.js and moved it (plus its matching
+Instructions.txt, kept alongside it per this project's convention of
+every script having a same-named instructions file) into a new
+scripts/javascript/ subfolder — the old scripts/recreate-multimedia-
+location-data.js and scripts/recreate-multimedia-location-data_
+Instructions.txt were removed once the new files existed at their new
+location.
+
+One functional change was required for the move, not just a rename: the
+script computed its own project root from its own file location
+(originally `path.join(__dirname, "..")`, one level up) so it could find
+data/multimedia/multimedia-data.json and write
+data/multimedia-location/multimedia-location-data.json correctly no
+matter where in the project it was run from. Moving the file one
+directory deeper (scripts/ -> scripts/javascript/) meant it needed to go
+up TWO levels instead of one at that time (`path.join(__dirname, "..",
+"..")`). This __dirname-based approach was later replaced entirely — see
+"August 2026, script became shared" near the end of this file — once the
+script itself became shared across every trip and could no longer infer
+which trip's project root it meant from its own location.
+
+Claude's resolved query (update — second rename)
+----------------------------------------------------------
+Renamed create-multimedia-location-data.js to
+build-multimedia-location-clusters-data.js (and its matching
+Instructions.txt to build-multimedia-location-clusters-data_
+Instructions.txt) — no move this time. This name was chosen specifically
+to avoid colliding with the existing, unrelated
+scripts/build-multimedia-location-data.js (see "*** IMPORTANT ***"
+section below) — an earlier request to rename this script to that exact
+name (build-multimedia-location-data.js) was declined for that reason,
+since it would have produced two same-named-but-different scripts living
+in different folders.
+
+Claude's resolved query (update — overview-description added, mechanical)
+---------------------------------------------------------------------------
+Added an "overview-description" property to every cluster in the output.
+Before writing it, Claude asked how it should be produced, since the
+data/multimedia/multimedia-data.json catalog carries two description
+styles per file (subject_description.standard, the factual one, and
+subject_description.monty_python, a comedic one) and "summary" could mean
+either a mechanical aggregate or an LLM-synthesized paragraph:
+
+  - Mechanical, script-only (chosen at the time) vs. a Claude-written
+    synthesis in a two-step process like refresh-notes.js/refresh-
+    events.js. Mechanical was chosen to keep this a one-step, fully
+    reproducible `node ...js` run with no LLM call involved.
+  - subject_description.standard (chosen) vs. .monty_python vs. both.
+    .standard was chosen as the factual source; nothing reads
+    .monty_python here — this is still true after the Claude-synthesis
+    update below.
+
+Implementation at the time: an aggregateOverviewDescription(members)
+function took each cluster member's subject_description.standard text, in
+chronological member order, dropped exact-duplicate strings, and joined
+what was left with a single space. No LLM call, no synthesis file. This
+was superseded by the Claude-synthesis update below, which replaced
+aggregateOverviewDescription with the two-mode --list-clusters /
+synthesis-file design.
+
+Claude's resolved query (update — Claude synthesis, superseding mechanical)
+-------------------------------------------------------------------------------
+Replaced the mechanical join with a genuine Claude-written synthesis per
+cluster, per an explicit follow-up request. Writing a real synthesis
+requires an LLM, and this script is (deliberately, per its own design
+principles above) a plain Node script with no model access and no network
+calls — so, exactly like refresh-notes.js and refresh-events.js, producing
+overview-description is now a two-step, Claude-mediated process instead of
+something the script can do unattended in one run. See "Why it's a
+two-step, Claude-mediated process" and "How to run it" below for the full
+mechanics.
+
+What changed in the script:
+  - aggregateOverviewDescription(members) was removed.
+  - A new --list-clusters <output-path> mode was added: it recomputes the
+    clustering (same algorithm, same CLUSTER_DIST_M) and writes each
+    cluster's folder, cluster_idx, a "key" string ("<folder>::<cluster_
+    idx>"), its multimedia_files list, and a "descriptions" array (its
+    members' subject_description.standard texts, chronological,
+    deduplicated) to <output-path> — WITHOUT touching data/multimedia-
+    location/multimedia-location-data.json. This is the source material
+    Claude reads to write the synthesis.
+  - Normal-mode invocation gained a REQUIRED synthesis-file argument: a
+    JSON object keyed by each cluster's "<folder>::<cluster_idx>" key,
+    valued with Claude's written overview-description text for that
+    cluster. The script no longer computes overview-description itself;
+    it only looks up each cluster's key in the synthesis file. A key
+    missing from the synthesis file gets overview-description: null and
+    is listed in a printed WARNING at the end of the run (this is NOT
+    silently or mechanically filled in — a missing synthesis entry is
+    meant to be visible, not papered over).
+  - Clustering itself (radius, algorithm, tie-breaks, centroid/time_start/
+    time_end/location_label computation) is completely unchanged by this
+    update — only how overview-description is produced changed.
+
+Why clustering must be deterministic for this to work: --list-clusters and
+the normal run each independently call the same buildClusters() function
+over the same trip's data/multimedia/multimedia-data.json. As long as the
+catalog file doesn't change between the two runs, the clustering
+algorithm always produces the same folder+cluster_idx assignments in the
+same order, so the "<folder>::<cluster_idx>" keys Claude saw in the
+--list-clusters output line up exactly with the clusters recomputed in
+the normal run — no persisted cluster IDs are needed, and there is no
+risk of Claude's synthesis silently landing on the wrong cluster as long
+as the catalog is untouched between steps 1 and 3 below.
+
+Why it's a two-step, Claude-mediated process
+----------------------------------------------
+Same underlying reason as refresh-notes.js/refresh-events.js: writing a
+genuine synthesis (not a mechanical join) requires an LLM, and this is a
+plain Node script with no model access. Producing overview-description is
+therefore three commands across two Claude-mediated steps:
+
+  1. Claude runs:
+       node scripts/javascript/build-multimedia-location-clusters-data.js <journal-folder> --list-clusters <clusters-file>
+     which writes every cluster's folder/cluster_idx/key/multimedia_files/
+     descriptions to <clusters-file> (a temp file is fine) — no output
+     written to that trip's data/multimedia-location/multimedia-location-data.json.
+
+  2. Claude reads <clusters-file> and, for every cluster in it, writes a
+     genuinely synthesized overview-description — informed by, but not
+     just concatenating, that cluster's "descriptions" array — into a
+     synthesis file: a JSON object shaped
+       { "<folder>::<cluster_idx>": "Claude-written overview text", ... }
+     keyed by each cluster's own "key" field from step 1. A cluster with
+     an empty "descriptions" array (no member had a subject_description)
+     can be given a short synthesis based on its location_label/
+     multimedia_files context instead, or simply omitted from the
+     synthesis file — an omitted key becomes overview-description: null
+     in the final output, which is a legitimate outcome, not an error.
+
+  3. Claude (or you) runs:
+       node scripts/javascript/build-multimedia-location-clusters-data.js <journal-folder> <synthesis-file> [output-path]
+     which recomputes the same clusters, merges in each cluster's
+     synthesis by "<folder>::<cluster_idx>" key, and writes the final
+     data/multimedia-location/multimedia-location-data.json (or
+     [output-path] if given, for a dry-run comparison before overwriting
+     the real file).
+
+Ask Claude to "refresh multimedia location overview descriptions" for a
+given trip (or similar) to trigger the full three-command process end to
+end.
+
+Runtime mirror + daily-location-gallery.html
+-------------------------------------------------------------------------------------
+The output page that reads this script's data, daily-location-
+gallery.html, can't fetch() data/multimedia-location/multimedia-location-data.json
+directly when opened from disk (file://) — local fetch() is blocked by
+CORS in every major browser — so normal mode ALSO writes a plain
+runtime-mirror .js file right next to whatever OUT_PATH it used (OUT_PATH
+with .json replaced by .js — normally data/multimedia-location/
+multimedia-location-data.js), containing `window.MULTIMEDIA_LOCATION_DATA
+= <the same array combined>;`. Written every run, immediately after
+OUT_PATH itself, so the two files can never drift apart. --list-clusters
+mode is unaffected — it never touches OUT_PATH or its mirror. Nothing
+about clustering, the synthesis-file merge, or the JSON output's own
+shape is affected by this — it only adds the second, derived output file.
+
+daily-location-gallery.html itself now lives at common/daily-location-
+gallery.html, shared by every trip via ?trip=<folder> — see "Where it
+lives" below and common/daily-location-gallery_Instructions.txt for that
+page's own full design and the ?trip= mechanics. It loads this script's
+mirror via
+  <script src="../data/multimedia-location/multimedia-location-data.js" onerror="window.MULTIMEDIA_LOCATION_DATA = window.MULTIMEDIA_LOCATION_DATA || []"></script>
+(path adjusted for whichever trip ?trip= names), reads a
+?date=YYYY-MM-DD query parameter (bare date, matching daily-gallery.html's
+own ?folder= convention: the basename of each cluster's "folder" field,
+which is itself "photos/YYYY-MM-DD"), and when no ?date= is given shows a
+day picker listing every date present in the data.
+
+What it does
+------------
+For every entry in a trip's data/multimedia/multimedia-data.json:
+  1. Groups entries by day (relative_folder).
+  2. Within each day, clusters files into two kinds:
+       - GPS-tagged files, by proximity (100m radius, greedy
+         nearest-centroid algorithm, chronological tie-break) —
+         "location_source": "gps".
+       - GPS-less files that DO carry a resolved_location.location_label
+         (the no-gps-location-resolver tool's output), grouped by an
+         EXACT match on that label within the same day —
+         "location_source": "resolved_location". See "GPS-LESS FALLBACK"
+         in the script's own module docstring for the full design and
+         rationale.
+     A file with neither GPS nor a resolved_location is skipped entirely
+     — still unresolved.
+  3. For each cluster: computes its centroid (avg lat/lon — a GPS
+     cluster's members carry real device coordinates; a resolved_location
+     cluster's members carry their matched gazetteer landmark's own
+     centroid_lat/centroid_lon, when the no-gps-location-resolver tool
+     recorded one, and null when it didn't rather than a fabricated
+     value), its time range (earliest/latest capture time among its
+     members), a majority-vote location_label/place_full/country from its
+     members' own resolved_location fields, an overview-description
+     looked up from the synthesis file passed on the command line (see
+     above), and its full multimedia_files list (relative paths, e.g.
+     "photos/2026-07-15/20260715_184807.jpg").
+  4. Writes the whole flat result to that trip's
+     data/multimedia-location/multimedia-location-data.json, plus a
+     runtime-mirror data/multimedia-location/multimedia-location-data.js
+     (window.MULTIMEDIA_LOCATION_DATA — see "Runtime mirror" above) —
+     normal mode. Or writes a cluster listing with source descriptions,
+     no output/mirror write, to a path you choose — --list-clusters mode.
+
+overview-description, in detail
+----------------------------------
+A Claude-written synthesis of the cluster's own member files'
+subject_description.standard text (never .monty_python) — NOT a
+mechanical join. The script itself cannot produce this text; it only
+merges in whatever Claude wrote to the synthesis file, keyed by
+"<folder>::<cluster_idx>". null for any cluster whose key is missing from
+the synthesis file (printed as a WARNING at the end of the run) or whose
+synthesis value is an empty/non-string entry.
+
+Where it lives
+---------------
+    travel-journals/                     <- the collection root (this
+      scripts/                              script's own grandparent
+        javascript/                          directory)
+          build-multimedia-location-clusters-data.js               <- SHARED
+          build-multimedia-location-clusters-data_Instructions.txt <- SHARED (this file)
+      common/
+        daily-location-gallery.html      <- shared page, reads the runtime mirror
+                                             below for whichever trip ?trip= names
+        daily-location-gallery_Instructions.txt
+      travel-journal-2026-07-01/         <- one trip
+        data/
+          multimedia/
+            multimedia-data.json          <- source data (read only)
+          multimedia-location/
+            multimedia-location-data.json <- this trip's output (normal mode)
+            multimedia-location-data.js   <- runtime mirror (normal mode)
+            build-multimedia-location-clusters-data_Changelog.txt  <- this trip's
+                                              own execution history, if any
+      travel-journal-2026-01-14/         <- another trip, same shape
+
+How to run it
+--------------
+No dependencies — plain Node. No Python required. Every command takes a
+required <journal-folder> first argument, resolved two ways, tried in
+order: as a path relative to the current directory (or absolute), or as a
+folder name directly under the travel-journals collection root (e.g.
+"travel-journal-2026-07-01"). If neither resolves to a real directory,
+the script exits with an error listing every travel-journal-YYYY-MM-DD
+folder it can see.
+
+Three commands (see "Why it's a two-step, Claude-mediated process" above
+for the full explanation):
+
+    node scripts/javascript/build-multimedia-location-clusters-data.js travel-journal-2026-07-01 --list-clusters <clusters-file>
+    (Claude writes a synthesis file from <clusters-file>'s content)
+    node scripts/javascript/build-multimedia-location-clusters-data.js travel-journal-2026-07-01 <synthesis-file> [output-path]
+
+  <journal-folder>                Which trip to act on. REQUIRED, always
+                                   first.
+  --list-clusters <output-path>   Writes the current clustering (folder,
+                                   cluster_idx, key, multimedia_files,
+                                   descriptions) to <output-path>. Does
+                                   NOT write that trip's data/multimedia-
+                                   location/multimedia-location-data.json.
+  <synthesis-file>                REQUIRED (normal mode). JSON object
+                                   keyed by "<folder>::<cluster_idx>",
+                                   valued with Claude's written
+                                   overview-description text.
+  [output-path]                   Defaults to that trip's data/multimedia-
+                                   location/multimedia-location-data.json.
+                                   Pass a different path for a dry-run
+                                   comparison before overwriting the real
+                                   file.
+
+Swap "travel-journal-2026-07-01" for the target trip's own folder name to
+run any of the above against a different trip.
+
+Safe to rerun any time a trip's data/multimedia/multimedia-data.json
+changes (new photos cataloged, GPS/EXIF data corrected) — it always
+recomputes that trip's data/multimedia-location/multimedia-location-data.json
+from scratch, but now needs a fresh --list-clusters / synthesis-file
+round-trip each time the underlying clusters could have changed (new
+photos can shift cluster boundaries), since a stale synthesis file's keys
+might not match the newly recomputed clusters.
+
+To use a different cluster radius, edit the CLUSTER_DIST_M constant near
+the top of the script (currently 100) and rerun the whole three-command
+process for every trip that should reflect it (a changed radius changes
+the clusters, so any existing synthesis file's keys are no longer
+trustworthy and should be regenerated too) — this constant is shared
+across every trip, since the script itself now is.
+
+*** IMPORTANT — how this relates to build-multimedia-location-data.js ***
+A trip's data/multimedia-location/multimedia-location-data.json can be
+produced by TWO independent scripts, and each one OVERWRITES whatever the
+other last wrote there:
+
+  - scripts/build-multimedia-location-data.js (per-trip, not shared):
+    combines the Claude-researched write-ups in photoMapsData/writeups/
+    *.json with a 150m clustering pass (via build-photo-maps.py
+    --list-clusters). Its entries have landmark_confirmed/landmark_note
+    (human-verified) and same_stop_as_cluster_idx, but no paragraphs
+    (removed in an earlier round) and no centroid_lat/lon/time_start/
+    time_end/overview-description.
+  - scripts/javascript/build-multimedia-location-clusters-data.js (this
+    script, shared): computes clustering fresh from that trip's
+    data/multimedia/multimedia-data.json alone, at a 100m radius, no
+    Python. Its entries have centroid_lat/centroid_lon/time_start/
+    time_end, a reverse-geocoded (not human-verified) location_label/
+    place_full/country, and a Claude-synthesized overview-description,
+    but no landmark_confirmed/landmark_note/same_stop_as_cluster_idx.
+
+Because the two scripts cluster at different radii (100m vs. 150m) and
+one depends on researched write-ups while the other does not, their
+cluster_idx values for the same day are NOT guaranteed to line up, and
+running one after the other does not "merge" anything — it fully replaces
+the file with that script's own output. Run whichever script matches what
+you currently need (research-grounded write-ups + their own linked photos
+via build-multimedia-location-data.js, or a fully self-contained,
+research-independent recomputation via this script), and expect the
+file's contents/shape to reflect only that most recent run.
+
+Usage once generated
+----------------------
+- A trip's data/multimedia-location/multimedia-location-data.json is one
+  flat JSON array, sorted chronologically by folder then cluster_idx,
+  e.g.:
+    [
+      {
+        "folder": "photos/2026-07-10",
+        "cluster_idx": 0,
+        "centroid_lat": 51.212232,
+        "centroid_lon": 3.227774,
+        "time_start": "2026-07-10T15:28:06.000Z",
+        "time_end": "2026-07-10T15:28:06.000Z",
+        "location_label": "Spiegelrei, Brugge",
+        "place_full": "13, Spiegelrei, Sint-Walburgakwartier, Brugge-Centrum, ...",
+        "country": "België / Belgique / Belgien",
+        "location_source": "gps",
+        "overview-description": "Canal-side view along the Spiegelrei in Brugge, gabled townhouses reflected in the water at dusk.",
+        "multimedia_files": ["photos/2026-07-10/20260710_152806.jpg"]
+      },
+      ...
+    ]
+- A day with no clusterable photos currently under photos/ (or not yet
+  cataloged into data/multimedia/multimedia-data.json) simply contributes
+  no clusters — not an error.
+- A single-photo cluster is entirely normal (a cluster is just "one or
+  more nearby/same-label files"), not a bug — a day with photos spread
+  far apart, or many distinct resolved_location labels, will naturally
+  produce many small clusters.
+- location_label/place_full/country can be null for a cluster whose
+  member(s) have no resolved_location recorded yet (e.g. reverse
+  geocoding failed or hasn't run) — the multimedia_files list is still
+  correct and usable even when the label is null. centroid_lat/
+  centroid_lon can independently be null for a resolved_location cluster
+  whose matched gazetteer rule has no confirmed coordinates — never
+  fabricated.
+- overview-description can be null for a cluster whose key was missing
+  from the synthesis file passed to the normal run — check the run's
+  printed WARNING list to see which clusters that happened to.
+
+Notes and safety
+-----------------
+- Read-only with respect to a trip's data/multimedia/multimedia-data.json,
+  photoMapsData/, and photos/ — this script only ever writes that trip's
+  data/multimedia-location/multimedia-location-data.json AND its runtime
+  mirror multimedia-location-data.js (normal mode) or the file you name
+  after --list-clusters (and creates the data/multimedia-location/ folder
+  if it doesn't exist yet, in normal mode).
+- No network access, no reverse geocoding, no Python subprocess — this
+  script only reads and recombines data already present in that trip's
+  data/multimedia/multimedia-data.json (including each file's
+  subject_description.standard, surfaced via --list-clusters for Claude
+  to read). The script itself makes no LLM call either; the synthesis
+  happens in the Claude turn between steps 1 and 3, not inside the script.
+- Running this script against the wrong <journal-folder> only touches
+  that one trip's own data/multimedia-location/ files and reads that
+  trip's own data/multimedia/multimedia-data.json — trips are fully
+  independent.
+- See build-multimedia-location-data_Instructions.txt (in a trip's own
+  scripts/, not scripts/javascript/) for that other, per-trip script's own
+  full documentation.
+
+August 2026, script became shared
+-----------------------------------------
+build-multimedia-location-clusters-data.js itself moved to
+travel-journals/scripts/javascript/ (one copy for every trip); each
+trip's own data/multimedia-location/ output, and any changelog file next
+to it, are unaffected and still live there. The __dirname-based project-
+root calculation described in "update — first rename and move" above was
+replaced with a required <journal-folder> argument, resolved the same way
+as this project's other shared scripts (refresh-notes.js,
+refresh-events.js, resolve_no_gps_locations.py's --gazetteer,
+build-multimedia-data.py) — there is no longer any way for the script to
+infer which trip's data to use from its own file location, since one copy
+now serves every trip. Every command in "How to run it" above reflects
+this.

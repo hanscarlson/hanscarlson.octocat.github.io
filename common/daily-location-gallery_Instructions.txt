@@ -1,0 +1,674 @@
+DAILY LOCATION GALLERY (common/) — INSTRUCTIONS
+===================================================
+
+This file is the design-of-record for common/daily-location-gallery.html
+going forward: a single, DYNAMIC page shared by every trip, replacing the
+per-trip copies each trip used to carry independently. It picks up the
+history where each trip's own build-multimedia-location-clusters-
+data_Instructions.txt left off — see the "Prior history" section below
+for a pointer to that record, which still covers everything about the
+page's look and behavior from before this move.
+
+Your query (verbatim)
+------------------------
+"move travel-journal-2026-07-01/daily-location-gallery.html to the
+common folder"
+
+Followed by two clarifying answers, since the move raised a real design
+question rather than being a plain file relocation:
+
+  Q1: "daily-location-gallery.html currently loads its data via a
+      relative path (./data/multimedia-location/...) and links to
+      ./daily-gallery.html and ./index.html, all assuming it sits inside
+      the trip folder. Once it's in common/, it needs to know which
+      trip's data to use. How should that work?"
+  A1: "Reusable via ?trip= param (Recommended)" — the page becomes
+      trip-agnostic, reading ?trip=<folder> from its own URL rather than
+      being hardcoded to one trip.
+
+  Q2: "travel-journal-2026-01-14 has its own separate (older) copy of
+      daily-location-gallery.html, which won't have the day-jump links
+      or British-voice change from last time. Should it also switch
+      over to the common page now?"
+  A2: "Switch it to the common page too" — both trips now use this one
+      shared page; travel-journal-2026-01-14's own older copy was
+      retired.
+
+Claude's resolved query
+--------------------------
+A1 meant the page could no longer assume "the trip" the way it always
+could assume "the day" — there was nothing left to hardcode a relative
+path against. A2 meant the fix had to work for every existing trip, not
+just the one that prompted the move, and that this had to become the
+one page both trips (and any future trip) point at. Together, that's a
+bigger change than moving a file: the page needed a genuine trip
+picker, every internal link needed an extra directory level and a
+carried-through ?trip=, and the one script that generates a
+frozen-to-one-trip derivative of this page (build-daily-location-
+gallery-for-range.js) needed to learn how to hardcode a trip at
+generation time instead of relying on the page always meaning one trip
+implicitly. All of that is what this file, and the four points below,
+describe.
+
+WHAT CHANGED
+---------------
+1. Moved from travel-journal-2026-07-01/daily-location-gallery.html to
+   common/daily-location-gallery.html — one directory level above every
+   trip folder, sibling to travel-journals/index.html and the top-level
+   scripts/ folder (not inside any one trip).
+
+2. Trip-agnostic via ?trip=<folder>. The page now shows one of four
+   states depending on its URL:
+     (neither param)      Trip picker — one card per trip in
+                           data/trips-manifest.js, pick one.
+     ?trip= only           Day picker for that trip — every date present
+                           in that trip's own data.
+     ?trip=&date=           That day's location galleries — same as
+                           before the move.
+     ?trip=&date= (no match) Empty state — same as before the move.
+   See the page's own top comment for the full parameter reference, the
+   two runtime-mirror data sources it loads (data/trips-manifest.js and
+   ../<trip>/data/multimedia-location/multimedia-location-data.js), and
+   why a document.write()-based loader is used for the second one (the
+   trip isn't known until the URL is parsed, so a plain static
+   <script src> tag can't name its path ahead of time).
+
+3. Every internal link gained a "../<trip>/" prefix and a carried ?trip=
+   parameter — daily-gallery.html links, the journal's own index.html
+   link, and next/prev/first/last day-jump links (all four, from the
+   Turn 2 First/Prev/Next/Last work — see "Prior history" below) all
+   still resolve correctly, now one directory level up and scoped to
+   whichever trip is currently showing.
+
+4. scripts/javascript/build-common-trips-manifest.js (NEW) scans every
+   travel-journal-YYYY-MM-DD folder's own index.html for its title and
+   subtitle and writes common/data/trips-manifest.js — the data source
+   the trip picker (point 2 above) and each page's masthead title read.
+   See that script's own Instructions.txt for the full design; briefly,
+   it exists because a browser can't list sibling folders on disk
+   (file:// has no directory API), so — like every other piece of data
+   this project's pages need from outside their own folder — it's
+   bridged with a small build script that writes a plain runtime-mirror
+   .js file.
+
+5. Each trip's own scripts/javascript/build-daily-location-gallery-for-
+   range.js — the script that freezes this page to one trip and a fixed
+   date range for a bare, shareable link — was updated to read the new
+   common/ template and hardcode window.TRIP_OVERRIDE instead of relying
+   on the page implicitly meaning one trip. See that script's own
+   Instructions.txt (in each trip's own scripts/javascript/) for the
+   full design and a debugging note about the marker-comment regex fix
+   made along the way.
+
+6. Each trip's own scripts/javascript/build-travel-journal.js was
+   updated so every day's photo-link href points at
+   ../common/daily-location-gallery.html?trip=<folder>&date=<date>
+   instead of ./daily-location-gallery.html?date=<date>. See that
+   script's own Instructions.txt for the specific before/after.
+
+7. travel-journal-2026-01-14's own separate, older copy of daily-
+   location-gallery.html was retired (deleted) — it now uses this same
+   shared page, picking up every update travel-journal-2026-07-01's copy
+   had already received (the day-jump links and British Read Aloud voice
+   from Turn 2) that its own copy had been missing.
+
+Prior history
+----------------
+Everything about how this page looks and behaves that predates the
+move — the vintage travel-journal styling, the map/gallery rendering,
+the daily-gallery.html thumbnail cross-link, the GPS-less
+resolved_location fallback, the First/Prev/Next/Last day-jump links, and
+the British educated female Read Aloud voice — is recorded in each
+trip's own scripts/javascript/build-multimedia-location-clusters-
+data_Instructions.txt (both trips' copies now end with a short note
+pointing here). None of that behavior changed in this move; only where
+the file lives and how a trip is chosen did.
+
+Where it lives
+------------------
+    travel-journals/
+      common/
+        daily-location-gallery.html                          <- this page
+        data/
+          trips-manifest.js                                   <- runtime mirror, written by build-common-trips-manifest.js
+        daily-location-gallery-<start>_to_<end>.html           <- per-trip range derivatives, written by each trip's own build-daily-location-gallery-for-range.js
+      scripts/
+        javascript/
+          build-common-trips-manifest.js
+          build-common-trips-manifest_Instructions.txt
+      travel-journal-2026-01-14/
+        trip-info.json                                         <- this trip's title, read by build-common-trips-manifest.js
+        data/multimedia-location/multimedia-location-data.js
+        scripts/javascript/build-daily-location-gallery-for-range.js
+        scripts/javascript/build-multimedia-location-clusters-data_Instructions.txt   <- prior history (see above)
+      travel-journal-2026-07-01/
+        trip-info.json                                         <- same, for this trip
+        data/multimedia-location/multimedia-location-data.js
+        scripts/javascript/build-daily-location-gallery-for-range.js
+        scripts/javascript/build-multimedia-location-clusters-data_Instructions.txt   <- prior history (see above)
+      common/
+        journal.html                                            <- also ?trip=-aware and shared (moved from a per-trip index.html, August 2026); "photo-link" links point here as journal.html?trip=<trip> is where they came from -- see the "Update" section at the end of this file
+
+HOW TO RUN / REGENERATE THE PIECES THIS MOVE ADDED OR CHANGED
+-------------------------------------------------------------------
+  New trip added: run, in order —
+    node scripts/javascript/build-common-trips-manifest.js
+        (from the travel-journals/ root — rescans every trip's
+        trip-info.json and rewrites common/data/trips-manifest.js so the
+        trip picker and masthead titles include the new trip)
+
+  A trip's data changes (new days, re-clustered, re-synthesized):
+    no action needed for common/daily-location-gallery.html itself — it
+    reads that trip's data/multimedia-location/multimedia-location-
+    data.js live, every time it's opened. Only re-run
+    build-common-trips-manifest.js if the trip's own trip-info.json
+    title changed.
+
+  A trip's photo-links need to point at the common page (new trip,
+  never rebuilt before):
+    No rebuild needed -- every trip's journal page is
+    common/journal.html?trip=<folder>, a client-side-rendered page
+    shared by every trip (see scripts/_to_delete/build-travel-
+    journal_Instructions.txt for how it replaced the old build-time
+    index.html this section originally described, and the "Update"
+    section at the end of this file for how that page later moved from
+    a per-trip index.html to this shared one) whose photo-links already
+    point at the common page directly; TRIP_FOLDER is read from the
+    page's own URL at load time, not baked in at build time.
+
+  A trip's range-scoped derivative needs regenerating:
+    node scripts/javascript/build-daily-location-gallery-for-range.js <start> <end>
+        (from inside that trip folder — see that script's own
+        Instructions.txt)
+
+Notes and safety
+-------------------
+- This file documents the page's own markup/CSS/JS going forward. Data-
+  producing scripts (build-multimedia-location-clusters-data.js,
+  refresh-events.js, refresh-notes.js, etc.) keep their own
+  Instructions.txt files inside each trip folder, unchanged by this
+  move.
+- ?trip= is validated against /^[A-Za-z0-9_.-]+$/ before ever being used
+  to build a path or a document.write() string — an invalid or missing
+  value is treated exactly like no ?trip= at all (shows the trip
+  picker), never an error page.
+- The page has no way to discover trip folders itself (file:// pages
+  can't list a directory) — data/trips-manifest.js is the only source
+  the trip picker and per-trip titles read, so it must be re-run
+  whenever a trip is added, removed, or renamed, or its own trip-
+  info.json title changes. A stale or missing manifest just means the
+  trip picker is incomplete or empty, not broken.
+
+Update — daily-gallery.html links repointed at common/ (2026-08-27, same day)
+------------------------------------------------------------------------------
+While verifying this move end-to-end, discovered that daily-gallery.html
+had ALSO already been moved to common/ and made ?trip=-aware (by other,
+separate work not part of this task) -- travel-journal-2026-07-01/
+daily-gallery.html and travel-journal-2026-01-14/daily-gallery.html no
+longer exist; the one shared copy is common/daily-gallery.html, reached
+via ?trip=<folder>&folder=<date>[&photo=<file>]. This page's own
+generated links (the day view's "Daily Gallery" button and every photo
+thumbnail) and build-travel-journal.js's masthead "Daily Gallery" link
+still pointed at the old, now-nonexistent ../<trip>/daily-gallery.html
+path -- fixed to ./daily-gallery.html?trip=<trip>&folder=... (this file)
+and ../common/daily-gallery.html?trip=<TRIP_FOLDER> (build-travel-
+journal.js) respectively, both now sibling links within common/ rather
+than reaching into a trip folder. Verified via Playwright that the fixed
+link opens common/daily-gallery.html scoped to the right trip and day.
+
+Update — combined/simplified navigation, matching common/daily-gallery.html (2026-08-27)
+------------------------------------------------------------------------------------------
+Your query (verbatim): "For common/daily-location-gallery.html combine and
+simplify all navigation and render it in the same way as in the
+common/daily-gallery navigation on the top to the right of the journal
+link. Render the journal link as in common/daily-gallery"
+
+Before this, day-view navigation was split across two separate rows: a
+top-nav pair (Previous day/All days/All trips/Daily Gallery/Next day)
+and a second, independent First/Prev/Next/Last pair flanking the Read
+Aloud button (added in Turn 2, before this page moved to common/ and
+before daily-gallery.html's own First/Previous/Next/Last pattern
+existed to copy). Both rows duplicated the same Previous/Next
+functionality in two different visual styles.
+
+Combined into ONE row -- reused the CSS class names and exact markup
+shape common/daily-gallery.html already uses in its own <header>:
+.back-link for the Journal link (a leftwards-arrow-with-hook icon plus
+label, IBM Plex Mono, uppercase, brass-dark) and .day-nav / .day-nav-
+link for everything to its right. First/Previous/Next/Last use the same
+icons and the same disabled-span-at-the-ends treatment as daily-
+gallery.html's own dayNavLink()/renderDayNav() (a non-clickable,
+45%-opacity span when there's nowhere to go, so the row's width never
+shifts as you move through the trip -- not the old visibility:hidden
+approach, which just left a gap). All days, Daily Gallery, and All trips
+-- the three links that don't have a direct equivalent in daily-
+gallery.html's own header -- were folded into the same row, in the same
+.day-nav-link style but without an icon, rather than being dropped or
+left in a separate place.
+
+Applied everywhere the old scattered top-nav markup lived:
+  - #trip-picker: "&#8617; All Journals" back-link only (no day-nav --
+    nothing to show before a trip is chosen).
+  - #day-picker: "&#8617; Journal" back-link + a day-nav containing just
+    "All Trips" (no First/Prev/Next/Last -- no date is showing yet,
+    matching daily-gallery.html's own day-picker state, where its
+    day-nav is hidden entirely for the same reason).
+  - #page (day view): "&#8617; Journal" back-link + the full seven-entry
+    day-nav described above. The read-aloud-row now holds only the Read
+    Aloud button, centered, reading as the row's sole (and clearer)
+    action.
+
+Removed entirely: the .day-jump-link CSS class and the readnav-first/
+readnav-prev/readnav-next/readnav-last elements/variables (the old
+second row), and the prev-day-link/next-day-link/all-days-link/daily-
+gallery-link elements/variables (the old top-nav pair) -- all replaced
+by one dayNavLink(label, icon, url) helper and a single #day-nav
+element populated fresh every time renderDay() runs.
+
+Verified via Playwright against real trip data: the day-nav's disabled
+state renders correctly at both ends of a trip (Previous disabled on
+the first day, Next disabled on the last), All days/Daily Gallery/All
+trips resolve correctly, and a masthead screenshot confirmed the visual
+result reads as one unified row.
+
+Update — Read Aloud moved into the top-nav line (2026-08-27, same day)
+--------------------------------------------------------------------------
+Your query (verbatim): "move 'read aloud' link to the end of the
+previous header line"
+
+The Read Aloud button moved out of its own centered row below the
+masthead's date-line and into the top-nav line built by the previous
+update, as its last element -- after All trips. It's a sibling of the
+#day-nav span rather than one of the entries inside it, so it's
+unaffected by #day-nav's innerHTML being fully rebuilt on every
+renderDay() call. The now-empty read-aloud-row wrapper div and its CSS
+rule were removed; .read-aloud-btn's padding was trimmed slightly
+(0.55rem 1.3rem -> 0.4rem 1.1rem) so the pill sits comfortably inline
+with the top-nav's smaller text, but its look (brass border, white
+background, "reading" state, disabled state) is otherwise unchanged.
+setupReadAloud() and every other reference to #read-aloud-btn still
+works unmodified -- only its position in the DOM moved, not its id or
+behavior.
+
+Update — country/date/locations/files combined into one line (2026-08-27, same day)
+---------------------------------------------------------------------------------------
+Your query (verbatim): "combine lines with country, date, and
+date/locations/files to one header line"
+
+Followed by a clarifying answer, since the date could no longer stay at
+its original full size once combined onto one line with the others:
+"One compact line, all same size (Recommended)" -- country, date, and
+the locations/files counts all render in the date-line's original
+moderate typography (Public Sans, 1rem, --ink-soft), not the big italic
+Fraunces headline that used to carry just the date.
+
+Removed the separate leg-label <p> (country, small-caps mono) and
+headline <h1> (the big date) entirely -- both their elements and their
+CSS rules (.leg-label, h1.headline). The surviving #date-line now reads
+country · date · N locations · N files, all in one line, country first.
+Kept the #date-line id/class and its own CSS (font-size:1rem, margin:0)
+unchanged, so this is a strict subtraction (fewer elements) rather than
+a new visual language: the masthead now reads kicker (trip · day N of
+M) directly above this one combined line, instead of kicker / country /
+big date / date-again-with-counts.
+
+Update — kicker moved into the top-nav line; tighter spacing (2026-08-27, same day)
+---------------------------------------------------------------------------------------
+Your query (verbatim): "move line 2 (for example, Travel Journal Day 1
+of ) to the first line and reduce the line spacing and the separator
+spacing"
+
+The kicker ("Travel Journal 2026 Summer · Day 14 of 41") used to be its
+own line, directly above the combined country/date/locations/files
+line. It's now a plain-text item inside the top-nav row itself (between
+the Journal back-link and the day-nav links), changed from a <p> to a
+<span> since it's now a flex child of .top-nav rather than a standalone
+block. #page's masthead is down to two content lines: the (now-combined)
+top-nav row and the date-line -- from the original five (top-nav,
+kicker, country, headline, date-line) before this session's edits.
+
+Spacing tightened in three places:
+  - .top-nav's own gap (between back-link/kicker/day-nav/Read Aloud):
+    14px -> 10px.
+  - .day-nav's internal gap (between First/Previous/Next/.../All trips):
+    12px -> 8px.
+  - .top-nav's bottom margin (the gap before the date-line below it):
+    1.4rem -> 0.6rem.
+  - .date-line .sep's separator margin (the space around each " · "
+    between country/date/locations/files): 0 0.5em -> 0 0.3em.
+
+Note: with the kicker now sharing the top-nav row, that row carries a
+lot of content (back-link + kicker + seven day-nav entries + the Read
+Aloud button) inside the same 900px max-width every other section of
+this page uses. It still fits on one line on a sufficiently wide
+window, but wraps onto a second line within that same row on an
+ordinary desktop width or narrower -- normal flex-wrap behavior, not a
+bug, and it still reads cleanly (confirmed via screenshots at 1100px,
+1500px, and 420px/mobile widths).
+
+Update — navigation pinned to an explicit second line, before Read Aloud (2026-08-27, same day)
+------------------------------------------------------------------------------------------------------
+Your query (verbatim): "move navigation to second line before 'read
+aloud'"
+
+The masthead's top-nav row used to be one flex container holding
+everything (Journal, kicker, the day-nav links, Read Aloud), which
+happened to wrap onto a second line whenever the content was wider than
+the page's 900px content width -- but exactly where it wrapped depended
+on window width, not on any explicit line 1/line 2 split. Replaced that
+with a deterministic two-row structure: .top-nav.two-line wraps two
+.nav-line rows (flex-direction:column, one nav-line per row) instead of
+relying on one long row's flex-wrap to break wherever it happens to.
+
+  Row 1 (.nav-line): Journal back-link + kicker (trip/day context).
+  Row 2 (.nav-line): the day-nav (First/Previous/Next/Last/All days/
+  Daily Gallery/All trips) immediately followed by the Read Aloud
+  button -- same order as before, now always on its own line rather
+  than sometimes sharing row 1 on a wide-enough window.
+
+Only #page's top-nav got the two-line treatment (id="journal-link-page"
+etc. -- element ids unchanged, only their DOM nesting moved, so no JS
+changes were needed beyond none). #trip-picker's and #day-picker's
+top-navs are single-row and stayed exactly as they were -- the base
+.top-nav CSS (a plain flex row) still applies to them; .two-line and
+.nav-line are additive classes only #page's top-nav carries. Confirmed
+via screenshots at 1500px, 1100px, and 420px/mobile that the split holds
+at every width and that day-picker/trip-picker are unaffected.
+
+Update — Journal moved to line 2, first three lines centered and resized (2026-08-27, same day)
+--------------------------------------------------------------------------------------------------
+Your query (verbatim): "move journal link to the second line before
+navigation. center first three lines. double font size of first line
+and third line."
+
+The masthead's #page state is now three lines:
+  1. kicker (trip/day context) alone, centered, at double its prior
+     size (0.72rem -> 1.44rem).
+  2. Journal back-link, then the day-nav (First/.../All trips), then
+     Read Aloud -- Journal moved here from line 1, now leading line 2
+     instead of leading the old single combined row.
+  3. date-line (country/date/locations/files), centered, at double its
+     prior size (1rem -> 2rem).
+Both .nav-line rows got justify-content:center (they default to
+flex-start); date-line was already centered via inherited text-align
+but is now itself a centered flex row too, for the reason below.
+
+Doubling the font sizes made both lines wider than the page's 900px
+content width at ordinary screen widths, so both were rebuilt as a
+centered, wrapping flex row of .line-phrase spans (white-space:nowrap)
+joined by .line-sep dots -- a shared pair of classes now used by both
+kicker and date-line (previously date-line had its own private .phrase/
+.sep; generalized so kicker could reuse the same mechanism). This
+guarantees that if the line has to wrap, it only ever breaks between
+phrases -- e.g. "2" and "locations", or "Day 14" and "of 41" -- never
+splitting a number away from its word.
+
+Even so, a single .line-phrase itself (e.g. the trip title "🧳 Travel
+Journal 2026 Summer", which has no internal separator to wrap at) could
+still overflow the viewport horizontally on very narrow phones. Added a
+rule inside the existing @media(max-width:640px) block stepping kicker
+down to 1.05rem and date-line down to 1.3rem there -- still visibly
+larger than their pre-doubling sizes, but no horizontal scroll.
+Confirmed via Playwright (documentElement.scrollWidth vs clientWidth,
+no overflow at 420/1100/1500px) and screenshots at all three widths.
+
+Update — Font sizes eased back down, line-2 links styled as pills (2026-08-27, same day)
+--------------------------------------------------------------------------------------------------
+Your query (verbatim): "reduce font size of first line and third line.
+make the links on the second line resemble the 'read aloud' link"
+
+Two changes, both scoped to #page's masthead:
+
+1. Kicker (line 1) and date-line (line 3) font sizes eased back down
+   from the prior doubling: kicker 1.44rem -> 1rem, date-line 2rem ->
+   1.4rem. (For reference: original was 0.72rem/1rem, doubled to
+   1.44rem/2rem last turn, now settled at 1rem/1.4rem -- noticeably
+   larger than original but no longer as oversized as the full double.)
+   The mobile @media(max-width:640px) override was updated to match,
+   stepping down further to 0.85rem/1.1rem there (was 1.05rem/1.3rem,
+   which had gone stale relative to the new smaller desktop base and
+   was no longer meaningfully smaller than it).
+
+2. Line 2's links -- the Journal back-link and every day-nav-link
+   (First/Previous/Next/Last/All days/Daily Gallery/All trips) -- now
+   look like pill buttons matching the Read Aloud button: padding
+   0.4rem 1.1rem, border-radius:999px, 1px solid var(--brass) border,
+   white background, hover fills to brass with white text. Implemented
+   as a new .pill-nav modifier class added only to #page's second
+   .nav-line div (not to #trip-picker's or #day-picker's top-navs,
+   which reuse the same .back-link/.day-nav-link base classes and were
+   left as plain text links) so the change doesn't leak elsewhere.
+   Disabled day-nav-link spans (e.g. "First"/"Previous" on day 1) get a
+   slightly muted pill variant rather than the hover-fill treatment.
+
+Verified: inline <script> blocks syntax-checked with node --check (both
+pass); Playwright screenshots at 1500px, 1100px, and 420px/mobile show
+all line-2 links rendering as consistent pill buttons alongside Read
+Aloud, and confirm documentElement.scrollWidth == clientWidth (no
+horizontal overflow) at all three widths.
+
+Update — "All Days" and "All Trips" links removed (2026-08-27, same day)
+--------------------------------------------------------------------------------------------------
+Your query (verbatim): "remove "All Days" and "All Trips" links"
+
+Dropped these two entries from the day-nav row (line 2), which now
+reads: First / Previous / Next / Last / Daily Gallery. Both were
+redundant with links already present: Journal, immediately to the left
+of this row, already backs out to the trip's journal (what "All Days"
+pointed at), and "All Trips" duplicated the ../index.html link already
+reachable from there. No JS structural changes beyond removing their
+two dayNavLink() calls from the array passed to dayNavEl.innerHTML;
+dayNavLink() itself and tripUrl() (still used elsewhere, including its
+own no-arg call at the empty-state back-link) were untouched.
+
+Verified: inline <script> blocks syntax-checked with node --check (both
+pass); Playwright screenshots at 1500px, 1100px, and 420px/mobile show
+the day-nav row shortened as expected and, at wide/mid widths, now
+fitting alongside Read Aloud on a single row; confirmed
+documentElement.scrollWidth == clientWidth (no horizontal overflow) at
+all three widths.
+
+Update — Fixed: Read Aloud button text not resetting after Stop (2026-08-27, same day)
+--------------------------------------------------------------------------------------------------
+Your query (verbatim): "the "Read Aloud" link when toggled to "Stop
+Reading" and clicked again stops reading, but does not reset the link
+text to "Read Aloud""
+
+Bug: setupReadAloud() clones the button node (cloneNode + replaceChild)
+right before attaching its click listener, specifically so each call to
+renderDay() gets a listener bound only to that day's own segments
+without stacking duplicate listeners from previous days. Everything
+after the clone -- the click handler, speakNext(), setIdle() -- must
+operate on that new freshBtn, since the original btn reference is now a
+detached node no longer in the page. Two places correctly did this
+(freshBtn.textContent = 'Stop Reading' when starting, in the click
+handler) but setIdle() -- called both when the user clicks Stop and
+when speech reaches the end of the segments on its own -- was still
+written against the stale outer btn, so it silently updated a node the
+user could no longer see instead of the visible one. Net effect: the
+click did stop the speech (synth.cancel() runs fine, it doesn't care
+which node called it) but the button visibly stayed on "Stop Reading".
+Fixed by pointing setIdle()'s two lines at freshBtn instead of btn.
+
+Verified: inline <script> blocks syntax-checked with node --check
+(pass). Reproduced the exact reported symptom against the pre-fix code
+via Playwright with speechSynthesis.speak()/cancel() stubbed out (so
+the click path could be tested deterministically, independent of
+whether a given browser/engine actually has a TTS voice available) --
+confirmed the button stayed on "⏹ Stop Reading" with the .reading class
+still applied after the second click. Ran the identical test against
+the fixed code: after the second click the button correctly reads "🔊
+Read Aloud" with the .reading class removed. Also re-ran the full
+1500/1100/420px screenshot + overflow check as a regression guard,
+since deploys in this session always get the full pass even when a
+change is JS-only -- no visual difference, no horizontal overflow.
+
+Update — index.html moved to common/journal.html?trip=<folder> (August 2026)
+------------------------------------------------------------------------------
+Comparing the two trips' index.html files (they were byte-identical
+except for title/folder name) turned up nothing worth keeping separate,
+so that page followed this same page's own move: it's now one shared
+file, common/journal.html, read via ?trip=<folder>, and each trip's own
+index.html was deleted. Its title source (that per-trip index.html's own
+<h1>) moved to a new <trip>/trip-info.json file ({"title": "..."}), which
+build-common-trips-manifest.js now reads instead of parsing index.html --
+see build-common-trips-manifest_Instructions.txt and common/
+journal.html's own top-of-script comment for the fuller history. Every
+link this page already builds to "the trip's journal" (the day-nav
+"Journal" back-link, the trip picker's per-trip links) now points at
+journal.html?trip=<trip> instead of ../<trip>/index.html.
+
+Update — travel-journals/index.html made client-side-rendered (August 2026)
+------------------------------------------------------------------------------
+travel-journals/index.html now reads window.TRIPS_MANIFEST client-side
+too, the same manifest this page's own trip picker reads, instead of
+being regenerated by build-travel-journal-index.js (retired -- see
+scripts/_to_delete/build-travel-journal-index_Instructions.txt). No
+change to this page or to build-common-trips-manifest.js was needed for
+that -- the manifest was already the shared, live data source both
+pages read.
+
+Update — days with no clustered location render as a location of their own (2026-08-29)
+--------------------------------------------------------------------------------------------------------
+Your query (verbatim): "when daily-location-gallery.html is opened for a
+travel journal for a particular date and there is not a clustered
+location for the date render the gallery with the multimedia files and
+gallery links as if the no clustered location is a location itself"
+
+Bug/gap: build-multimedia-location-clusters-data.js skips a file
+entirely when it has neither GPS nor a resolved_location (its own "GPS-
+LESS FALLBACK" comment says as much -- "A file with neither GPS nor a
+resolved_location is skipped entirely"). A day where every file falls
+into that gap (travel-journal-2026-02-07's 2026-02-09 and 2026-02-10,
+found while diagnosing this) never produces a cluster at all, so it was
+entirely absent from DATA here -- missing from the day picker, and
+landing on "No location clusters for this day" if visited directly by
+?date=, even though its photos/videos exist and are perfectly viewable.
+
+Fix: this page now also loads that trip's raw multimedia catalog --
+../<trip>/data/multimedia/multimedia-data.js (window.MULTIMEDIA_CATALOG)
+-- alongside the existing multimedia-location-data.js load, via a second
+document.write()'d <script src> in the same TRIP-DATA-LOADER block (with
+the same onerror="... || []" pattern as the existing loader). After DATA
+is built from the real clusters as before, any day present in the
+catalog but absent from DATA gets one synthesized pseudo-cluster
+(no_location: true) holding every one of that day's files, in the same
+chronological order (filename string sort) a real cluster's
+multimedia_files already has. It has no location_label/place_full/
+country/centroid -- renderLocations() titles it "No clustered location"
+(distinct from "Unknown location", which means a real GPS cluster whose
+reverse-geocode came back empty -- a different situation), the date
+line's existing "Location unknown" fallback covers the country slot for
+free, renderMap() drops it with no pin the same way it already drops any
+cluster with a null centroid, and its overview paragraph explains why in
+plain language instead of falling into the generic "No description
+available for this location yet." text. A day that already has at least
+one real cluster is left completely untouched. Days genuinely absent
+from BOTH data sources still hit the original "No location clusters for
+this day" empty state, unchanged.
+
+Time range on the pseudo-cluster's meta line comes from
+multimedia_metadata.datetime_original ("YYYY:MM:DD HH:MM:SS", EXIF-style,
+no timezone) on that day's catalog entries, reshaped into the same
+fake-"Z" ISO form multimedia-location-data.json's own time_start/
+time_end already use, so the existing formatTime()/formatTimeRange()
+helpers (which deliberately read via getUTC* accessors for exactly this
+reason) work unmodified for a synthesized cluster too.
+
+Range pages (build-daily-location-gallery-for-range.js): that script's
+hardcoded TRIP-DATA-LOADER replacement now also emits the multimedia
+catalog <script src> line, and its rangeFilterScript now filters
+window.MULTIMEDIA_CATALOG down to [start, end] the same way it already
+filtered window.MULTIMEDIA_LOCATION_DATA -- without that second filter a
+range page would leak a pseudo-cluster for every out-of-range day with
+GPS-less/unresolved files. See that script's own Instructions.txt for
+the matching entry. The one existing generated range page,
+common/daily-location-gallery-2026-07-01_to_2026-08-18.html, was
+regenerated afterward so it picks up both changes.
+
+Verified: both edited files syntax-checked (node --check on the range-
+generator script; the template's own main inline <script> extracted and
+run through `new Function(...)` since it's not a standalone file).
+Playwright against a local static server serving common/ and travel-
+journal-2026-02-07/'s multimedia + multimedia-location mirrors:
+2026-02-09 (no clusters, 1 file) now renders the page (not the empty
+state) with title "No clustered location", meta "9:49 AM · 1 photo", the
+new overview text, one gallery figure linking correctly to
+daily-gallery.html?trip=...&folder=2026-02-09&photo=..., and the map
+hidden; 2026-02-08 (a real cluster) still renders exactly as before
+("Pinnacle Peak Park", unchanged); the day picker lists both 2026-02-09
+and 2026-02-10 as "1 location" days with the correct file counts and no
+fabricated country; and 2026-03-01 (present in neither data source)
+still hits the original empty state with its original message. No
+console/page errors from either change. Also re-ran the standard
+1500/1100/420px screenshot + `documentElement.scrollWidth ==
+clientWidth` overflow check on the no-cluster view as a regression
+guard -- no overflow at any width.
+
+Update — trailing "Location Unknown" section for unclustered files on an otherwise-clustered day (2026-08-29, same day)
+------------------------------------------------------------------------------------------------------------------------------------------
+Your query (verbatim): "when daily-location-gallery.html is opened for a
+travel journal for a particular date and there are multimedia files that
+are not in a clustered location for that day add a section at the end
+of the gallery "Location Unknown" and display those multimedia file
+thumbnails there"
+
+Different gap from the "days with no clustered location render as a
+location of their own" update just above (which covers a day with ZERO
+real clusters). This one covers the far more common partial case: a day
+WITH one or more real clusters where a handful of that day's files still
+never made it into any of them -- again because build-multimedia-
+location-clusters-data.js skips a file entirely once it has neither GPS
+nor a resolved_location. travel-journal-2026-02-07's own 2026-02-08 is
+an example found while building this: 22 catalog files that day, only
+18 in the "Pinnacle Peak Park" cluster, 4 (a poolside beer-can photo and
+three others) silently absent from the page entirely before this
+change.
+
+Implementation: renderLocations(clusters, dateStr) now also computes,
+after building every real (or pseudo, from the update above) cluster's
+own <article>, the set of that day's CATALOG_BY_DAY files NOT claimed by
+any cluster's own multimedia_files list (a plain object used as a
+claimed-set, checked against each catalog entry's "relative_folder/
+file_name"). If any remain, one more <article class="location
+location-unknown" id="loc-unknown"> is appended at the end of the
+locations HTML (i.e. after every numbered location, never before or
+between them) titled "Location Unknown" -- no pin-badge number (unlike
+every other location, it has no map coordinate and isn't part of the
+numbered pin sequence renderMap() draws), a plain-language prose
+explanation instead of an overview-description, and a gallery of those
+files' thumbnails built the same way, with the same daily-gallery.html
+deep links, as any other location's gallery.
+
+Two small helpers were pulled out of the per-cluster map() callback
+that already built this exact markup, so the trailing section doesn't
+duplicate it: buildGalleryHtml(files, dateStr) (the <figure> markup for
+an array of "photos/YYYY-MM-DD/file_name" strings) and
+mediaCountLabel(files) ("N photos, M videos" / "0 files"). Both real
+clusters and the trailing section now call these same two functions --
+no behavior change for real clusters, just de-duplicated code.
+
+No conflict with the whole-day pseudo-cluster from the update above: on
+a day with zero real clusters, that pseudo-cluster's own multimedia_files
+already lists every one of that day's catalog files, so the claimed-set
+covers 100% of them and no (redundant) Location Unknown section renders
+alongside it -- confirmed against 2026-02-09 below.
+
+Verified: main inline <script> extracted and run through `new
+Function(...)` (syntax OK). Playwright against a local static server
+serving common/ and travel-journal-2026-02-07/'s multimedia +
+multimedia-location mirrors: 2026-02-08 (Pinnacle Peak Park, 4 leftover
+files) shows both articles, "Location Unknown" last, no pin-badge, meta
+"4 photos", correct daily-gallery.html deep links for all 4; 2026-02-13
+(fully clustered, 0 leftover) shows its 5 real locations only, no
+Location Unknown section, last article is a real location; 2026-02-09
+(the whole-day pseudo-cluster case from the update above) still shows
+only "No clustered location", no separate/duplicate Location Unknown
+section. No console/page errors. Re-ran the standard 1500/1100/420px
+screenshot + `documentElement.scrollWidth == clientWidth` overflow check
+on the 2026-02-08 view -- no overflow at any width. Regenerated the one
+existing generated range page, common/daily-location-gallery-2026-07-
+01_to_2026-08-18.html, afterward (it's a byte-for-byte copy of this
+template aside from its hardcoded loader block, so it needed the same
+refresh) -- confirmed "Location Unknown" now appears there too (3
+occurrences across the range, one per affected day).

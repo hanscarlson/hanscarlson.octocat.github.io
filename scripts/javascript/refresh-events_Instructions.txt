@@ -1,0 +1,218 @@
+CALENDAR EVENTS REFRESH SCRIPT — INSTRUCTIONS
+==============================================
+
+SHARED SCRIPT — this file and refresh-events.js live once at
+travel-journals/scripts/javascript/ and serve every travel-journal-
+YYYY-MM-DD/ trip (as of August 2026, refresh-events.js was moved here from
+being duplicated inside each trip's own scripts/javascript/ folder), so it
+takes a required <journal-folder> argument, as its first argument, to say
+which trip to act on (see "How to run it" below).
+
+What it does
+------------
+scripts/javascript/refresh-events.js pulls events from five Google Calendars —
+"Events Hans", "Travel", "Birthdays", "Holidays in Sweden", and
+"Victoria Arthaud" — dedupes them, and writes the merged result to a
+trip's data/events/events-data.json: a plain, day-by-day JSON file
+({"YYYY-MM-DD": [{time, title, cal, description?}, ...], ...}). Right
+after writing that file, it also writes a plain runtime-mirror sibling,
+data/events/events-data.js (`window.EVENTS_DATA = <same object>;`) — the
+two are always written together and never drift apart. That trip's
+index.html (a client-side-rendered page — see its own top-of-script
+comment) loads that mirror via
+`<script src="./data/events/events-data.js">` and reads
+`window.EVENTS_DATA.events[<date>]` at render time — there is no
+build-time merge step and nothing hardcodes events anywhere.
+
+Why it's a two-step, Claude-mediated process
+----------------------------------------------
+Same reason as refresh-notes.js: this is a plain Node script with no
+Google credentials, so it can't call the Calendar API itself.
+Refreshing events is therefore two steps:
+
+  1. Claude fetches events from each of the five calendars (via the
+     Calendar connector's list_events tool, paginating through every
+     page — some of these calendars, especially "Events Hans", have
+     enough recurring meetings that a single page isn't enough), strips
+     each event down to the essentials, and writes one
+     raw-events-<name>.json file per calendar into a working directory,
+     each shaped:
+       { "calendar": "<exact display name>", "calendarId": "<id>", "events": [...] }
+     Each event keeps only: id, summary, start, end, location (if
+     present), and description (if present) — attendee lists and other
+     bulky fields are dropped, both because the script doesn't need
+     them and because some of these calendars' raw events are large
+     enough to blow past tool output limits otherwise. The script
+     strips any HTML in the description down to plain text (<p>/<br>
+     become newlines, other tags are dropped, common entities are
+     decoded) and only includes a "description" key on the output
+     entry when the source event actually had one.
+     The "calendar" field must exactly match one of the five names
+     above (case-sensitive) — that's how the script knows which
+     calendar it's looking at, both for the "cal" label on each output
+     event and for dedup priority (see below).
+
+  2. Claude (or you) runs, once per trip that needs fresh events:
+       node scripts/javascript/refresh-events.js <journal-folder> <raw-events-dir> <start> <end> [output-path]
+     which resolves <journal-folder> to that one trip (see "How to run
+     it" below), reads every raw-events-*.json file in <raw-events-dir>,
+     dedupes, and writes the merged result plus its .js mirror into that
+     trip's data/events/ — see "How to run it" below. The same
+     raw-events-dir can be reused for a different trip's <start>/<end>
+     window if it happens to contain events spanning more than one trip;
+     events outside the requested window are simply filtered out.
+
+Ask Claude to "refresh events" (for a given trip, if more than one is
+active) to trigger the full two-step process end to end. No rebuild step
+follows or is needed — that trip's index.html reads events-data.js live,
+client-side, on every page load, so reloading the page is enough to see
+the new events.
+
+Date range is fully variable
+-------------------------------
+Nothing in this script hardcodes a date range — not any one trip's dates.
+<start> and <end> are REQUIRED command-line arguments (YYYY-MM-DD,
+inclusive both ends). Re-run with a different <journal-folder> and
+different dates for a different trip without editing the script at all.
+
+Ignored titles
+---------------
+Some recurring/personal events are always dropped regardless of source
+calendar: "Cleaning day", "cleaners", "ELC Bible Study: Genesis", "Zoom
+Bible Study", "MOTW", "API Superstream: APIs and the Agentic Shift
+[O'Reilly Live Event]", "Zero to Agent in 30 Minutes [O'Reilly Live
+Event]", and "Church". Matching is case-insensitive on the exact event
+title. This list is the IGNORE_TITLES constant near the top of the
+script -- edit it there to add/remove titles. It applies the same way
+regardless of which trip you're refreshing.
+
+Dedup rule
+-----------
+When the same event (same calendar date, same normalized title, same
+time-of-day label — case/whitespace/dash differences ignored) shows up
+on more than one calendar, only the copy from the highest-priority
+calendar is kept, in this fixed order:
+
+    Events Hans  >  Travel  >  Birthdays  >  Holidays in Sweden  >  Victoria Arthaud
+
+(This priority order is a constant near the top of the script,
+PRIORITY_ORDER — edit it there if the set of calendars or their
+priority ever changes; it's separate from the variable date range, and
+shared across every trip.) Every dropped duplicate is recorded in the
+output file's "duplicatesSkipped" array (date, title, which calendar's
+copy was kept, which was dropped), so the dedup is auditable rather than
+a silent black box.
+
+Multi-day events
+------------------
+Rather than repeating an event on every day it spans, a multi-day event
+gets exactly ONE entry, on its start date, with " (thru <end date>)"
+appended to the title — e.g. a hotel stay 2026-07-02 to 2026-07-05
+becomes a single 2026-07-02 entry titled "Brasss Hotel Suites (thru Jul
+5)". All-day events use Google Calendar's exclusive end-date convention
+correctly (an all-day event with end date 2026-07-05 actually covers
+through 2026-07-04 only) when computing the "thru" date.
+
+Where it lives
+---------------
+    travel-journals/                          <- the collection root (this
+      scripts/                                   script's own grandparent
+        javascript/                              directory, via __dirname)
+          refresh-events.js                   <- SHARED, one copy for every trip
+          refresh-events_Instructions.txt     <- SHARED (this file)
+      travel-journal-2026-07-01/              <- one trip
+        data/
+          events/
+            events-data.json        <- this trip's output, one refresh-events.js run
+            events-data.js          <- runtime mirror, window.EVENTS_DATA = {...};
+                                        written right after events-data.json, every run
+        index.html                   <- reads events-data.js live, client-side
+      travel-journal-2026-01-14/              <- another trip, same shape:
+        data/events/events-data.json + .js
+
+How to run it
+--------------
+No npm dependencies — plain Node (uses Intl for timezone-aware time
+formatting; needs a Node build with full ICU data, which every
+mainstream Node.js download since v13 has by default).
+
+    node scripts/javascript/refresh-events.js <journal-folder> <raw-events-dir> <start> <end> [output-path]
+
+  <journal-folder>  Which trip to update. REQUIRED. Resolved two ways,
+                    tried in order:
+                      1. As a path relative to the current directory, or
+                         absolute — run this from anywhere and point
+                         straight at a trip.
+                      2. As a folder name directly under the
+                         travel-journals collection root (e.g.
+                         "travel-journal-2026-07-01") — run this from
+                         the collection root without typing a full path.
+                    If neither resolves to a real directory, the script
+                    exits with an error listing every
+                    travel-journal-YYYY-MM-DD folder it can see.
+  <raw-events-dir>  Directory containing the raw-events-*.json files
+                    from step 1 above (one per calendar).
+  <start>/<end>     Inclusive date range, YYYY-MM-DD. Required.
+  [output-path]     Defaults to <journal-folder>/data/events/events-data.json.
+                    Pass a different path to write somewhere else (useful
+                    for a dry-run comparison before overwriting the real
+                    file). The events-data.js mirror is always written
+                    next to whichever path this resolves to, as
+                    events-data.js in that same directory.
+
+Examples (run from the travel-journals collection root):
+
+    node scripts/javascript/refresh-events.js travel-journal-2026-07-01 /tmp/raw-calendar-events 2026-07-01 2026-08-18
+    node scripts/javascript/refresh-events.js travel-journal-2026-01-14 /tmp/raw-calendar-events 2026-01-14 2026-02-28
+
+Or from anywhere, with an explicit path:
+
+    node /path/to/travel-journals/scripts/javascript/refresh-events.js /path/to/travel-journals/travel-journal-2026-07-01 /tmp/raw-calendar-events 2026-07-01 2026-08-18
+
+Prints a summary when run: which trip it resolved <journal-folder> to,
+how many events came from each calendar file, the requested date range,
+how many events/days ended up in the output, and a line per skipped
+duplicate (or "No duplicates found." if none).
+
+Notes and safety
+-----------------
+- This script only ever WRITES a trip's data/events/events-data.json and
+  its events-data.js mirror — it never reads or modifies
+  data/daily-notes/daily-notes-data.json or anything else in the project,
+  and it never touches any other trip's files.
+- Nothing further is needed to get fresh events onto the page: each
+  trip's index.html reads its own events-data.js client-side on every
+  load, so re-running this script for that trip is the whole update — no
+  separate build step required for events to show up. (LOCATION_BANDS --
+  the "where you are" bands shown per day -- is a different, unrelated
+  mechanism: it's derived automatically, client-side, by that trip's
+  index.html itself, from the data/travel-details/travel-details-data.js
+  mirror -- not from calendar events or any hand-maintained constant; see
+  refresh-travel-details.py's Instructions.txt.)
+- Events with status "cancelled" are skipped.
+- A raw-events-*.json file whose "calendar" field doesn't match one of
+  the five names in PRIORITY_ORDER still gets included, but is treated
+  as lowest priority and prints a warning — fix the "calendar" field
+  (or extend PRIORITY_ORDER) rather than ignoring the warning.
+- Safe to re-run repeatedly; each run fully regenerates both output
+  files for the target trip from whatever's in <raw-events-dir> at the
+  time (it doesn't merge with a previous events-data.json/events-data.js
+  the way refresh-notes.js merges daily notes).
+- Running this script against the wrong <journal-folder> only affects
+  that one trip's data/events/ files — trips are fully independent, so
+  there's no cross-trip data to worry about beyond picking the right
+  folder (and the matching date range) for the calendar data you
+  actually fetched.
+
+Update — index.html moved to common/journal.html?trip=<folder> (August 2026)
+------------------------------------------------------------------------------
+Every mention of "that trip's index.html" above still describes the same
+live, client-side behavior (events-data.js is read the same way, on
+every page load, no rebuild needed) -- only the file itself moved. Each
+trip used to have its own index.html, byte-identical to every other
+trip's copy except for its title and folder name; that page is now one
+shared file, common/journal.html, read via ?trip=<folder> (the same
+?trip=-aware pattern common/daily-gallery.html and common/daily-
+location-gallery.html already used), and each trip's own index.html was
+deleted. See common/journal.html's own top-of-script comment and
+build-travel-journal-index_Instructions.txt for the fuller history.

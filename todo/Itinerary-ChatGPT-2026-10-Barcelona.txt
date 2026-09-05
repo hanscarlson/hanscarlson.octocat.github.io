@@ -1,0 +1,566 @@
+{
+  "trip": {
+    "destination": "Barcelona, Spain",
+    "dates": {
+      "start": "2026-10-08",
+      "end": "2026-10-11",
+      "departure_time": "13:00"
+    },
+    "travelers": 2,
+    "hotel": {
+      "name": "Catalonia Born",
+      "city": "Barcelona",
+      "country": "Spain"
+    },
+    "trip_style": [
+      "architecture",
+      "history",
+      "Catalan culture",
+      "food",
+      "wine",
+      "scenic viewpoints",
+      "relaxed pacing"
+    ]
+  },
+
+  "itinerary": [
+    {
+      "date": "2026-10-08",
+      "day": "Thursday",
+      "theme": "Barcelona Architecture and Old City",
+      "schedule": [
+        {
+          "time": "08:00-09:00",
+          "activity": "Breakfast",
+          "location": "Catalonia Born",
+          "booking_required": false
+        },
+        {
+          "time": "09:00-10:15",
+          "activity": "Arc de Triomf, Ciutadella Park and El Born",
+          "booking_required": false,
+          "notes": "Easy walking directly from the hotel."
+        },
+        {
+          "time": "10:30-12:00",
+          "activity": "Recinte Modernista de Sant Pau",
+          "booking_required": true,
+          "status": "To book",
+          "preferred_visit": "Self-guided",
+          "notes": "Allow approximately 90 minutes."
+        },
+        {
+          "time": "12:00-14:15",
+          "activity": "Leisurely lunch",
+          "preferred_area": "Avinguda de Gaudi / Sagrada Familia",
+          "booking_required": false
+        },
+        {
+          "time": "14:15-15:00",
+          "activity": "Transfer to Sagrada Familia and coffee",
+          "transport": "Taxi preferred",
+          "notes": "Maintain a generous buffer before the timed Sagrada Familia tour."
+        },
+        {
+          "time": "15:15-17:15",
+          "activity": "Sagrada Familia Guided Tour with Towers Access",
+          "operator": "The Touring Pandas",
+          "booking_status": "Booked / selected",
+          "language": "English",
+          "duration": "2 hours",
+          "party_size": 2,
+          "tower_access": true,
+          "preferred_tower": "Nativity Tower",
+          "notes": [
+            "Confirm that the voucher explicitly identifies Nativity Tower.",
+            "Do not assume that generic 'tower access' means Nativity Tower."
+          ]
+        },
+        {
+          "time": "17:15-18:00",
+          "activity": "Avinguda de Gaudi",
+          "options": [
+            "Coffee",
+            "Gelato",
+            "Relaxed walk"
+          ],
+          "booking_required": false
+        },
+        {
+          "time": "18:00-19:00",
+          "activity": "Return to hotel and rest",
+          "booking_required": false
+        },
+        {
+          "time": "19:00-21:00",
+          "activity": "Gothic Quarter evening walk",
+          "booking_required": false,
+          "suggested_route": [
+            "Santa Maria del Mar",
+            "Gothic Quarter",
+            "Barcelona Cathedral",
+            "Plaça Sant Jaume",
+            "Plaça Reial"
+          ]
+        },
+        {
+          "time": "21:00",
+          "activity": "Dinner",
+          "restaurant": "Arcano",
+          "booking_status": "To reserve",
+          "party_size": 2,
+          "preferred_time": "21:00",
+          "location": "El Born"
+        }
+      ]
+    },
+
+    {
+      "date": "2026-10-09",
+      "day": "Friday",
+      "theme": "Private Montserrat and Boutique Winery Experience",
+      "schedule": [
+        {
+          "time": "Morning-afternoon",
+          "activity": "Private Montserrat & Boutique Winery Experience",
+          "operator": "Barcelona Slow Travel",
+          "booking_status": "Booked / selected",
+          "party_size": 2,
+          "type": "Private tour",
+          "major_destinations": [
+            "Montserrat",
+            "Penedès wine region",
+            "Boutique winery"
+          ],
+          "included_experience": [
+            "Private transportation",
+            "Montserrat visit",
+            "Boutique winery experience",
+            "Wine tasting",
+            "Lunch if included by the confirmed booking"
+          ],
+          "details_to_verify_from_confirmation": [
+            "Hotel pickup time",
+            "Hotel pickup location",
+            "Exact winery or wineries",
+            "Lunch inclusion",
+            "Number of wine tastings",
+            "Return time to Barcelona"
+          ]
+        },
+        {
+          "time": "Evening",
+          "activity": "Relaxed dinner near Catalonia Born",
+          "booking_status": "Flexible",
+          "booking_required": false,
+          "notes": "Avoid major sightseeing after the full-day private excursion."
+        }
+      ]
+    },
+
+    {
+      "date": "2026-10-10",
+      "day": "Saturday",
+      "theme": "Gaudi, Park Guell and Montjuic",
+      "schedule": [
+        {
+          "time": "08:00-09:00",
+          "activity": "Breakfast",
+          "location": "Catalonia Born",
+          "booking_required": false
+        },
+        {
+          "time": "09:45-11:00",
+          "activity": "Casa Batllo",
+          "booking_status": "To book",
+          "party_size": 2,
+          "preferred_ticket": "Gold",
+          "preferred_time": "09:45",
+          "duration": "Approximately 1 hour 15 minutes",
+          "language": "English audioguide",
+          "notes": [
+            "Prefer official Casa Batllo ticket.",
+            "FlexiPass is not considered necessary.",
+            "Gold is preferred over the basic visit because this is a major architectural highlight of the trip."
+          ]
+        },
+        {
+          "time": "11:00-12:00",
+          "activity": "Passeig de Gracia",
+          "booking_required": false,
+          "suggested_activities": [
+            "Walk Passeig de Gracia",
+            "See La Pedrera exterior",
+            "Architecture and shopping"
+          ]
+        },
+        {
+          "time": "12:00-13:30",
+          "activity": "Lunch",
+          "booking_required": false
+        },
+        {
+          "time": "13:30-14:00",
+          "activity": "Transfer to Park Guell",
+          "transport": "Taxi preferred"
+        },
+        {
+          "time": "14:15-16:15",
+          "activity": "Park Guell",
+          "booking_status": "To book",
+          "party_size": 2,
+          "preferred_time": "14:15",
+          "preferred_ticket": "Official timed Monumental Core / standard admission",
+          "visit_style": "Self-guided",
+          "notes": [
+            "Book directly through official Park Guell ticketing if possible.",
+            "Timed entry is important.",
+            "No third-party guided tour is currently preferred."
+          ]
+        },
+        {
+          "time": "16:15-17:15",
+          "activity": "Gracia neighborhood",
+          "booking_required": false,
+          "suggested_activities": [
+            "Walk",
+            "Coffee",
+            "Gelato"
+          ]
+        },
+        {
+          "time": "17:15-17:45",
+          "activity": "Transfer to Montjuic",
+          "transport": "Taxi preferred"
+        },
+        {
+          "time": "17:45-19:30",
+          "activity": "Montjuic",
+          "booking_required": false,
+          "suggested_activities": [
+            "MNAC viewpoint",
+            "Plaça d'Espanya panorama",
+            "Olympic area",
+            "Barcelona views",
+            "Sunset if weather permits"
+          ],
+          "notes": "No formal tour or attraction booking currently planned."
+        },
+        {
+          "time": "20:30",
+          "activity": "Special dinner",
+          "booking_status": "To reserve",
+          "party_size": 2,
+          "primary_restaurant": "Estimar",
+          "backup_restaurant": "Público - Cuina de Mercat",
+          "preferred_time": "20:30",
+          "notes": "This should be the best restaurant meal of the Barcelona portion of the trip."
+        }
+      ]
+    },
+
+    {
+      "date": "2026-10-11",
+      "day": "Sunday",
+      "theme": "Relaxed El Born and Waterfront Morning",
+      "schedule": [
+        {
+          "time": "08:00-09:00",
+          "activity": "Breakfast",
+          "booking_required": false
+        },
+        {
+          "time": "09:00-10:00",
+          "activity": "Mercat de Santa Caterina",
+          "booking_required": false
+        },
+        {
+          "time": "10:00-11:00",
+          "activity": "El Born, Santa Maria del Mar and Ciutadella",
+          "booking_required": false
+        },
+        {
+          "time": "11:00-12:00",
+          "activity": "Port Vell and Barceloneta",
+          "booking_required": false
+        },
+        {
+          "time": "12:00-13:00",
+          "activity": "Return to hotel and collect luggage",
+          "booking_required": false
+        },
+        {
+          "time": "13:00",
+          "activity": "Depart Barcelona",
+          "booking_required": false
+        }
+      ]
+    }
+  ],
+
+  "bookings": {
+    "confirmed_or_selected": [
+      {
+        "date": "2026-10-08",
+        "time": "15:15-17:15",
+        "experience": "Sagrada Familia Guided Tour with Towers Access",
+        "operator": "The Touring Pandas",
+        "language": "English",
+        "duration_hours": 2,
+        "party_size": 2,
+        "status": "Booked / selected",
+        "tower_preference": "Nativity Tower",
+        "confirmation_required": "Verify exact tower assignment on voucher."
+      },
+      {
+        "date": "2026-10-09",
+        "experience": "Private Montserrat & Boutique Winery Experience",
+        "operator": "Barcelona Slow Travel",
+        "type": "Private",
+        "party_size": 2,
+        "status": "Booked / selected",
+        "details_to_verify": [
+          "Pickup time",
+          "Pickup location",
+          "Exact winery",
+          "Lunch",
+          "Wine tastings",
+          "Return time"
+        ]
+      }
+    ],
+    "to_book": [
+      {
+        "date": "2026-10-08",
+        "time": "10:30",
+        "experience": "Sant Pau Modernist Site",
+        "party_size": 2,
+        "preferred_ticket": "Self-guided",
+        "priority": "Medium-high"
+      },
+      {
+        "date": "2026-10-08",
+        "time": "21:00",
+        "experience": "Dinner",
+        "restaurant": "Arcano",
+        "party_size": 2,
+        "priority": "High"
+      },
+      {
+        "date": "2026-10-10",
+        "time": "09:45",
+        "experience": "Casa Batllo",
+        "party_size": 2,
+        "preferred_ticket": "Gold",
+        "priority": "High"
+      },
+      {
+        "date": "2026-10-10",
+        "time": "14:15",
+        "experience": "Park Guell",
+        "party_size": 2,
+        "preferred_ticket": "Official timed Monumental Core / standard admission",
+        "priority": "High"
+      },
+      {
+        "date": "2026-10-10",
+        "time": "20:30",
+        "experience": "Special dinner",
+        "primary_restaurant": "Estimar",
+        "backup_restaurant": "Público - Cuina de Mercat",
+        "party_size": 2,
+        "priority": "High"
+      }
+    ],
+    "flexible": [
+      {
+        "date": "2026-10-09",
+        "experience": "Dinner near Catalonia Born",
+        "party_size": 2,
+        "priority": "Low"
+      }
+    ]
+  },
+
+  "restaurants": {
+    "october_8": {
+      "preferred": "Arcano",
+      "area": "El Born",
+      "target_time": "21:00",
+      "status": "To reserve",
+      "reason": "Historic atmosphere, Mediterranean/Catalan food, good wine selection and convenient to hotel."
+    },
+    "october_9": {
+      "preferred": "Flexible casual dinner near hotel",
+      "target_time": "Approximately 20:00",
+      "status": "Flexible",
+      "reason": "Full-day private Montserrat and winery experience."
+    },
+    "october_10": {
+      "preferred": "Estimar",
+      "backup": "Público - Cuina de Mercat",
+      "target_time": "20:30",
+      "status": "To reserve",
+      "reason": "Special dinner; seafood/wine focus preferred."
+    }
+  },
+
+  "transportation": {
+    "general_strategy": "Use taxis for cross-city timed attractions; walk within neighborhoods.",
+    "october_8": [
+      {
+        "route": "Catalonia Born → Sant Pau",
+        "preferred_transport": "Taxi"
+      },
+      {
+        "route": "Sant Pau → Sagrada Familia",
+        "preferred_transport": "Taxi"
+      },
+      {
+        "route": "Sagrada Familia → Catalonia Born",
+        "preferred_transport": "Taxi or walk depending on energy"
+      }
+    ],
+    "october_9": {
+      "transport": "Provided by private Barcelona Slow Travel experience",
+      "notes": "Use the operator's confirmed pickup and return arrangements."
+    },
+    "october_10": [
+      {
+        "route": "Catalonia Born → Casa Batllo",
+        "preferred_transport": "Taxi"
+      },
+      {
+        "route": "Casa Batllo → Park Guell",
+        "preferred_transport": "Taxi"
+      },
+      {
+        "route": "Park Guell → Gracia",
+        "preferred_transport": "Walk"
+      },
+      {
+        "route": "Gracia → Montjuic",
+        "preferred_transport": "Taxi"
+      },
+      {
+        "route": "Montjuic → Dinner",
+        "preferred_transport": "Taxi"
+      }
+    ]
+  },
+
+  "booking_priorities": [
+    {
+      "priority": 1,
+      "booking": "Casa Batllo",
+      "date": "2026-10-10",
+      "time": "09:45",
+      "preferred_ticket": "Gold"
+    },
+    {
+      "priority": 2,
+      "booking": "Park Guell",
+      "date": "2026-10-10",
+      "time": "14:15",
+      "preferred_ticket": "Official timed Monumental Core / standard admission"
+    },
+    {
+      "priority": 3,
+      "booking": "October 10 special dinner",
+      "date": "2026-10-10",
+      "time": "20:30",
+      "preferred_restaurant": "Estimar",
+      "backup": "Público - Cuina de Mercat"
+    },
+    {
+      "priority": 4,
+      "booking": "Sant Pau",
+      "date": "2026-10-08",
+      "time": "10:30",
+      "preferred_ticket": "Self-guided"
+    },
+    {
+      "priority": 5,
+      "booking": "Arcano",
+      "date": "2026-10-08",
+      "time": "21:00"
+    }
+  ],
+
+  "experience_preferences": {
+    "sagrada_familia": {
+      "preferred_tour_type": "Commercial small-group English tour",
+      "private_tour": "Not preferred if substantially more expensive",
+      "tower_preference": "Nativity Tower",
+      "selected_operator": "The Touring Pandas",
+      "selected_time": "15:15",
+      "duration": "2 hours"
+    },
+    "casa_batllo": {
+      "preferred_ticket": "Gold",
+      "flexipass": "Not considered worth the extra cost",
+      "private_guide": "Not necessary",
+      "third_party_tour": "Not preferred"
+    },
+    "park_guell": {
+      "preferred_visit": "Self-guided",
+      "preferred_ticket": "Official timed Monumental Core admission",
+      "commercial_guided_tour": "Not currently preferred"
+    },
+    "montserrat": {
+      "preferred_experience": "Private",
+      "selected_operator": "Barcelona Slow Travel",
+      "combined_with_winery": true
+    }
+  },
+
+  "what_not_to_book": [
+    "No additional major sightseeing on October 9 evening.",
+    "No guided tour for Montjuic.",
+    "No guided tour for Gothic Quarter unless plans change.",
+    "No guided tour for El Born.",
+    "No attraction reservations for October 11.",
+    "No Casa Batllo FlexiPass unless schedule flexibility becomes important."
+  ],
+
+  "outstanding_verifications": [
+    "Confirm Sagrada Familia voucher specifies Nativity Tower.",
+    "Confirm exact Barcelona Slow Travel October 9 pickup time.",
+    "Confirm exact winery or wineries on October 9.",
+    "Confirm whether lunch is included on October 9.",
+    "Confirm wine tasting details on October 9.",
+    "Confirm October 9 return time.",
+    "Book Sant Pau around 10:30 AM October 8.",
+    "Book Arcano around 21:00 October 8.",
+    "Book Casa Batllo Gold at 09:45 October 10.",
+    "Book Park Guell at 14:15 October 10.",
+    "Book Estimar at 20:30 October 10, with Público as backup."
+  ],
+
+  "trip_design_principles": [
+    "Avoid over-scheduling.",
+    "Use the major architectural attractions as anchors.",
+    "Keep October 9 relatively empty because it is a full private excursion.",
+    "Use taxis when needed to protect timed reservations.",
+    "Prioritize Catalan food and wine experiences.",
+    "Leave October 11 flexible and relaxed before the 13:00 departure."
+  ],
+
+  "status_summary": {
+    "confirmed_or_selected": 2,
+    "high_priority_bookings_remaining": 5,
+    "flexible_items": 1,
+    "unbooked_sightseeing": [
+      "Gothic Quarter",
+      "El Born",
+      "Ciutadella",
+      "Gracia",
+      "Montjuic",
+      "Santa Caterina Market",
+      "Port Vell",
+      "Barceloneta"
+    ]
+  },
+
+  "last_updated": "2026-08-31"
+}

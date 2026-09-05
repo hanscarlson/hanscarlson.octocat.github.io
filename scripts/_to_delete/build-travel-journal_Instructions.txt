@@ -1,0 +1,389 @@
+BUILD TRAVEL JOURNAL SCRIPT — INSTRUCTIONS
+=============================================
+
+RETIRED (August 2026) — see "Update — retired: replaced by the former
+index-dynamic.html" at the very end of this file for what happened and
+why. Everything below this point describes the script as it worked
+before retirement; kept for history, not as current instructions.
+
+SHARED SCRIPT — build-travel-journal.js and this file live once at
+travel-journals/scripts/javascript/ and serve every
+travel-journal-YYYY-MM-DD/ trip (as of August 2026, this was moved here
+from being duplicated inside each trip's own scripts/javascript/ folder
+-- see the update section at the very end of this file, which also
+covers a second change made at the same time: a per-trip customizable
+<title>/<h1> text). Because one copy now serves every trip, every run
+takes a required <journal-folder> first argument to say which trip to
+build -- see "HOW TO RUN IT" below for the current invocation.
+
+Your original query (verbatim)
+--------------------------------
+"create and execute a script and instructions that recreates a travel
+journal for a date range yyyy-mm-dd to yyyy-mm-dd include the claude
+resolved query in the instructions"
+
+Claude's resolved query
+--------------------------
+Your message left the actual range as the literal placeholder
+"yyyy-mm-dd to yyyy-mm-dd" rather than real dates. Since index.html and
+data/travel-details/travel-details.json already cover 2026-07-01 through
+2026-08-18 (the range set up in this project's most recent prior work), I
+resolved "a date range" to that same range for the initial run below,
+rather than stopping to ask — re-run the script yourself any time with a
+different range; see HOW TO RUN IT.
+
+Built scripts/javascript/build-travel-journal.js, a plain Node script (no
+npm dependencies, but shells out to poppler's `pdftoppm`; not a two-step,
+Claude-mediated script — see "PYTHON, NOT... / PLAIN NODE, NOT
+CLAUDE-MEDIATED" reasoning below) that:
+
+  1. Takes an inclusive start/end date range as two required command-line
+     arguments (YYYY-MM-DD each) instead of a hardcoded range.
+  2. Scans the photos/ folder for dated subfolders (YYYY-MM-DD) of
+     multimedia files — photos AND videos, see "MANIFEST.JS NOW INCLUDES
+     VIDEOS" below — and rewrites manifest.js (window.PHOTO_MANIFEST) from
+     that scan.
+  3. Scans the rideWithGPS/ folder for route-report PDFs named with a
+     leading YYYY-MM-DD, rasterizing each to a PNG via `pdftoppm` (only
+     when missing or stale) for embedding.
+  4. Reads data/travel-details/travel-details.json and derives the
+     multi-day "where you are" location bands (the "All Day" list items at
+     the top of each day's Events list) automatically from its "locale"
+     column, instead of a hand-transcribed LOCATION_BANDS constant — see
+     "LOCATION BANDS: NOW DERIVED, NOT TRANSCRIBED" below.
+  5. Writes index.html: one `<section class="day">` per calendar day in
+     the given range (even days with nothing scheduled), each containing,
+     in order: Events (build-time location-band items + client-side
+     calendar events), Travel Details, Notes, a photo-gallery link with a
+     live mini-map (if that date has a photo folder), and a Cycle Routes
+     block (if that date has ride report PDFs).
+
+This is a NEW script, not an edit of the old
+scripts/_to_delete/build-journal.js. That file already lived in
+_to_delete/ (marked for removal) before this task, so it was left alone;
+build-travel-journal.js is written to fully replace it going forward.
+
+PLAIN NODE, NOT CLAUDE-MEDIATED
+-----------------------------------
+Like its predecessor, this script needs no research or synthesis only
+Claude can supply. Events, Notes, and Travel Details are NOT baked into
+index.html at build time at all — they're populated entirely CLIENT-SIDE,
+at page-load time, from data/events/events-data.js,
+data/daily-notes/daily-notes-data.js, and
+data/travel-details/travel-details-data.js respectively (the runtime
+mirrors refresh-events.js, refresh-notes.js, and refresh-travel-details.py
+each write alongside their own .json file). Re-running just one of those
+three refresh scripts is enough for index.html to pick up new
+events/notes/travel-details on next page load — you don't need to re-run
+this script for that. Re-run THIS script only when: the date range itself
+changes, photo folders or rideWithGPS PDFs are added/removed, or the
+travel-details.json "locale" column changes in a way that should move a
+location-band boundary.
+
+LOCATION BANDS: NOW DERIVED, NOT TRANSCRIBED
+-------------------------------------------------
+The old build-journal.js required a manual step (see
+scripts/_to_delete/TravelJournal_Instructions.txt, step 2.c) where Claude
+hand-transcribed each multi-day "where you are" span into a LOCATION_BANDS
+constant at the top of the script, reading them off a separate calendar
+export. That's gone. This script instead groups calendar-CONSECUTIVE rows
+in data/travel-details/travel-details.json that share the same trimmed,
+non-empty "locale" string into one band automatically (computeLocationBands()
+in the script). A gap in the data (a date with no row, or a row with a
+blank locale) breaks the run, same as a locale value actually changing
+does — it does not silently bridge across missing days.
+
+Practical effect: band labels are now exactly whatever text is in
+TravelDetails.ods's Locale column for that day (e.g. "Harlem NL", "Bike
+and Barge", "Drive to Sweden") rather than hand-composed labels like
+"Netherlands – Haarlem". Keep the Locale column worded the way you want it
+to read on the journal page — this script no longer rewords it. A day
+outside every band (no row, or a blank locale) simply gets no "All Day"
+item, exactly like a day outside every old LOCATION_BANDS range used to.
+
+Also new: a "Travel Details" block per day
+-----------------------------------------------
+index.html's day template now includes a "Travel Details" section (Trip,
+Locale, Lodging, Transportation, Meals, Activities, Trip Notes — "Trip
+Notes" rather than "Notes" so it isn't confused with the journal's own
+Notes section right below it), populated client-side the same way Events
+and Notes already are. This was added to index.html directly in prior
+work in this project; build-travel-journal.js now generates it as a
+built-in part of every rebuild, so a full regenerate no longer loses it.
+
+MANIFEST.JS NOW INCLUDES VIDEOS (added 2026-08-25)
+-------------------------------------------------------
+Your query: "update manifest.js based on multimedia files in the photos
+subfolder."
+
+Claude's resolved query: scanPhotoFolders()'s file filter was IMAGE_RE
+only (jpe?g|png|gif|webp|bmp|heic|heif|avif|svg) — a video sitting in a
+photos/YYYY-MM-DD folder (e.g. a phone's .mp4 clip) was silently invisible
+to manifest.js and didn't count toward that day's "N photos" link, even
+though daily-location-gallery.html already fully supports embedding
+videos (its own isVideo()/VIDEO_EXT_RE, a <video> tag with a "VIDEO"
+badge, and mixed "N photos, M videos" count labels — it just doesn't read
+manifest.js at all, so it was unaffected by this gap). I added VIDEO_RE
+(mp4|mov|m4v|avi|webm|mkv — the same extension list, so a file
+manifest.js now includes is exactly one gallery already knows how to
+embed as a video) and now scan with MEDIA_RE = IMAGE_RE | VIDEO_RE.
+
+Two other things changed alongside this, both downstream of the same
+scan and left inconsistent otherwise:
+  - Each day's photo-link label now splits into "N photos, M videos"
+    (only the parts that are nonzero) instead of always saying "N
+    photos" — matching daily-location-gallery.html's own label style. A
+    day whose folder is all video no longer misreports "0 photos".
+  - The header sub-line ("N days with photos · M photos total") splits
+    the same way ("M photos, K videos total").
+
+Ran on the real project: 5 videos turned up across photos/2026-07-05,
+photos/2026-07-09 (x2), and photos/2026-07-10 (x2) — all previously
+absent from manifest.js. See the "Second run" example below.
+
+Known gap this does NOT fix: gallery.html (the standalone ?folder=<name>
+viewer, not daily-location-gallery.html) reads manifest.js directly and
+renders every entry with a plain `<img>` tag — it has no video handling,
+so a video filename now in manifest.js will show as a broken image icon
+there. It's a secondary/legacy tool (index.html's own day photo-links all
+point to daily-location-gallery.html, which already handles video
+correctly and doesn't use manifest.js at all), so this was left as-is
+rather than expanding scope — flag it if you want gallery.html taught to
+embed video too.
+
+HEADER LINK TO DAILY GALLERY (added 2026-08-26)
+-------------------------------------------------------
+Your query: "modify index.html to include a link next to daily notes in
+the header that opens a no arg daily-gallery.html view update the build
+script and instructions."
+
+Claude's resolved query: the header's <nav class="header-nav"> already had
+three links (↑ Top, ↓ Bottom, and an external "Daily Notes" link to the
+Google Drive folder refresh-notes.js's source spreadsheet lives in). I
+added a fourth, right after "Daily Notes" so it reads as a matched pair
+(the two ways to see "notes" for a day and "everything shot" across every
+day): <a href="./daily-gallery.html" target="_blank" rel="noopener">Daily
+Gallery</a>. No query string, so it opens straight to the "All Days"
+day-picker daily-gallery.html's own script renders when ?folder= is
+absent — the same view build-daily-multimedia-gallery.js's own "eighth
+update" (see that script's Instructions.txt) just added per-day thumbnail
+previews to.
+
+Link text is "Daily Gallery" rather than something like "Photo Gallery" or
+"All Photos" because that's daily-gallery.html's own <title> and header
+<h1> text — clicking it should say exactly where it's taking you. Opens
+in a new tab (target="_blank" rel="noopener"), matching both the existing
+"Daily Notes" link right next to it and every other in-project link to a
+gallery page this script already writes (each day's own 📷 photo-link to
+daily-location-gallery.html, one section up in this same file).
+
+This is a pure template addition — it doesn't read daily-gallery.html or
+data/multimedia/anything to build the link, so it's safe to run even on a
+project where daily-gallery.html hasn't been generated yet (the link
+would just 404 until scripts/javascript/build-daily-multimedia-gallery.js
+is run at least once — same as any other cross-script link in this
+project already assumes its target has been built).
+
+DEPENDENCIES
+--------------
+    Plain Node (no npm packages). Requires poppler's `pdftoppm` on PATH
+    for rasterizing rideWithGPS PDFs — same requirement as the old
+    build-journal.js.
+
+HOW TO RUN IT (current, as of the August 2026 shared-script move)
+------------------------------------------------------------------------
+    node scripts/javascript/build-travel-journal.js <journal-folder> <start> <end> [--title "Custom Title"]
+
+  <journal-folder>  Which trip to build. Either a path (relative to the
+                    current directory, or absolute) to a
+                    travel-journal-YYYY-MM-DD/ folder, or just that
+                    folder's name if it lives directly under the
+                    travel-journals collection root (e.g.
+                    "travel-journal-2026-07-01"). Required.
+  <start>/<end>     Inclusive date range, YYYY-MM-DD. Both required.
+  --title "text"    Optional. Sets this trip's <title>/<h1> text (the 🧳
+                    emoji is always prefixed onto <h1> separately, so
+                    don't include it here). If omitted, a trip that
+                    already has an index.html keeps its current title
+                    as-is -- a plain rebuild never clobbers a name
+                    customized earlier (e.g. "Travel Journal 2026
+                    Summer", travel-journal-2026-07-01's own title). A
+                    trip with no index.html yet defaults to plain
+                    "Travel Journal". See the update section at the end
+                    of this file for the full reasoning.
+
+Example (the July trip, matching its existing title):
+    node scripts/javascript/build-travel-journal.js travel-journal-2026-07-01 2026-07-01 2026-08-18
+
+Example (the January trip):
+    node scripts/javascript/build-travel-journal.js travel-journal-2026-01-14 2026-01-14 2026-01-31
+
+Example (setting/changing a trip's title explicitly):
+    node scripts/javascript/build-travel-journal.js travel-journal-2026-07-01 2026-07-01 2026-08-18 --title "Travel Journal 2026 Summer"
+
+Historical runs (2026-08-22 through 2026-08-27, all against
+travel-journal-2026-07-01, back when this script still lived inside that
+trip's own folder and took no <journal-folder> argument):
+
+  Initial run (per your original query — see "Claude's resolved query"
+  above for why this range):
+      node scripts/javascript/build-travel-journal.js 2026-07-01 2026-08-18
+  Rebuilt manifest.js and index.html for July 1 – August 18, 2026,
+  deriving 6 location bands from the 49 rows then in
+  data/travel-details/travel-details.json.
+
+  Second run (2026-08-25, same range — see "MANIFEST.JS NOW INCLUDES
+  VIDEOS" above): picked up 5 videos across 4 days that the first run's
+  manifest.js had silently omitted, and updated every affected day's
+  photo-link label (and the header sub-line) to show split photo/video
+  counts.
+
+  Third run (2026-08-26, same range — see "HEADER LINK TO DAILY GALLERY"
+  above): added the "Daily Gallery" header-nav link to every rebuild of
+  index.html going forward — no change to manifest.js or any day's
+  content.
+
+Safe to rerun any time — it always rescans that trip's photos/,
+rideWithGPS/, and travel-details.json fresh and overwrites that trip's
+manifest.js and index.html to match exactly the range and files given
+(it does not merge with a prior run's output, except for the title,
+which is deliberately preserved -- see above).
+
+Notes and safety
+-------------------
+- Read-only with respect to data/events/, data/daily-notes/, and
+  data/travel-details/ — this script only READS travel-details.json (to
+  derive location bands); it never writes to any of the three data
+  sources or their refresh scripts. Run the relevant refresh-*.py/.js
+  script first if you want this rebuild to reflect newer source data.
+- Requires data/travel-details/travel-details.json to already cover (or
+  at least overlap) the range you're rebuilding, if you want location
+  bands — run refresh-travel-details.py first for a new/wider range. A
+  missing or non-overlapping travel-details.json just means zero bands
+  get derived, not an error.
+- photos/ and rideWithGPS/ are scanned in full every run (not filtered to
+  the given range up front) — a folder or PDF dated outside the requested
+  range is simply never referenced by any day section, since only days
+  inside [start, end] get rendered at all.
+
+
+Update — photo-link now points at common/daily-location-gallery.html
+--------------------------------------------------------------------------
+Your query (verbatim, on the "move daily-location-gallery.html" task):
+"move travel-journal-2026-07-01/daily-location-gallery.html to the
+common folder"
+
+Followed by two clarifying answers:
+  - "daily-location-gallery.html currently loads its data via a
+    relative path ... How should that work?" -> "Reusable via ?trip=
+    param (Recommended)"
+  - "travel-journal-2026-01-14 has its own separate (older) copy ...
+    Should it also switch over to the common page now?" -> "Switch it
+    to the common page too"
+
+daily-location-gallery.html moved out of every trip folder into
+common/daily-location-gallery.html, one shared copy for every trip
+instead of each trip's own drifting duplicate -- see
+common/daily-location-gallery_Instructions.txt for the full design.
+Since it's no longer a same-folder page, each day's photo-link href
+changed from
+  ./daily-location-gallery.html?date=<date>
+to
+  ../common/daily-location-gallery.html?trip=<this trip's folder name>&date=<date>
+so it still lands the visitor on the right trip's right day. TRIP_FOLDER
+(= path.basename(ROOT), this trip's own folder name, e.g.
+"travel-journal-2026-07-01") is computed once near the top of the script
+and reused for every day's link.
+
+Re-run (2026-08-27) to regenerate against the new href (both runs still
+made back when this script took no <journal-folder> argument, per-trip):
+    node scripts/javascript/build-travel-journal.js 2026-07-01 2026-08-18   (this trip)
+    node scripts/javascript/build-travel-journal.js 2026-01-14 2026-01-31   (travel-journal-2026-01-14)
+
+
+Update — moved to scripts/javascript/, shared across every trip, plus a per-trip custom title (August 2026)
+--------------------------------------------------------------------------------------------------------------------
+Two changes made together:
+
+  1. Moved out of each trip's own scripts/javascript/ folder (where it
+     had been duplicated) into the single shared
+     travel-journals/scripts/javascript/, matching build-multimedia-
+     data.py's own earlier move and this project's other shared scripts
+     (refresh-events.js, refresh-notes.js, build-multimedia-location-
+     clusters-data.js). ROOT is no longer computed from __dirname; the
+     script now takes a required <journal-folder> first argument
+     instead, resolved via the same two-step lookup (a path, or a folder
+     name under the collection root) those other shared scripts use.
+
+  2. While comparing the two trips' copies before the move, they turned
+     out to be identical except for one hardcoded difference: this
+     trip's <title>/<h1> text reads "Travel Journal 2026 Summer" while
+     travel-journal-2026-01-14's reads plain "Travel Journal" -- a
+     one-off customization made directly in each trip's own copy of the
+     script at some point, never documented and never exposed as an
+     argument. Left as a hardcoded literal, that customization would
+     have been destroyed by the very next rebuild once one shared script
+     serves both trips (there'd be only one hardcoded string for
+     everyone). Instead, TITLE_TEXT is now resolved dynamically, in
+     order: an explicit --title "text" argument if given; otherwise this
+     trip's own existing index.html's current <title> text, if it
+     already has one (so a plain rebuild reproduces whatever title this
+     trip was already showing, custom or not); otherwise plain "Travel
+     Journal" for a trip with no index.html yet. This is why running the
+     shared script against travel-journal-2026-07-01 with no --title
+     still reproduces "Travel Journal 2026 Summer" -- it's reading that
+     text back out of the index.html already sitting there, not
+     generating it fresh.
+
+Nothing about what gets built, per trip -- the date-range scan, location
+bands, ride reports, Travel Details block, or any other content -- changed.
+See "HOW TO RUN IT (current...)" above for the up-to-date invocation.
+
+
+
+Update — retired: replaced by the former index-dynamic.html (August 2026)
+------------------------------------------------------------------------------
+Each trip had grown a second, client-side-rendered index-dynamic.html
+alongside this script's build-time index.html (see that trip's own
+index-dynamic.html top-of-script comment, at the time) -- a full twin
+that computed its whole day-by-day skeleton, date range, and photo/video
+counts live from the data/ folder on every page load, needing no rebuild
+step at all after adding photos, events, notes, ride reports, or travel
+details. Once that twin existed and worked, this script's own
+build-time index.html was pure redundancy: two files to keep in sync,
+one of which (this one) needed a rebuild after nearly every kind of data
+change, the other needing none.
+
+Per your request, each trip's old index.html was deleted and its
+index-dynamic.html renamed to index.html in its place -- there is now
+only one index.html per trip, and it's the client-side-rendered kind.
+This script (build-travel-journal.js) is retired accordingly: moved to
+scripts/_to_delete/, and nothing in the project calls it anymore.
+refresh-notes.js used to run it automatically after merging notes (see
+refresh-notes_Instructions.txt); that step was removed since it's no
+longer needed -- notes-data.js is read live, the same as every other
+data mirror this script used to require a rebuild to pick up.
+
+Two things this script used to be the only source of, now handled
+elsewhere:
+  - Per-trip custom <title>/<h1> text (e.g. this trip's "Travel Journal
+    2026 Summer") -- this script resolved it from --title, or the
+    existing index.html's own title, or a plain default (see "Update —
+    moved to scripts/javascript/..." above). The renamed index.html files
+    already carry the right static <h1>/<title> text baked in from
+    before the rename, so nothing needed to change there.
+  - manifest.js (window.PHOTO_MANIFEST) -- this script's own scan of
+    photos/ for gallery.html's ?folder= viewer. Nothing currently
+    regenerates manifest.js going forward; it's frozen at whatever this
+    script last wrote. gallery.html is a secondary/legacy tool (index.html's
+    own photo-links all point at common/daily-location-gallery.html,
+    which reads data/multimedia/multimedia-data.js directly, not
+    manifest.js) -- if gallery.html's ?folder= listing needs to reflect
+    photos added after this retirement, something will need to either
+    regenerate manifest.js some other way or be pointed at
+    multimedia-data.js instead.
+
+If a future trip is ever built the old way (no index-dynamic.html-style
+page written for it), this script would need un-retiring rather than
+copied fresh -- it still works exactly as documented above, it's just
+unused today.

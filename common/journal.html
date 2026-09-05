@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Travel Journal (Live)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,900;1,500;1,600&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+  :root {
+    --ink: #1c2b3a;
+    --ink-soft: #5c5445;
+    --paper: #f7f2e6;
+    --paper-alt: #efe4cd;
+    --brass: #b8863b;
+    --brass-dark: #8f6526;
+    --brick: #a1432f;
+    --sea: #3f6e64;
+    --rule: #ddccaa;
+    --white: #fffdf8;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Public Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  }
+  header {
+    position: sticky; top: 0; z-index: 10;
+    padding: 16px 20px;
+    background: linear-gradient(180deg, var(--paper-alt) 0%, var(--paper) 100%);
+    border-bottom: 1px solid var(--rule);
+    text-align: center;
+  }
+  header h1 {
+    margin: 0 0 8px;
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-style: italic;
+    font-size: 30px;
+    color: var(--ink);
+  }
+  header .sub {
+    color: var(--ink-soft);
+    font-size: 16px;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.01em;
+  }
+  header .live-badge {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 1px 7px;
+    border-radius: 999px;
+    background: var(--sea);
+    color: var(--white);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    vertical-align: middle;
+  }
+  header .header-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 8px;
+  }
+  header .header-nav a {
+    color: var(--brass-dark);
+    text-decoration: none;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  header .header-nav a:hover { color: var(--sea); text-decoration: underline; }
+
+  main { width: 90%; margin: 0 auto; padding: 24px 32px 80px; max-width: none; }
+
+  .loading, .load-error {
+    text-align: center;
+    color: var(--ink-soft);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    padding: 60px 20px;
+  }
+  .load-error { color: var(--brick); }
+
+  .day {
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    background: var(--white);
+    margin-bottom: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(28,43,58,0.06);
+  }
+  .day h2 {
+    margin: 0;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--rule);
+    background: var(--paper-alt);
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .day h2 .day-weekday {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--sea);
+    font-weight: 600;
+  }
+  .day h2 .day-date {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 21px;
+    color: var(--ink);
+  }
+  .day-body { padding: 14px 20px 18px; }
+  ul.events { list-style: none; margin: 8px 0 0; padding: 0; }
+  ul.events li {
+    font-size: 16.5px;
+    padding: 3px 0;
+    color: var(--ink-soft);
+  }
+  ul.events li.band-item .time { color: var(--sea); }
+  .time {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 600;
+    font-size: 0.86em;
+    color: var(--brass-dark);
+    margin-right: 6px;
+  }
+  .cal { color: var(--ink-soft); font-style: italic; font-size: 15px; }
+  .no-events { color: var(--ink-soft); font-size: 16.5px; font-style: italic; margin: 8px 0 0; }
+  hr.divider {
+    border: none;
+    border-top: 1px solid var(--rule);
+    margin: 14px 0 10px;
+  }
+
+  .photo-link {
+    display: inline-block;
+    margin-top: 8px;
+    color: var(--brass-dark);
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .photo-link:hover { color: var(--sea); text-decoration: underline; }
+  .photo-link.daily-gallery-link { display: block; text-align: center; }
+
+  .day-map-mini {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 50vw;
+    max-width: 100%;
+    aspect-ratio: 3 / 2;
+    margin: 12px auto 0;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--rule);
+    background: var(--paper-alt);
+  }
+  .day-map-mini-canvas { position: absolute; inset: 0; }
+  .day-map-mini:not(.has-map) .day-map-mini-canvas { display: none; }
+  .day-map-mini.has-map .day-map-mini-empty { display: none; }
+  .day-map-mini-empty {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ink-soft);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 6px;
+  }
+  .day-map-mini .leaflet-control-attribution {
+    font-size: 9px;
+    line-height: 1.3;
+    padding: 0 4px;
+    background: rgba(247,242,230,0.75);
+  }
+  .day-map-mini .leaflet-popup-content-wrapper { font-family: 'Public Sans', sans-serif; border-radius: 4px; }
+  @media (max-width:640px) {
+    .day-map-mini { width: 80vw; }
+  }
+
+  .notes-block, .travel-details-block { margin-top: 16px; }
+  .notes-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--brass-dark);
+  }
+  .notes-content, .travel-details-content { margin-top: 8px; }
+  .notes-content p, .travel-details-content p {
+    font-size: 16.5px;
+    line-height: 1.55;
+    margin: 0 0 10px;
+    color: var(--ink-soft);
+  }
+  .notes-content p:last-child, .travel-details-content p:last-child { margin-bottom: 0; }
+
+  .rides-block { margin-top: 16px; }
+  .ride-embed { margin-top: 10px; text-align: center; }
+  .ride-caption {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 600;
+    font-size: 17px;
+    color: var(--sea);
+    margin-bottom: 6px;
+  }
+  .ride-image {
+    display: block;
+    width: 70%;
+    margin: 0 auto;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    background: #fff;
+  }
+
+  footer {
+    text-align: center;
+    color: var(--ink-soft);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    padding: 24px 20px;
+  }
+</style>
+</head>
+<body id="top">
+
+<header>
+  <h1 id="journal-title">🧳 Travel Journal</h1>
+  <nav class="header-nav">
+    <a href="../index.html">&#8617; All Journals</a>
+    <a href="#top">↑ Top</a>
+    <a href="#bottom">↓ Bottom</a>
+    <a href="https://drive.google.com/drive/folders/1ttD3a7HFxSglFDPDf4Yex5TPoqB6l6of" target="_blank" rel="noopener">Daily Notes</a>
+    <a id="daily-gallery-nav-link" href="daily-gallery.html" target="_blank" rel="noopener">Daily Gallery</a>
+  </nav>
+  <div class="sub" id="journal-summary">Loading journal data…<span class="live-badge">Live</span></div>
+</header>
+
+<main id="main">
+  <p class="loading" id="loading-msg">Loading journal from the data folder…</p>
+</main>
+
+<footer id="bottom">Rendered live, client-side — every day section, the date range above, and each day's photo/video counts are computed on page load from data/multimedia/multimedia-data.js, data/travel-details/, data/events/, data/daily-notes/, and data/ride-reports/ (no rebuild step needed after adding photos, events, notes, or travel details). Run <code id="ride-reports-cmd">node scripts/javascript/build-ride-reports-data.js</code> after adding or removing a rideWithGPS PDF so its Cycle Routes block picks it up. Notes are read-only here: to change one, edit the Google Doc, re-run refresh-notes.js, and reload this page.</footer>
+
+<script>
+  // This page lives once at common/journal.html, a sibling of every
+  // travel-journal-YYYY-MM-DD/ folder, and serves whichever one
+  // ?trip=<folder-name> names (e.g. common/journal.html?trip=travel-
+  // journal-2026-07-01) -- the same shared-page pattern already used by
+  // common/daily-gallery.html and common/daily-location-gallery.html.
+  // TRIP_BASE is the relative-path prefix every trip-relative asset
+  // below (the data/ mirrors, rideWithGPS/ files) is built from; with no
+  // ?trip= given it falls back to "./" (this page's own common/ folder),
+  // which simply finds nothing -- see the "No trip specified" empty
+  // state in the main script below. Stashed on window so the main
+  // script (a separate <script> block, since these src attributes have
+  // to be written via document.write before it runs) can read them
+  // back without re-parsing the URL.
+  var TRIP = new URLSearchParams(window.location.search).get("trip") || "";
+  var TRIP_BASE = TRIP ? "../" + TRIP + "/" : "./";
+  window.__TRIP__ = TRIP;
+  window.__TRIP_BASE__ = TRIP_BASE;
+  document.write(
+    '<script src="' + TRIP_BASE + 'data/events/events-data.js" ' +
+    'onerror="window.EVENTS_DATA = window.EVENTS_DATA || {events:{}}">' + '<' + '/script>'
+  );
+  document.write(
+    '<script src="' + TRIP_BASE + 'data/daily-notes/daily-notes-data.js" ' +
+    'onerror="window.DAILY_NOTES_DATA = window.DAILY_NOTES_DATA || {}">' + '<' + '/script>'
+  );
+  document.write(
+    '<script src="' + TRIP_BASE + 'data/travel-details/travel-details-data.js" ' +
+    'onerror="window.TRAVEL_DETAILS_DATA = window.TRAVEL_DETAILS_DATA || {}">' + '<' + '/script>'
+  );
+  document.write(
+    '<script src="' + TRIP_BASE + 'data/multimedia/multimedia-data.js" ' +
+    'onerror="window.MULTIMEDIA_CATALOG = window.MULTIMEDIA_CATALOG || []">' + '<' + '/script>'
+  );
+  document.write(
+    '<script src="' + TRIP_BASE + 'data/multimedia-location/multimedia-location-data.js" ' +
+    'onerror="window.MULTIMEDIA_LOCATION_DATA = window.MULTIMEDIA_LOCATION_DATA || []">' + '<' + '/script>'
+  );
+  document.write(
+    '<script src="' + TRIP_BASE + 'data/ride-reports/ride-reports-data.js" ' +
+    'onerror="window.RIDE_REPORTS_DATA = window.RIDE_REPORTS_DATA || {}">' + '<' + '/script>'
+  );
+</script>
+<script src="data/trips-manifest.js" onerror="window.TRIPS_MANIFEST = window.TRIPS_MANIFEST || []"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+(function () {
+  // ---------------------------------------------------------------------
+  // common/journal.html
+  // -------------------
+  // Fully client-side-rendered: nothing about which dates get a section,
+  // each day's photo/video count, or the header's date-range summary is
+  // baked in at build time. This page computes ALL of that itself, on
+  // load, straight from the data/ folder's *-data.js mirrors -- the same
+  // files this page uses for Events, Notes, Travel Details, and the mini
+  // maps. Add a new dated photos/ folder, run build-multimedia-data.py,
+  // and reload this page: no rebuild of this page itself is ever needed.
+  // The one exception is rideWithGPS/ PDFs -- browser JS can't scan a
+  // folder, so those are mirrored into data/ride-reports/ by the small
+  // build-ride-reports-data.js script (re-run that one after adding or
+  // removing a ride-report PDF).
+  //
+  // (This page used to be a separate copy of index.html duplicated
+  // inside each travel-journal-YYYY-MM-DD/ folder -- byte-identical
+  // except for the trip's own title and folder name -- until August
+  // 2026, when it moved here as one shared, ?trip=-aware page and each
+  // trip's own index.html was deleted; see build-travel-journal-
+  // index_Instructions.txt and build-common-trips-manifest_Instructions.txt
+  // for how every other page's links were repointed at
+  // common/journal.html?trip=<folder>. Before that, this same page had
+  // briefly lived at each trip's own index-dynamic.html, alongside an
+  // older, build-time-generated index.html -- see scripts/_to_delete/
+  // build-travel-journal_Instructions.txt for that earlier retirement.
+  // A few comments further down still describe this page's algorithms
+  // as "mirroring" that long-retired script's logic -- that's design
+  // history, not a live dependency: this page has never read or run
+  // that script.)
+  function esc(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+
+  // TRIP/TRIP_BASE were already resolved (from this page's own ?trip=)
+  // by the small bootstrap script above, before the data mirrors were
+  // requested -- read back from window rather than re-parsing the URL.
+  var TRIP_FOLDER = window.__TRIP__ || "";
+  var TRIP_BASE = window.__TRIP_BASE__ || "./";
+
+  var dailyGalleryLink = document.getElementById("daily-gallery-nav-link");
+  if (dailyGalleryLink) {
+    dailyGalleryLink.href = "daily-gallery.html?trip=" + encodeURIComponent(TRIP_FOLDER);
+  }
+
+  // This trip's display title, looked up in common/data/trips-manifest.js
+  // (window.TRIPS_MANIFEST, written by build-common-trips-manifest.js)
+  // by folder name -- the same manifest common/daily-location-
+  // gallery.html already uses for its own per-trip title. Falls back to
+  // the generic bootstrap heading above if the trip isn't found there
+  // (e.g. a folder that hasn't been added to the manifest yet).
+  var tripInfo = (window.TRIPS_MANIFEST || []).filter(function (t) { return t.folder === TRIP_FOLDER; })[0] || null;
+  var titleEl = document.getElementById("journal-title");
+  if (tripInfo && tripInfo.title) {
+    if (titleEl) titleEl.textContent = tripInfo.title;
+    document.title = tripInfo.title + " (Live)";
+  }
+
+  var rideReportsCmdEl = document.getElementById("ride-reports-cmd");
+  if (rideReportsCmdEl) {
+    rideReportsCmdEl.textContent = "node scripts/javascript/build-ride-reports-data.js" + (TRIP_FOLDER ? " " + TRIP_FOLDER : "");
+  }
+
+  // ---- Date helpers (mirrors build-travel-journal.js) -------------------
+  var DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+  function isoDate(d) { return d.toISOString().slice(0, 10); }
+  function toUtcDate(iso) { return new Date(iso + "T12:00:00Z"); }
+  function fmtDateOnly(iso) {
+    return toUtcDate(iso).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" });
+  }
+  function fmtWeekday(iso) {
+    return toUtcDate(iso).toLocaleDateString("en-US", { weekday: "long", timeZone: "UTC" });
+  }
+  function fmtDateNoYear(iso) {
+    return toUtcDate(iso).toLocaleDateString("en-US", { month: "long", day: "numeric", timeZone: "UTC" });
+  }
+  function allDaysBetween(startIso, endIso) {
+    var days = [];
+    var start = toUtcDate(startIso);
+    var end = toUtcDate(endIso);
+    for (var d = new Date(start); d <= end; d.setUTCDate(d.getUTCDate() + 1)) {
+      days.push(isoDate(d));
+    }
+    return days;
+  }
+  function nextDayIso(iso) {
+    var d = toUtcDate(iso);
+    d.setUTCDate(d.getUTCDate() + 1);
+    return isoDate(d);
+  }
+
+  // ---- Pull every date any data source mentions, to find the range ------
+  // (build-travel-journal.js instead took an explicit <start> <end> CLI
+  // range -- this page has no CLI, so it derives the same range from
+  // whichever dates actually show up across the data folder.)
+  var eventsByDate = (window.EVENTS_DATA && window.EVENTS_DATA.events) || {};
+  var notesByDate = window.DAILY_NOTES_DATA || {};
+  var travelDetailsByDate = window.TRAVEL_DETAILS_DATA || {};
+  var rideReportsByDate = window.RIDE_REPORTS_DATA || {};
+  var multimediaCatalog = window.MULTIMEDIA_CATALOG || [];
+
+  // ---- Group the multimedia catalog by day -------------------------------
+  // Each record's relative_folder looks like "photos/2026-07-12" -- the
+  // basename is the journal date, same convention used throughout this
+  // project (daily-location-gallery.html, the mini-map grouping below).
+  // "mapPreview.png" is excluded to match build-travel-journal.js's own
+  // photos/ folder scan, which never counted it toward a day's total.
+  var mediaByDate = {};
+  multimediaCatalog.forEach(function (r) {
+    if (!r || !r.relative_folder || r.file_name === "mapPreview.png") return;
+    var parts = String(r.relative_folder).split("/");
+    var day = parts[parts.length - 1];
+    if (!DATE_RE.test(day)) return;
+    (mediaByDate[day] = mediaByDate[day] || []).push(r);
+  });
+
+  // The range itself is anchored on photos (mediaByDate) and the trip
+  // itinerary (travelDetailsByDate) only -- NOT events/notes/ride-reports.
+  // EVENTS_DATA in particular is a straight calendar-sync mirror queried
+  // over a padded window (its own "range" field usually reaches a day or
+  // two past the last travel-details/photos day), so it can carry
+  // unrelated everyday calendar entries (e.g. a standing weekly bike
+  // ride) on days after the trip actually ended. Using it to help decide
+  // the range would let one such event silently stretch the whole
+  // journal by a day. Events/notes/ride-reports still populate whichever
+  // days they fall on WITHIN that range -- they just don't get a vote on
+  // where the range's edges are.
+  var allDateKeys = []
+    .concat(Object.keys(mediaByDate))
+    .concat(Object.keys(travelDetailsByDate))
+    .filter(function (k) { return DATE_RE.test(k); });
+
+  var mainEl = document.getElementById("main");
+  var summaryEl = document.getElementById("journal-summary");
+
+  if (!TRIP_FOLDER) {
+    mainEl.innerHTML = '<p class="load-error">No trip specified -- open this page via a trip link that includes ?trip=&lt;folder&gt; (e.g. the top-level index.html\'s trip cards, or common/journal.html?trip=travel-journal-2026-07-01 directly).</p>';
+    summaryEl.innerHTML = 'No trip selected <span class="live-badge">Live</span>';
+    return;
+  }
+
+  if (!allDateKeys.length) {
+    mainEl.innerHTML = '<p class="load-error">No dated content found in the data folder yet -- nothing to render. Run the refresh/build scripts under scripts/ (or scripts/python/) to populate data/, then reload this page.</p>';
+    summaryEl.innerHTML = 'No data found <span class="live-badge">Live</span>';
+    return;
+  }
+
+  allDateKeys.sort();
+  var journalStart = allDateKeys[0];
+  var journalEnd = allDateKeys[allDateKeys.length - 1];
+  var days = allDaysBetween(journalStart, journalEnd);
+
+  // ---- Totals for the header summary line --------------------------------
+  var totalPhotos = 0, totalVideos = 0;
+  Object.keys(mediaByDate).forEach(function (day) {
+    mediaByDate[day].forEach(function (r) {
+      var type = r.multimedia_metadata && r.multimedia_metadata.type;
+      if (type === "video") totalVideos++; else totalPhotos++;
+    });
+  });
+  var daysWithPhotos = Object.keys(mediaByDate).length;
+  var totalCountParts = [totalPhotos + " photo" + (totalPhotos === 1 ? "" : "s")];
+  if (totalVideos) totalCountParts.push(totalVideos + " video" + (totalVideos === 1 ? "" : "s"));
+
+  summaryEl.innerHTML = esc(fmtDateNoYear(journalStart)) + " – " + esc(fmtDateNoYear(journalEnd))
+    + " · " + daysWithPhotos + " day" + (daysWithPhotos === 1 ? "" : "s") + " with photos"
+    + " · " + esc(totalCountParts.join(", ")) + " total"
+    + '<span class="live-badge">Live</span>';
+
+  // ---- Location bands, derived from TRAVEL_DETAILS_DATA -------------------
+  // Same algorithm build-travel-journal.js's computeLocationBands() uses on
+  // travel-details.json's row array -- rebuilt here as rows from the
+  // date-keyed TRAVEL_DETAILS_DATA mirror instead of fetching the .json
+  // directly (file:// blocks that fetch; this mirror is why it exists).
+  function computeLocationBands() {
+    var rows = Object.keys(travelDetailsByDate).sort().map(function (date) {
+      var row = travelDetailsByDate[date] || {};
+      return { date: date, locale: row.locale };
+    });
+    var bands = [];
+    var current = null;
+    rows.forEach(function (row) {
+      var locale = row.locale == null ? null : String(row.locale).trim();
+      var continuesRun = current && locale && current.label === locale && nextDayIso(current.end) === row.date;
+      if (continuesRun) {
+        current.end = row.date;
+      } else {
+        if (current) bands.push(current);
+        current = locale ? { start: row.date, end: row.date, label: locale } : null;
+      }
+    });
+    if (current) bands.push(current);
+    return bands;
+  }
+  var locationBands = computeLocationBands();
+
+  var TRAVEL_DETAIL_FIELDS = [
+    ["trip_name", "Trip"],
+    ["locale", "Locale"],
+    ["lodging", "Lodging"],
+    ["transportation", "Transportation"],
+    ["meals", "Meals"],
+    ["activities", "Activities"],
+    ["notes", "Trip Notes"]
+  ];
+
+  // ---- Build each day's section -------------------------------------------
+  var html = days.map(function (key) {
+    var bands = locationBands.filter(function (b) { return key >= b.start && key <= b.end; });
+    var bandItemsHtml = bands.map(function (b) {
+      return '<li class="band-item"><span class="time">All Day</span> ' + esc(b.label) + '</li>';
+    }).join("\n");
+
+    var eventHtml = '<div class="notes-label">Events</div>\n'
+      + '      <ul class="events" id="events-' + key + '" data-date="' + key + '">\n'
+      + bandItemsHtml + '\n'
+      + '      </ul>\n'
+      + '      <p class="no-events" id="no-events-' + key + '" style="display:none;">No scheduled events.</p>';
+
+    var travelDetailsHtml = '<div class="travel-details-block">\n'
+      + '        <div class="notes-label">Travel Details</div>\n'
+      + '        <div class="travel-details-content" id="travel-details-' + key + '" data-date="' + key + '">\n'
+      + '          <p class="no-events">No travel details for this day.</p>\n'
+      + '        </div>\n'
+      + '      </div>';
+
+    var notesHtml = '<div class="notes-block">\n'
+      + '        <div class="notes-label">Notes</div>\n'
+      + '        <div class="notes-content" id="notes-' + key + '" data-date="' + key + '">\n'
+      + '          <p class="no-events">No notes for this day.</p>\n'
+      + '        </div>\n'
+      + '      </div>';
+
+    var mediaItems = mediaByDate[key];
+    var photoHtml = "";
+    if (mediaItems && mediaItems.length) {
+      var videoCount = mediaItems.filter(function (r) { return r.multimedia_metadata && r.multimedia_metadata.type === "video"; }).length;
+      var photoCount = mediaItems.length - videoCount;
+      var countParts = [];
+      if (photoCount) countParts.push(photoCount + " photo" + (photoCount === 1 ? "" : "s"));
+      if (videoCount) countParts.push(videoCount + " video" + (videoCount === 1 ? "" : "s"));
+      photoHtml = '<hr class="divider">\n'
+        + '      <a class="photo-link daily-gallery-link" href="daily-location-gallery.html?trip=' + encodeURIComponent(TRIP_FOLDER) + '&date=' + encodeURIComponent(key) + '" rel="noopener">Daily Gallery 📷 ' + esc(countParts.join(", ")) + ' →</a>\n'
+        + '      <div class="day-map-mini" id="daymap-' + key + '" data-date="' + key + '">\n'
+        + '        <div class="day-map-mini-canvas"></div>\n'
+        + '        <div class="day-map-mini-empty">Map</div>\n'
+        + '      </div>';
+    }
+
+    var rides = rideReportsByDate[key];
+    var rideHtml = "";
+    if (rides && rides.length) {
+      rideHtml = '<div class="rides-block">\n'
+        + '        <div class="notes-label">Cycle Routes</div>\n'
+        + rides.map(function (r) {
+          return '        <div class="ride-embed">\n'
+            + '          <div class="ride-caption">🚴 ' + esc(r.label) + '</div>\n'
+            + '          <img class="ride-image" src="' + TRIP_BASE + 'rideWithGPS/images/' + encodeURIComponent(r.image) + '" alt="' + esc(r.label) + '">\n'
+            + '          <a class="photo-link" href="' + TRIP_BASE + 'rideWithGPS/' + encodeURIComponent(r.file) + '" target="_blank" rel="noopener">View PDF →</a>\n'
+            + '        </div>';
+        }).join("\n")
+        + '\n      </div>';
+    }
+
+    return '  <section class="day" id="' + key + '">\n'
+      + '    <h2><span class="day-weekday">' + esc(fmtWeekday(key)) + '</span><span class="day-date">' + esc(fmtDateOnly(key)) + '</span></h2>\n'
+      + '    <div class="day-body">\n'
+      + '      ' + eventHtml + '\n'
+      + '      ' + travelDetailsHtml + '\n'
+      + '      ' + notesHtml + '\n'
+      + '      ' + photoHtml + '\n'
+      + '      ' + rideHtml + '\n'
+      + '    </div>\n'
+      + '  </section>';
+  }).join("\n\n");
+
+  mainEl.innerHTML = html;
+
+  // ---- Populate Events / Notes / Travel Details -----------------------
+  // Identical to this page's own client-side population script -- the
+  // <ul>/<div> containers above just went into the DOM via innerHTML
+  // instead of being part of a build-time template string.
+  document.querySelectorAll(".events[data-date]").forEach(function (ul) {
+    var date = ul.getAttribute("data-date");
+    var dayEvents = eventsByDate[date] || [];
+    dayEvents.forEach(function (e) {
+      var li = document.createElement("li");
+      li.innerHTML = '<span class="time">' + esc(e.time) + '</span> ' + esc(e.title)
+        + ' <span class="cal">[' + esc(e.cal) + ']</span>';
+      ul.appendChild(li);
+    });
+    if (!ul.querySelector("li")) {
+      ul.style.display = "none";
+      var fallback = document.getElementById("no-events-" + date);
+      if (fallback) fallback.style.display = "";
+    }
+  });
+
+  document.querySelectorAll(".notes-content[data-date]").forEach(function (container) {
+    var date = container.getAttribute("data-date");
+    var noteText = notesByDate[date];
+    if (!noteText) return;
+    var paras = noteText.split(/\n\n+/).map(function (p) { return p.trim(); }).filter(Boolean);
+    container.innerHTML = paras.map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("\n");
+  });
+
+  document.querySelectorAll(".travel-details-content[data-date]").forEach(function (container) {
+    var date = container.getAttribute("data-date");
+    var detail = travelDetailsByDate[date];
+    if (!detail) return;
+    var rows = TRAVEL_DETAIL_FIELDS
+      .map(function (pair) { return [pair[1], detail[pair[0]]]; })
+      .filter(function (pair) { return pair[1]; });
+    if (!rows.length) return;
+    container.innerHTML = rows.map(function (pair) {
+      return "<p><strong>" + esc(pair[0]) + ":</strong> " + esc(pair[1]).replace(/\n/g, "<br>") + "</p>";
+    }).join("\n");
+  });
+
+  // ---- Mini maps -----------------------------------------------------------
+  // Identical to this page's own mini-map script.
+  function basename(folder) { var parts = String(folder).split("/"); return parts[parts.length - 1]; }
+
+  var byDate = {};
+  (window.MULTIMEDIA_LOCATION_DATA || []).forEach(function (c) {
+    if (c.centroid_lat == null || c.centroid_lon == null) return;
+    var d = basename(c.folder);
+    (byDate[d] = byDate[d] || []).push(c);
+  });
+
+  var containers = Array.prototype.slice.call(document.querySelectorAll(".day-map-mini"));
+
+  function renderMiniMap(el) {
+    var date = el.getAttribute("data-date");
+    var emptyEl = el.querySelector(".day-map-mini-empty");
+    if (typeof L === "undefined") {
+      el.style.display = "none";
+      return;
+    }
+    var clusters = byDate[date];
+    if (!clusters || !clusters.length) {
+      if (emptyEl) emptyEl.textContent = "No mapped locations";
+      return;
+    }
+    el.classList.add("has-map");
+    var canvas = el.querySelector(".day-map-mini-canvas");
+    var map = L.map(canvas, { scrollWheelZoom: false, zoomControl: false });
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap', maxZoom: 19
+    }).addTo(map);
+
+    var pins = clusters.map(function (c) { return [c.centroid_lat, c.centroid_lon]; });
+    if (pins.length > 1) {
+      L.polyline(pins, { color: '#b8863b', weight: 2, dashArray: '2,6', opacity: 0.8 }).addTo(map);
+    }
+    clusters.forEach(function (c) {
+      L.circleMarker([c.centroid_lat, c.centroid_lon], {
+        radius: 6, weight: 2, color: '#b8863b', fillColor: '#1c2b3a', fillOpacity: 1
+      }).addTo(map).bindPopup('<strong>' + esc(c.location_label || 'Unknown location') + '</strong>');
+    });
+
+    var bounds = L.latLngBounds(pins);
+    map.fitBounds(bounds, { padding: [10, 10] });
+    if (pins.length === 1) map.setZoom(14);
+    setTimeout(function () { map.invalidateSize(); }, 0);
+  }
+
+  if (containers.length) {
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            renderMiniMap(entry.target);
+            io.unobserve(entry.target);
+          }
+        });
+      }, { rootMargin: "200px" });
+      containers.forEach(function (el) { io.observe(el); });
+    } else {
+      containers.forEach(renderMiniMap);
+    }
+  }
+})();
+</script>
+</body>
+</html>
